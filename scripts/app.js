@@ -24,10 +24,12 @@ function save_cookie() {
 }
 
 function load_cookie() {
-    let cookies = document.cookie;
-    let target = cookies.split(";").find(cookie => cookie.indexOf(cookie_name1) >= 0);
-    let keyvals = target.split("=");
-    if (keyvals.length > 1) {
-        loaded_cookie_label.innerText = keyvals[1];    
+    let cookies = document.cookie.split(";");
+    if (cookies.length > 0) {
+        let target = cookies.find(cookie => cookie.indexOf(cookie_name1) >= 0);
+        let keyvals = target.split("=");
+        if (keyvals.length > 1) {
+            loaded_cookie_label.innerText = keyvals[1];    
+        }    
     }
 }
