@@ -22,17 +22,21 @@
   </nav>
 
   <main>
-  <div>
-    <button id="butInstall" hidden>Install PWA</button>
-  </div>
-  <h2>test 5</h2>
-  <!-- /.main -->
-  <div>
-    <input type="text" id="input_value" />
-  </div>
-  <div>
-    <button id="save_cookie_btn">Save cookie</button>
-  </div>
+    <div>
+      <button id="butInstall" hidden>Install PWA</button>
+    </div>
+    <h2>test 6</h2>
+    <!-- /.main -->
+    <div>
+      <input type="text" id="input_value" />
+    </div>
+    <div>
+      <button id="save_cookie_btn">Save cookie</button>
+    </div>
+      
+    <div>
+      Cookie: cookie1 = <span id="loaded_cookie"></span>
+    </div>
   </main>
 
   <footer class="footer">
@@ -51,6 +55,8 @@
         .catch((err) => {
           console.log('Service worker did not register.', err);
         });
+
+        load_cookie();
       });
     }
   </script>
