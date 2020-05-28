@@ -18,7 +18,7 @@ function save_cookie() {
 
     let value = document.getElementById('input_value').value;
     //coknam+"="+escape(coktxt)+";expires="+endday;
-    let cookie = cookie_name1 + "=" +escape(value) + ";expire=" + end_date;
+    let cookie = cookie_name1 + "=" +escape(value) + ";expires=" + end_date;
     document.cookie = cookie;
     console.log("[save_cookie] wrote ", cookie);
 }
