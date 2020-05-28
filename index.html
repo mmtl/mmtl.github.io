@@ -1,32 +1,47 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# website: http://ogp.me/ns/website#">
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="format-detection" content="telephone=no">
-<meta name="viewport" content="width=device-width, initial-scale=1">    
-<link rel="icon" type="image/png" href="fav.png">
-<link rel="apple-touch-icon" sizes="180x180" href="icon.png">
-<title>test</title>
-<!--<link rel="stylesheet" href="assets/css/style.css">-->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
-<link rel"canonical" href="ここに正規化するURL" />
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="format-detection" content="telephone=no">
+	<meta name="viewport" content="width=device-width, initial-scale=1">    
+	<link rel="icon" type="image/png" href="images/favicon.ico">
+	<link rel="manifest" href="/manifest.json">
+	<title>test</title>
+	<link rel="stylesheet" href="styles/font-awesome.min.css">
 </head>
 
 <body>
 
-<header class="header">
-<!-- /.header --></header>
+  <header class="header">
+  <!-- /.header -->
+  </header>
 
-<nav class="gnav">
-<!-- /.gnav --></nav>
+  <nav class="gnav">
+  <!-- /.gnav -->
+  </nav>
 
-<main>
-<h2>test</h2>
-<!-- /.main --></main>
+  <main>
+  <h2>test</h2>
+  <!-- /.main -->
+  </main>
 
-<footer class="footer">
-<!-- /.footer --></footer>
+  <footer class="footer">
+  <!-- /.footer -->
+  </footer>
 
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+        .then((reg) => {
+          console.log('Service worker registered.', reg);
+        })
+        .catch((err) => {
+          console.log("Service worker did not register.", err);
+        });
+      }
+    }
+  </script>
 </body>
 </html>
