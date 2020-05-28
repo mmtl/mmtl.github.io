@@ -18,14 +18,14 @@ function save_cookie() {
 
     let value = document.getElementById('input_value').value;
     //coknam+"="+escape(coktxt)+";expires="+endday;
-    let cookie = cookie_name1 + "=" +escape(value) + ";expires=" + end_date;
+    let cookie = cookie_name1 + "=" +escape(value) + "; expires=" + end_date;
     document.cookie = cookie;
     console.log("[save_cookie] wrote ", cookie);
 }
 
 function load_cookie() {
     let cookies = document.cookie;
-    let target = cookies.split(";").find(cookie => cookie.indexOf(cookie_name1) >= 0)[0];
+    let target = cookies.split(";").find(cookie => cookie.indexOf(cookie_name1) >= 0);
     let value = target.split("=")[0];
     
     loaded_cookie_label.innerText = value;
