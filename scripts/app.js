@@ -40,3 +40,8 @@ var test_confirm_btn = document.getElementById('testConfirm');
 test_confirm_btn.addEventListener('click', (event) => {
     window.confirm("This is test.");
 });
+
+var test_prompt_btn = document.getElementById('testPrompt');
+test_prompt_btn.addEventListener('click', (event) => {
+    window.prompt("This is prompt.");
+});
