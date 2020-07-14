@@ -45,3 +45,15 @@ var test_prompt_btn = document.getElementById('testPrompt');
 test_prompt_btn.addEventListener('click', (event) => {
     window.prompt("This is prompt.");
 });
+
+var nec_ib_send_btn = document.getElementById('nec_ib_send_btn');
+nec_ib_send_btn.addEventListener('click', (event) => {
+    event.preventDefault();
+    location.href = "nec-ib://ibact=1&mode=0&id=test&ad=dummy";
+});
+
+var nec_ib_close_btn = document.getElementById('nec_ib_close_btn');
+nec_ib_close_btn.addEventListener('click', (event) => {
+    event.preventDefault();
+    location.href = "nec-ib://ibact=16&mode=0&id=0569u7srjsy6";
+});
