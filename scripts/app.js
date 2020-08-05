@@ -64,6 +64,7 @@ var open_browser_and_close_pwa = document.getElementById('open_browser_and_close
 open_browser_and_close_pwa.addEventListener('click', (event) => {
     event.preventDefault();
     window.open("https://www.google.co.jp/", "_blank");
+    window.focus();
     location.href = "nec-ib://ibact=16&mode=0&id=0569u7srjsy6";
 });
 
