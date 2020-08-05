@@ -57,3 +57,14 @@ nec_ib_close_btn.addEventListener('click', (event) => {
     event.preventDefault();
     location.href = "nec-ib://ibact=16&mode=0&id=0569u7srjsy6";
 });
+
+var open_browser_and_close_pwa = document.getElementById('open_browser_and_close_pwa');
+open_browser_and_close_pwa.addEventListener('click', (event) => {
+    event.preventDefault();
+    location.href = "nec-ib://ibact=16&mode=0&id=0569u7srjsy6";
+});
+
+var window_open_test = document.getElementById('window_open_test');
+window_open_test.addEventListener('click', (event) => {
+    window.open("https://www.google.co.jp/", "_blank");
+});
