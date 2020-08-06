@@ -66,9 +66,12 @@ open_browser_and_close_pwa.addEventListener('click', (event) => {
     window.open("https://www.google.co.jp/", "_blank");
     window.focus();
     location.href = "nec-ib://ibact=16&mode=0&id=0569u7srjsy6";
+    // This one doesn't work as expected.
 });
 
 var window_open_test = document.getElementById('window_open_test');
 window_open_test.addEventListener('click', (event) => {
-    window.open("https://www.google.co.jp/", "_blank");
+    event.preventDefault();
+    var encoded_url = encodeURIComponent("https://www.yahoo.co.jp/");
+    location.href = "nec-ib://ibact=18&mode=0&id=0569u7srjsy6&url=" + encoded_url;
 });
