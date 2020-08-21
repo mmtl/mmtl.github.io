@@ -75,3 +75,27 @@ window_open_test.addEventListener('click', (event) => {
     var encoded_url = encodeURIComponent("https://www.yahoo.co.jp/");
     location.href = "nec-ib://ibact=18&mode=0&id=0569u7srjsy6&url=" + encoded_url;
 });
+
+var connection;
+window.addEventListener('load', (event) => {
+    var url = "ws://localhost:8090/ws/";
+    connection = new WebSocket(url);
+
+    var connection_result = document.getElementById('connection_result');
+    connection.onopen = function(event) {
+        connection_result.innerText = "onopen: " + event.data;
+    };
+
+    connection.onerror = function(event) {
+        connection_result.innerText = "onerror: " + event.data;
+    };
+
+    connection.onmessage = function(event) {
+        connection_result.innerText = "onmessage"
+        document.getElementById('connection_message').innerText = event.data;
+    };
+
+    connection.onclose = function() {
+        connection_result.innerText = "onclose";
+    };
+});
