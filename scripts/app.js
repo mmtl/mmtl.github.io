@@ -99,4 +99,6 @@ connect_server.addEventListener('click', (event) => {
     connection.onclose = function() {
         connection_result.innerText = "onclose";
     };
+
+    connection.send("PWA data");
 });
