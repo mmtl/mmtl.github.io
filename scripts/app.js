@@ -95,6 +95,8 @@ connect_server.addEventListener('click', (event) => {
         connection_result.innerText = "onmessage"
         document.getElementById('connection_message').innerText = event.data;
 
+        // close connection
+        connection.close();
     };
 
     connection.onclose = function() {
@@ -109,7 +111,6 @@ var send_data = document.getElementById('send_data');
 send_data.addEventListener('click', (event) => {
     if (send_data_value.value) {
         connection.send(send_data_value.value);
-        connection.close();
     }
 });
 
