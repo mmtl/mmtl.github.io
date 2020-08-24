@@ -76,7 +76,7 @@ window_open_test.addEventListener('click', (event) => {
     location.href = "nec-ib://ibact=18&mode=0&id=0569u7srjsy6&url=" + encoded_url;
 });
 
-var connection;
+var connection = null;
 var connect_server = document.getElementById('connect_server');
 connect_server.addEventListener('click', (event) => {
     var url = "ws://localhost:8090/ws/";
@@ -94,6 +94,8 @@ connect_server.addEventListener('click', (event) => {
     connection.onmessage = function(event) {
         connection_result.innerText = "onmessage"
         document.getElementById('connection_message').innerText = event.data;
+
+        // close connection
     };
 
     connection.onclose = function() {
@@ -106,4 +108,12 @@ connect_server.addEventListener('click', (event) => {
 var send_data = document.getElementById('send_data');
 send_data.addEventListener('click', (event) => {
     connection.send("PWA data");
+});
+
+var close_connection = document.getElementById('close_connection');
+close_connection.addEventListener('click', () => {
+    if (connection) {
+        connection.close();
+        connection = null;
+    }
 });
