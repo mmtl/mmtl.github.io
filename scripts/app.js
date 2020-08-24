@@ -95,7 +95,6 @@ connect_server.addEventListener('click', (event) => {
         connection_result.innerText = "onmessage"
         document.getElementById('connection_message').innerText = event.data;
 
-        // close connection
     };
 
     connection.onclose = function() {
@@ -105,9 +104,13 @@ connect_server.addEventListener('click', (event) => {
     
 });
 
+var send_data_value = document.getElementById('send_data_value');
 var send_data = document.getElementById('send_data');
 send_data.addEventListener('click', (event) => {
-    connection.send("PWA data");
+    if (send_data_value.value) {
+        connection.send(send_data_value.value);
+        connection.close();
+    }
 });
 
 var close_connection = document.getElementById('close_connection');
