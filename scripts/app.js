@@ -77,7 +77,8 @@ window_open_test.addEventListener('click', (event) => {
 });
 
 var connection;
-window.addEventListener('load', (event) => {
+var connect_server = document.getElementById('connect_server');
+connect_server.addEventListener('click', (event) => {
     var url = "ws://localhost:8090/ws/";
     connection = new WebSocket(url);
 
