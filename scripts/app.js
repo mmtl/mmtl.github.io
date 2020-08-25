@@ -79,7 +79,7 @@ window_open_test.addEventListener('click', (event) => {
 var connection = null;
 var connect_server = document.getElementById('connect_server');
 connect_server.addEventListener('click', (event) => {
-    var url = "wss://localhost:8090/ws/";
+    var url = "ws://localhost:8090/ws/";
     connection = new WebSocket(url);
 
     var connection_result = document.getElementById('connection_result');
