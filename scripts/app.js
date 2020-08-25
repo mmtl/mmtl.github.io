@@ -51,7 +51,7 @@ test_prompt_btn.addEventListener('click', (event) => {
 var nec_ib_send_btn = document.getElementById('nec_ib_send_btn');
 nec_ib_send_btn.addEventListener('click', (event) => {
     event.preventDefault();
-    location.href = "nec-ib://ibact=1&mode=0&id=test&ad=dummy";
+    location.href = "nec-ib://ibact=10&mode=0&id=test&ad=dummy";
 });
 
 var nec_ib_close_btn = document.getElementById('nec_ib_close_btn');
@@ -116,5 +116,11 @@ close_connection.addEventListener('click', () => {
     if (connection) {
         connection.close();
         connection = null;
+    }
+});
+
+window.addEventListener('beforeunload', (event) => {
+    if (connection != null) {
+        connection.close();
     }
 });
