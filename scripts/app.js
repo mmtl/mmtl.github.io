@@ -77,6 +77,12 @@ window_open_test.addEventListener('click', (event) => {
 });
 
 var connection = null;
+window.addEventListener('beforeunload', (event) => {
+    if (connection != null) {
+        connection.close();
+    }
+});
+
 var connect_server = document.getElementById('connect_server');
 connect_server.addEventListener('click', (event) => {
     var url = "ws://localhost:8090/ws/";
@@ -84,11 +90,11 @@ connect_server.addEventListener('click', (event) => {
 
     var connection_result = document.getElementById('connection_result');
     connection.onopen = function(event) {
-        connection_result.innerText = "onopen: " + event.data;
+        connection_result.innerText = "onopen" + event.data == "undefined" ? "" : " (" + event.data + ")";
     };
 
     connection.onerror = function(event) {
-        connection_result.innerText = "onerror: " + event.data;
+        connection_result.innerText = "onerror" + event.data == "undefined" ? "" : " (" + event.data + ")";
     };
 
     connection.onmessage = function(event) {
@@ -119,8 +125,18 @@ close_connection.addEventListener('click', () => {
     }
 });
 
-window.addEventListener('beforeunload', (event) => {
-    if (connection != null) {
-        connection.close();
-    }
+var ws_close_pwa = document.getElementById('ws_close_pwa');
+ws_close_pwa.addEventListener('click', (event) => {
+    connection.send("ibact=16&mode=0&id=0569u7srjsy6");
+});
+
+var ws_close_pwa_and_open_url= document.getElementById('ws_close_pwa_and_open_url');
+ws_close_pwa_and_open_url.addEventListener('click', (event) => {
+    var encoded_url = encodeURIComponent(document.getElementById('open_url').value);
+    connection.send("ibact=18&mode=0&id=0569u7srjsy6&url=" + encoded_url);
+});
+
+var ws_get_key = document.getElementById('ws_get_key');
+ws_get_key.addEventListener('click', (event) => {
+    connection.send("ibact=1&mode=0&id=0569u7srjsy6");
 });
