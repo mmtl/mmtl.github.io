@@ -1,5 +1,38 @@
+#container {
+    display: grid;
+    grid-auto-rows: auto;
+    grid-template-columns: 150px 1fr;
+    grid-gap: 20px;
+    -ms-grid-row-align: 20px;
+    margin: 20px;
+}
+
 .eula_box {
-    margin: 30px 30px;
+    margin: 20px;
     padding: 10px;
     border: medium solid #000;
+}
+
+#send_data_value {
+    width: 300px;
+}
+
+#input_value {
+    width: 300px;
+}
+
+.two_by_table {
+    display: grid;
+    grid-auto-rows: auto;
+    grid-template-columns: 100px auto;
+}
+
+#commands {
+    display: grid;
+    grid-auto-rows: auto;
+    grid-template-columns: 100px 1fr;
+}
+
+#update_stamp {
+    text-decoration-line: underline;
 }
