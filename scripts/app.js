@@ -83,6 +83,7 @@ window.addEventListener('beforeunload', (event) => {
     }
 });
 
+var connection_message = document.getElementById('connection_message');
 var connect_server = document.getElementById('connect_server');
 connect_server.addEventListener('click', (event) => {
     var url = "ws://localhost:8090/ws/";
@@ -90,20 +91,25 @@ connect_server.addEventListener('click', (event) => {
 
     var connection_result = document.getElementById('connection_result');
     connection.onopen = function(event) {
-        connection_result.innerText = "onopen" + event.data == "undefined" ? "" : " (" + event.data + ")";
+        var result_text = event.data === undefined ? "" : " (" + event.data + ")"
+        connection_result.innerText = "onopen" + result_text;
+        connection_message.innerText = "";
     };
 
     connection.onerror = function(event) {
-        connection_result.innerText = "onerror" + event.data == "undefined" ? "" : " (" + event.data + ")";
+        var result_text = event.data === undefined ? "" : " (" + event.data + ")"
+        connection_result.innerText = "onerror" + result_text;
+        connection_message.innerText = "";
     };
 
     connection.onmessage = function(event) {
         connection_result.innerText = "onmessage"
-        document.getElementById('connection_message').innerText = event.data;
+        connection_message.innerText = event.data;
     };
 
     connection.onclose = function() {
         connection_result.innerText = "onclose";
+        connection_message.innerText = "";
     };
 
     
