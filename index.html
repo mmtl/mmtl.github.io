@@ -23,28 +23,72 @@
   </nav>
 
   <main>
-    <div class="eula_box">
-      EULA EULA EULA EULA EULA EULA EULA EULA EULA EULA<br>
-      EULA EULA EULA EULA EULA EULA EULA EULA EULA EULA<br>
-      EULA EULA EULA EULA EULA EULA EULA EULA EULA EULA<br>
-      EULA EULA EULA EULA EULA EULA EULA EULA EULA EULA<br>
-      EULA EULA EULA EULA EULA EULA EULA EULA EULA EULA
-    </div>
     <div>
       <button id="butInstall" hidden>Install PWA</button>
     </div>
-    <h2>test 16</h2>
+    <div class="eula_box">
+      <span id="update_stamp">2020/08/26 11:08 updated</span><br>Test PWA
+    </div>
+
+    <div id="container">
+      <div>Cookie</div>
+      <div>
+        <input type="text" id="input_value" />&nbsp;<button id="save_cookie_btn">Save</button>
+        <div>
+          Saved cookie: cookie1 = <span id="loaded_cookie"></span>
+        </div>
+      </div>
+
+      <div>URI scheme<br>(Deprecated)</div>
+      <div>
+        <div>
+          <button id="nec_ib_send_btn">nec-ib:Send data</button>
+        </div>
+        <div>
+          <button id="nec_ib_close_btn">nec-ib:Close</button>
+        </div>
+        <div>
+          <a href="https://www.google.co.jp/" target="_blank" id="open_browser_and_close_pwa">Open browser and close PWA</a>
+        </div>
+        <div>
+          <button id="window_open_test">App open url and terminate PWA</button>
+        </div>
+      </div>
+
+      <div>WebSocket</div>
+      <div>
+        <div>
+          <button id="connect_server">Connect</button>&nbsp;&nbsp;<button id="close_connection">Close</button>
+        </div>
+        <div class="two_by_table">
+          <div>Status: </div>
+          <div><span id="connection_result"></span></div>
+          <div>Received: </div>
+          <div><span id="connection_message"></span></div>
+        </div>
+        <div id="commands">
+          <div>Command:</div>
+          <div>
+            <div>
+              <input type="text" id="send_data_value" value="ibact=0&mode=xyz&id=123">&nbsp;<button id="send_data">Send</button>
+            </div>
+            <div>
+              <button id="ws_close_pwa">Close PWA</button>
+            </div>
+            <div>
+              <button id="ws_close_pwa_and_open_url">Close PWA and Open Browser</button>
+              &nbsp;<input type="text" id="open_url" value="https://www.google.co.jp/">
+            </div>
+            <div>
+              <button id="ws_get_key">Get RSA public key</button>&nbsp;&nbsp;<span id="key_value"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <!-- /.main -->
-    <div>
-      <input type="text" id="input_value" />
-    </div>
-    <div>
-      <button id="save_cookie_btn">Save cookie</button>
-    </div>
       
-    <div>
-      Cookie: cookie1 = <span id="loaded_cookie"></span>
-    </div>
     <!--
     <div>
       <button id="testConfirm">Test confirmation</button>
@@ -53,27 +97,6 @@
       <button id="testPrompt">Test Prompt</button>
     </div>
     -->
-    <div>
-      <button id="nec_ib_send_btn">nec-ib:Send data</button>
-    </div>
-    <div>
-      <button id="nec_ib_close_btn">nec-ib:Close</button>
-    </div>
-    <div>
-      <a href="https://www.google.co.jp/" target="_blank" id="open_browser_and_close_pwa">Open browser and close PWA</a>
-    </div>
-    <div>
-      <button id="window_open_test">App open url and terminate PWA</button>
-    </div>
-    <div>
-      <button id="connect_server">Connect server</button>&nbsp;&nbsp;<button id="close_connection">Close connection</button>
-    </div>
-    <div>
-      <input type="text" id="send_data_value" value="ibact=0&mode=xyz&id=123">&nbsp;<button id="send_data">Send data</button>
-    </div>
-    <div>
-      Connection: <span id="connection_result"></span><br>Received: <span id="connection_message"></span>
-    </div>
   </main>
 
   <footer class="footer">
