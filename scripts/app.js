@@ -146,3 +146,23 @@ var ws_get_key = document.getElementById('ws_get_key');
 ws_get_key.addEventListener('click', (event) => {
     connection.send("ibact=1&mode=0&id=0569u7srjsy6");
 });
+
+var post_publish = document.getElementById('post_publish');
+var dummy = document.getElementById('dummy');
+post_publish.addEventListener('click', (event)=> {
+    const form = document.createElement('form');
+    form.setAttribute('action', 'http://localhost:8090/ws/ticket');
+    form.setAttribute('method', 'post');
+    form.style.display = "none";
+    dummy.appendChild(form);
+
+    const input = document.createElement('input');
+    input.setAttribute('type', 'hidden');
+    input.setAttribute('name', 'publish_ticket');
+    input.setAttribute('value', "test");
+    form.appendChild(input);
+
+    form.submit();
+
+    dummy.removeChild(dummy.firstChild);
+});
