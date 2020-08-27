@@ -150,21 +150,27 @@ ws_get_key.addEventListener('click', (event) => {
 var post_publish = document.getElementById('post_publish');
 var dummy = document.getElementById('dummy');
 post_publish.addEventListener('click', (event)=> {
+    /*
     const form = document.createElement('form');
     form.setAttribute('action', 'http://localhost:8090/ws/ticket');
     form.setAttribute('method', 'get');
     form.style.display = "none";
     dummy.appendChild(form);
 
-    /*
-    const input = document.createElement('input');
-    input.setAttribute('type', 'hidden');
-    input.setAttribute('name', 'publish_ticket');
-    input.setAttribute('value', "test");
-    form.appendChild(input);
-    */
-
     form.submit();
 
     dummy.removeChild(dummy.firstChild);
+    */
+
+    var req = new XMLHttpRequest();
+    req.onreadystatechange = function() {
+        if (req.readyState == 4) {
+            if (req.status == 200) {
+                dummy.innerText = req.responseText;
+            }
+        }
+    };
+
+    req.open('get', 'http://localhost:8090/ws/ticket', true);
+    req.send(null);
 });
