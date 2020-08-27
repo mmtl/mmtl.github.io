@@ -86,7 +86,7 @@ window.addEventListener('beforeunload', (event) => {
 var connection_message = document.getElementById('connection_message');
 var connect_server = document.getElementById('connect_server');
 connect_server.addEventListener('click', (event) => {
-    var url = "ws://localhost:8090/ws/";
+    var url = "ws://localhost:8090/ws/?abc";
     connection = new WebSocket(url);
 
     var connection_result = document.getElementById('connection_result');
