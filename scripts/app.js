@@ -152,15 +152,17 @@ var dummy = document.getElementById('dummy');
 post_publish.addEventListener('click', (event)=> {
     const form = document.createElement('form');
     form.setAttribute('action', 'http://localhost:8090/ws/ticket');
-    form.setAttribute('method', 'post');
+    form.setAttribute('method', 'get');
     form.style.display = "none";
     dummy.appendChild(form);
 
+    /*
     const input = document.createElement('input');
     input.setAttribute('type', 'hidden');
     input.setAttribute('name', 'publish_ticket');
     input.setAttribute('value', "test");
     form.appendChild(input);
+    */
 
     form.submit();
 
