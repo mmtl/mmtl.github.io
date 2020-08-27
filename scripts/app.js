@@ -172,5 +172,6 @@ post_publish.addEventListener('click', (event)=> {
     };
 
     req.open('get', 'http://localhost:8090/ws/ticket', true);
+    req.setRequestHeader("X-Ib-Fetch", "abcxyz");
     req.send(null);
 });
