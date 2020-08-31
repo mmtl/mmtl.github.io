@@ -157,6 +157,7 @@ post_publish.addEventListener('click', (event)=> {
         if (req.readyState == 4) {
             if (req.status == 200) {
                 dummy.innerText = req.responseText;
+                ticket = req.responseText;
             }
         }
     };
