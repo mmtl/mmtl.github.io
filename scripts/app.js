@@ -224,6 +224,9 @@ get_key.addEventListener('click', () => {
 
     fetch('http://localhost:8090/ws/key', {
         method: 'GET',
+        headers: {
+            'Content-Type': 'text/plain'
+        },
         mode: 'cors'
     })
     .then((response) => {
