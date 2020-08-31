@@ -171,8 +171,7 @@ post_publish.addEventListener('click', (event)=> {
         method: 'GET',
         headers: {
             'X-Ib-Fetch': "accept",
-        },
-        mode: 'cors'
+        }
     })
     .then((response) => {
         if (!response.ok) {
@@ -224,10 +223,7 @@ get_key.addEventListener('click', () => {
 
     fetch('http://localhost:8090/ws/key', {
         method: 'GET',
-        headers: {
-            'Content-Type': 'text/plain'
-        },
-        mode: 'cors'
+        mode: 'no-cors'
     })
     .then((response) => {
         if (!response.ok) {
