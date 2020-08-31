@@ -147,6 +147,7 @@ ws_get_key.addEventListener('click', (event) => {
     connection.send("ibact=1&mode=0&id=0569u7srjsy6");
 });
 
+var ticket = "";
 var post_publish = document.getElementById('post_publish');
 var dummy = document.getElementById('dummy');
 post_publish.addEventListener('click', (event)=> {
@@ -179,7 +180,40 @@ post_publish.addEventListener('click', (event)=> {
         return response.text();
     })
     .then((text) => {
+        ticket = text;
         dummy.innerText = text;
     })
     .catch(error => console.error(error));
+});
+
+var ws_ticket_test = document.getElementById('ws_ticket_test');
+ws_ticket_test.addEventListener('click', () => {
+    // for testing ticket validation
+    var escaped_ticket = encodeURIComponent(ticket);
+    var url = "ws://localhost:8090/ws/hs/identifier/" + escaped_ticket;
+    connection = new WebSocket(url);
+
+    var connection_result = document.getElementById('connection_result');
+    connection.onopen = function(event) {
+        var result_text = event.data === undefined ? "" : " (" + event.data + ")"
+        connection_result.innerText = "onopen" + result_text;
+        connection_message.innerText = "";
+    };
+
+    connection.onerror = function(event) {
+        var result_text = event.data === undefined ? "" : " (" + event.data + ")"
+        connection_result.innerText = "onerror" + result_text;
+        connection_message.innerText = "";
+    };
+
+    connection.onmessage = function(event) {
+        connection_result.innerText = "onmessage"
+        connection_message.innerText = event.data;
+    };
+
+    connection.onclose = function() {
+        connection_result.innerText = "onclose";
+        connection_message.innerText = "";
+    };
+
 });
