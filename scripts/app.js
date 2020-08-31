@@ -170,8 +170,9 @@ post_publish.addEventListener('click', (event)=> {
     fetch('http://localhost:8090/ws/ticket/identifier', {
         method: 'GET',
         headers: {
-            'X-Ib-Fetch': "accept"
-        }
+            'X-Ib-Fetch': "accept",
+        },
+        mode: 'cors'
     })
     .then((response) => {
         if (!response.ok) {
@@ -221,7 +222,10 @@ ws_ticket_test.addEventListener('click', () => {
 var get_key = document.getElementById('get_key');
 get_key.addEventListener('click', () => {
 
-    fetch('http://localhost:8090/ws/key')
+    fetch('http://localhost:8090/ws/key', {
+        method: 'GET',
+        mode: 'cors'
+    })
     .then((response) => {
         if (!response.ok) {
             throw new Error(`${response.status} ${response.statusText}`);
