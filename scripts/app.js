@@ -166,7 +166,7 @@ post_publish.addEventListener('click', (event)=> {
     req.send(null);
     */
 
-    fetch('http://localhost:8090/ws/ticket/identifier', {
+    fetch('http://localhost:8090/ws/ticket?identifier', {
         method: 'GET',
         headers: {
             'X-Ib-Fetch': "accept"
