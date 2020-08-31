@@ -152,7 +152,6 @@ var post_publish = document.getElementById('post_publish');
 var dummy = document.getElementById('dummy');
 post_publish.addEventListener('click', (event)=> {
 
-    /*
     var req = new XMLHttpRequest();
     req.onreadystatechange = function() {
         if (req.readyState == 4) {
@@ -165,8 +164,8 @@ post_publish.addEventListener('click', (event)=> {
     req.open('get', 'http://localhost:8090/ws/ticket/identifier', true);
     req.setRequestHeader("X-Ib-Fetch", "accept");
     req.send(null);
-    */
 
+    /*
     fetch('http://localhost:8090/ws/ticket/identifier', {
         method: 'GET',
         headers: {
@@ -184,6 +183,7 @@ post_publish.addEventListener('click', (event)=> {
         dummy.innerText = text;
     })
     .catch(error => console.error(error));
+    */
 });
 
 var ws_ticket_test = document.getElementById('ws_ticket_test');
@@ -221,6 +221,19 @@ ws_ticket_test.addEventListener('click', () => {
 var get_key = document.getElementById('get_key');
 get_key.addEventListener('click', () => {
 
+    var req = new XMLHttpRequest();
+    req.onreadystatechange = function() {
+        if (req.readyState == 4) {
+            if (req.status == 200) {
+                dummy.innerText = req.responseText;
+            }
+        }
+    };
+
+    req.open('get', 'http://localhost:8090/ws/key', true);
+    req.send(null);
+
+    /*
     fetch('http://localhost:8090/ws/key', {
         method: 'GET',
         mode: 'cors'
@@ -236,5 +249,6 @@ get_key.addEventListener('click', () => {
         dummy.innerText = "KEY: " + text;
     })
     .catch(error => console.error(error));
+    */
 
 });
