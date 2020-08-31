@@ -223,7 +223,7 @@ get_key.addEventListener('click', () => {
 
     fetch('http://localhost:8090/ws/key', {
         method: 'GET',
-        mode: 'no-cors'
+        mode: 'cors'
     })
     .then((response) => {
         if (!response.ok) {
