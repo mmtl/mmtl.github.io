@@ -217,3 +217,23 @@ ws_ticket_test.addEventListener('click', () => {
     };
 
 });
+
+var get_key = document.getElementById('get_key');
+get_key.addEventListener('click', () => {
+
+    fetch('http://localhost:8090/key', {
+        method: 'GET'
+    })
+    .then((response) => {
+        if (!response.ok) {
+            throw new Error(`${response.status} ${response.statusText}`);
+        }
+        return response.text();
+    })
+    .then((text) => {
+        ticket = text;
+        dummy.innerText = "KEY: " + text;
+    })
+    .catch(error => console.error(error));
+
+});
