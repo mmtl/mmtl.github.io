@@ -150,18 +150,8 @@ ws_get_key.addEventListener('click', (event) => {
 var post_publish = document.getElementById('post_publish');
 var dummy = document.getElementById('dummy');
 post_publish.addEventListener('click', (event)=> {
+
     /*
-    const form = document.createElement('form');
-    form.setAttribute('action', 'http://localhost:8090/ws/ticket');
-    form.setAttribute('method', 'get');
-    form.style.display = "none";
-    dummy.appendChild(form);
-
-    form.submit();
-
-    dummy.removeChild(dummy.firstChild);
-    */
-
     var req = new XMLHttpRequest();
     req.onreadystatechange = function() {
         if (req.readyState == 4) {
@@ -171,7 +161,25 @@ post_publish.addEventListener('click', (event)=> {
         }
     };
 
-    req.open('get', 'http://localhost:8090/ws/ticket/?identifier', true);
+    req.open('get', 'http://localhost:8090/ws/ticket/identifier', true);
     req.setRequestHeader("X-Ib-Fetch", "accept");
     req.send(null);
+    */
+
+    fetch('http://localhost:8090/ws/ticket/identifier', {
+        method: 'GET',
+        headers: {
+            'X-Ib-Fetch': "accept"
+        }
+    })
+    .then((response) => {
+        if (!response.ok) {
+            throw new Error(`${response.status} ${response.statusText}`);
+        }
+        return response.text();
+    })
+    .then((text) => {
+        dummy.innerText = text;
+    })
+    .catch(error => console.error(error));
 });
