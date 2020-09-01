@@ -1,4 +1,4 @@
-var revision = 10118;
+var revision = 10119;
 
 function set_revision() {
     document.getElementById('update_stamp').innerText = revision;
@@ -192,7 +192,7 @@ function start_handshake() {
         var result_text = event.data === undefined ? "" : " (" + event.data + ")"
         connection_result.innerText = "onopen" + result_text;
         connection_message.innerText = "";
-        connection_status.innerText = "";
+        connection_status.innerText = "Handshaked";
     };
 
     connection.onerror = function(event) {
