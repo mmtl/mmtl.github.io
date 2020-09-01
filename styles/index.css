@@ -24,7 +24,7 @@
 .two_by_table {
     display: grid;
     grid-auto-rows: auto;
-    grid-template-columns: 100px auto;
+    grid-template-columns: 160px auto;
 }
 
 #commands {
@@ -35,4 +35,8 @@
 
 #update_stamp {
     text-decoration-line: underline;
+}
+
+.label {
+    font-weight: bold;
 }

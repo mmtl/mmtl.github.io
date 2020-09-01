@@ -26,12 +26,12 @@
     <div>
       <button id="butInstall" hidden>Install PWA</button>
     </div>
-    <div class="eula_box">
-      Test PWA rev.<span id="update_stamp">10116</span>
+    <div class="eula_box label">
+      Test PWA rev.<span id="update_stamp">-----</span>
     </div>
 
     <div id="container">
-      <div>Cookie</div>
+      <div class="label">Cookie</div>
       <div>
         <input type="text" id="input_value" />&nbsp;<button id="save_cookie_btn">Save</button>
         <div>
@@ -55,30 +55,34 @@
         </div>
       </div>
 
-      <div>WebSocket</div>
+      <div class="label">WebSocket</div>
       <div>
         <div>
-          <button id="connect_server">Connect</button>&nbsp;&nbsp;<button id="close_connection">Close</button>
+          <button id="connect_server">Connect with ticket</button>&nbsp;&nbsp;<button id="close_connection">Close</button>
         </div>
         <div class="two_by_table">
           <div>Status: </div>
+          <div><span id="connection_status"></span></div>
+          <div>Ticket: </div>
+          <div><input type="text" id="connection_ticket" readonly></div>
+          <div>Handshake status: </div>
           <div><span id="connection_result"></span></div>
-          <div>Received: </div>
+          <div>Received data: </div>
           <div><span id="connection_message"></span></div>
         </div>
         <div id="commands">
           <div>Command:</div>
           <div>
             <div>
-              <input type="text" id="send_data_value" value="ibact=0&mode=xyz&id=123">&nbsp;<button id="send_data">Send</button>
+              <input type="text" id="send_data_value" value="id=identifier&as=1">&nbsp;<button id="send_data">Send</button>
             </div>
             <div>
               <button id="ws_close_pwa">Close PWA</button>
             </div>
-            <div>
+            <!--<div>
               <button id="ws_close_pwa_and_open_url">Close PWA and Open Browser</button>
               &nbsp;<input type="text" id="open_url" value="https://www.google.co.jp/">
-            </div>
+            </div>-->
             <div>
               <button id="ws_get_key">Get RSA public key</button>&nbsp;&nbsp;<span id="key_value"></span>
             </div>
@@ -86,13 +90,13 @@
         </div>
       </div>
 
-      <div>etc</div>
+      <div class="label">etc</div>
       <div>
         <button id="post_publish">get ticket</button>
         <div id="dummy"></div>
         <button id="ws_ticket_test">ws connection start (validate ticket)</button>
         <div>
-          <button id="get_key">get key</button>
+          <button id="get_key">Get RSA public key</button>&nbsp;<input type="text" id="public_key_value" readonly>
         </div>
       </div>
     </div>
@@ -129,6 +133,7 @@
         load_cookie();
       });
     }
+    set_revision();
   </script>
 </body>
 </html>
