@@ -1,4 +1,4 @@
-var revision = 10119;
+var revision = 10120;
 
 function set_revision() {
     document.getElementById('update_stamp').innerText = revision;
@@ -78,6 +78,7 @@ var connection = null;
 window.addEventListener('beforeunload', () => {
     if (connection != null) {
         connection.close();
+        connection = null;
     }
 });
 
@@ -121,6 +122,8 @@ close_connection.addEventListener('click', () => {
     if (connection) {
         connection.close();
         connection = null;
+
+        connection_status.innerText = "";
     }
 });
 
