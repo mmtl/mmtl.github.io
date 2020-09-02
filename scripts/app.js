@@ -1,4 +1,4 @@
-var revision = 10130;
+var revision = 10131;
 
 function setRevision() {
     document.getElementById('update_stamp').innerText = revision;
@@ -275,9 +275,9 @@ function convertArrayBufferToString(buf) {
     return String.fromCharCode.apply(null, new Uint8Array(buf));
 }
 
-async function importPublicKey(publickKey) {
-    var binaryKey = window.atob(publickKey);
-    var keyData = convertStringToArrayBuffer(binaryKey);
+async function importPublicKey(publicKey) {
+    //var binaryKey = window.atob(publicKey);
+    var keyData = convertStringToArrayBuffer(publicKey);//convertStringToArrayBuffer(binaryKey);
 
     try {
         return await window.crypto.subtle.importKey(
@@ -285,9 +285,9 @@ async function importPublicKey(publickKey) {
             keyData,
             {
                 name: "RSA-OAEP",
-                hash: "SHA-256",
+                hash: "SHA-256"
             },
-            true,
+            false,
             ["encrypt"]
         );
     } catch(e) {
