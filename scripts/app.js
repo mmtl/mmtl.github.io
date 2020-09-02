@@ -1,6 +1,6 @@
-var revision = 10122;
+var revision = 10123;
 
-function set_revision() {
+function setRevision() {
     document.getElementById('update_stamp').innerText = revision;
 }
 
@@ -9,15 +9,15 @@ function set_revision() {
 var save_coockie_btn = document.getElementById('save_cookie_btn');
 if (save_coockie_btn) {
     save_coockie_btn.addEventListener('click', (event) => {
-        save_cookie();
-        load_cookie();
+        saveCookie();
+        loadCookie();
     });
 }
 
 var loaded_cookie_label = document.getElementById('loaded_cookie');
 var cookie_name1 = "cookie1";
 
-function save_cookie() {
+function saveCookie() {
     let date = new Date();
     date.setDate(date.getDate() + 60 * 60 * 24 * 1000);
     let end_date = date.toUTCString();
@@ -29,7 +29,7 @@ function save_cookie() {
     console.log("[save_cookie] wrote ", cookie);
 }
 
-function load_cookie() {
+function loadCookie() {
     let cookies = document.cookie.split(";");
     if (cookies.length > 0) {
         let target = cookies.find(cookie => cookie.indexOf(cookie_name1) >= 0);
@@ -262,6 +262,7 @@ get_key.addEventListener('click', () => {
 
 });
 
+/*
 function convertStringToArrayBuffer(str) {
     const buf = new ArrayBuffer(str.length);
     const bufView = new Uint8Array(buf);
@@ -317,3 +318,4 @@ enc_send_data.addEventListener('click', () => {
         console.log(error);
     }
 });
+*/
