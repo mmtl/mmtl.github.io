@@ -275,9 +275,19 @@ function convertArrayBufferToString(buf) {
     return String.fromCharCode.apply(null, new Uint8Array(buf));
 }
 
+function base64StringToArrayBuffer(b64str) {
+    var byteStr = atob(b64str);
+    var bytes = new Uint8Array(byteStr.length);
+    for (var i = 0; i < byteStr.length; i++) {
+      bytes[i] = byteStr.charCodeAt(i);
+    }
+    return bytes.buffer;
+}
+
 async function importPublicKey(publicKey) {
-    //var binaryKey = window.atob(publicKey);
-    var keyData = convertStringToArrayBuffer(publicKey);//convertStringToArrayBuffer(binaryKey);
+    var binaryKey = window.atob(publicKey);
+    var keyData = convertStringToArrayBuffer(binaryKey);
+    keyData = base64StringToArrayBuffer(publicKey);
 
     try {
         return await window.crypto.subtle.importKey(
