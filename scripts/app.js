@@ -1,4 +1,4 @@
-var revision = 10125;
+var revision = 10126;
 
 function setRevision() {
     document.getElementById('update_stamp').innerText = revision;
@@ -275,7 +275,6 @@ function convertArrayBufferToString(buf) {
     return String.fromCharCode.apply(null, new Uint8Array(buf));
 }
 
-/*
 async function importPublicKey(publickKey) {
     var binaryKey = window.atob(publickKey);
     var keyData = convertStringToArrayBuffer(binaryKey);
@@ -292,6 +291,7 @@ async function importPublicKey(publickKey) {
     );
 }
 
+/*
 async function encryptRSA(key, plainText) {
     let encrypted = await window.crypto.subtle.encrypt(
         {
