@@ -88,6 +88,9 @@
         <div>
           <button id="get_key">Get RSA public key</button>&nbsp;<input type="text" id="public_key_value" readonly>
         </div>
+        <div>
+          <button id="enc_send_data">Send ecnrypt data</button>&nbsp;<input type="text" id="enc_send_data_value" value="This is test data from client.">
+        </div>
       </div>
     </div>
 
@@ -111,10 +114,10 @@
           console.log('Service worker did not register.', err);
         });
 
-        load_cookie();
+        loadCookie();
       });
     }
-    set_revision();
+    setRevision();
   </script>
 </body>
 </html>

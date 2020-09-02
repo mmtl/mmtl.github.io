@@ -1,6 +1,6 @@
-var revision = 10120;
+var revision = 10121;
 
-function set_revision() {
+function setRevision() {
     document.getElementById('update_stamp').innerText = revision;
 }
 
@@ -9,15 +9,15 @@ function set_revision() {
 var save_coockie_btn = document.getElementById('save_cookie_btn');
 if (save_coockie_btn) {
     save_coockie_btn.addEventListener('click', (event) => {
-        save_cookie();
-        load_cookie();
+        saveCookie();
+        loadCookie();
     });
 }
 
 var loaded_cookie_label = document.getElementById('loaded_cookie');
 var cookie_name1 = "cookie1";
 
-function save_cookie() {
+function saveCookie() {
     let date = new Date();
     date.setDate(date.getDate() + 60 * 60 * 24 * 1000);
     let end_date = date.toUTCString();
@@ -29,7 +29,7 @@ function save_cookie() {
     console.log("[save_cookie] wrote ", cookie);
 }
 
-function load_cookie() {
+function loadCookie() {
     let cookies = document.cookie.split(";");
     if (cookies.length > 0) {
         let target = cookies.find(cookie => cookie.indexOf(cookie_name1) >= 0);
@@ -86,7 +86,7 @@ window.addEventListener('beforeunload', () => {
 var connect_server = document.getElementById('connect_server');
 var connection_message = document.getElementById('connection_message');
 connect_server.addEventListener('click', (event) => {
-    get_ticket();
+    getTicket();
     /*
     var url = "ws://localhost:8090/ws/?abc";
     connection = new WebSocket(url);
@@ -141,7 +141,7 @@ var identifier = "identifier";
 var ticket = "";
 var connection_ticket = document.getElementById('connection_ticket');
 var connection_status = document.getElementById('connection_status');
-function get_ticket() {
+function getTicket() {
     connection_ticket.innerText = "";
     connection_status.innerText = "Request ticket...";
 
@@ -152,7 +152,7 @@ function get_ticket() {
                 connection_ticket.innerText = req.responseText;
                 ticket = req.responseText;
                 connection_status.innerText = "Request handshake...";
-                start_handshake();
+                startHandshake();
             }
         }
     };
@@ -185,7 +185,7 @@ function get_ticket() {
 }
 
 // Start handshake
-function start_handshake() {
+function startHandshake() {
     var escaped_ticket = encodeURIComponent(ticket);
     var url = "ws://localhost:8090/ws/hs/" + identifier + "/" + escaped_ticket;
     connection = new WebSocket(url);
@@ -224,6 +224,7 @@ ws_close_pwa.addEventListener('click', (event) => {
 ////////////////////////////////////////////////////////////////////////////////
 // Encryption
 // Get public key for encryption
+var rsaPublicKey = null;
 var get_key = document.getElementById('get_key');
 var public_key_value = document.getElementById('public_key_value');
 get_key.addEventListener('click', () => {
@@ -232,7 +233,8 @@ get_key.addEventListener('click', () => {
     req.onreadystatechange = function() {
         if (req.readyState == 4) {
             if (req.status == 200) {
-                public_key_value.value = req.responseText;
+                rsaPublicKey = req.responseText;
+                public_key_value.value = rsaPublicKey;
             }
         }
     };
@@ -259,3 +261,73 @@ get_key.addEventListener('click', () => {
     */
 
 });
+
+function convertStringToArrayBuffer(str) {
+    const buf = new ArrayBuffer(str.length);
+    const bufView = new Uint8Array(buf);
+    for (let i = 0, strLen = str.length; i < strLen; i++) {
+        bufView[i] = str.charCodeAt(i);
+    }
+    return buf;
+}
+    
+function convertArrayBufferToString(buf) {
+    return String.fromCharCode.apply(null, new Uint8Array(buf));
+}
+
+async function importPublicKey(publickKey) {
+    var binaryKey = window.atob(publickKey);
+    var keyData = convertStringToArrayBuffer(binaryKey);
+
+    return await window.crypto.subtle.importKey(
+        "spki",
+        keyData,
+        {
+            name: "RSA-OAEP",
+            hash: "SHA-256",
+        },
+        true,
+        ["encrypt"]
+    );
+}
+
+async function encryptRSA(key, plainText) {
+    let encrypted = await window.crypto.subtle.encrypt(
+        {
+            name: "RSA-OAEP"
+        },
+        key,
+        plainText
+    );
+    return encrypted;
+}
+
+// Send encrypt data
+var enc_send_data = document.getElementById('enc_send_data');
+enc_send_data.addEventListener('click', () => {
+    var enc_send_data_value = document.getElementById('enc_send_data_value');
+    var plainText = enc_send_data_value.value;
+
+    try {
+        const pubKey = await importPublicKey(rsaPublicKey);
+        const encrypted = await encryptRSA(pubKey, new TextEncoder().encode(plainText));
+        const encryptedBase64 = window.btoa(convertArrayBufferToString(encrypted));
+        console.log(encryptedBase64.replace(/(.{64})/g, "$1\n")); 
+    } catch(error) {
+        console.log(error);
+    }
+});
+/*
+async function importPublicKeyAndEncrypt() {
+
+    const plaintext = 'This text will be encoded UTF8 and may contain special characters like § and €.';
+                
+    try {
+        const pub = await importPublicKey(publicKey);
+        const encrypted = await encryptRSA(pub, new TextEncoder().encode(plaintext));
+        const encryptedBase64 = window.btoa(ab2str(encrypted));
+        console.log(encryptedBase64.replace(/(.{64})/g, "$1\n")); 
+    } catch(error) {
+        console.log(error);
+    }
+} */
