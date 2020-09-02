@@ -1,4 +1,4 @@
-var revision = 10123;
+var revision = 10124;
 
 function setRevision() {
     document.getElementById('update_stamp').innerText = revision;
@@ -86,7 +86,7 @@ window.addEventListener('beforeunload', () => {
 var connect_server = document.getElementById('connect_server');
 var connection_message = document.getElementById('connection_message');
 connect_server.addEventListener('click', (event) => {
-    get_ticket();
+    getTicket();
     /*
     var url = "ws://localhost:8090/ws/?abc";
     connection = new WebSocket(url);
@@ -141,7 +141,7 @@ var identifier = "identifier";
 var ticket = "";
 var connection_ticket = document.getElementById('connection_ticket');
 var connection_status = document.getElementById('connection_status');
-function get_ticket() {
+function getTicket() {
     connection_ticket.innerText = "";
     connection_status.innerText = "Request ticket...";
 
@@ -152,7 +152,7 @@ function get_ticket() {
                 connection_ticket.innerText = req.responseText;
                 ticket = req.responseText;
                 connection_status.innerText = "Request handshake...";
-                start_handshake();
+                startHandshake();
             }
         }
     };
@@ -185,7 +185,7 @@ function get_ticket() {
 }
 
 // Start handshake
-function start_handshake() {
+function startHandshake() {
     var escaped_ticket = encodeURIComponent(ticket);
     var url = "ws://localhost:8090/ws/hs/" + identifier + "/" + escaped_ticket;
     connection = new WebSocket(url);
