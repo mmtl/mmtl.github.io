@@ -262,6 +262,7 @@ get_key.addEventListener('click', () => {
 
 });
 
+/*
 function convertStringToArrayBuffer(str) {
     const buf = new ArrayBuffer(str.length);
     const bufView = new Uint8Array(buf);
@@ -317,17 +318,4 @@ enc_send_data.addEventListener('click', () => {
         console.log(error);
     }
 });
-/*
-async function importPublicKeyAndEncrypt() {
-
-    const plaintext = 'This text will be encoded UTF8 and may contain special characters like § and €.';
-                
-    try {
-        const pub = await importPublicKey(publicKey);
-        const encrypted = await encryptRSA(pub, new TextEncoder().encode(plaintext));
-        const encryptedBase64 = window.btoa(ab2str(encrypted));
-        console.log(encryptedBase64.replace(/(.{64})/g, "$1\n")); 
-    } catch(error) {
-        console.log(error);
-    }
-} */
+*/
