@@ -1,4 +1,4 @@
-var revision = 10124;
+var revision = 10125;
 
 function setRevision() {
     document.getElementById('update_stamp').innerText = revision;
@@ -262,7 +262,6 @@ get_key.addEventListener('click', () => {
 
 });
 
-/*
 function convertStringToArrayBuffer(str) {
     const buf = new ArrayBuffer(str.length);
     const bufView = new Uint8Array(buf);
@@ -276,6 +275,7 @@ function convertArrayBufferToString(buf) {
     return String.fromCharCode.apply(null, new Uint8Array(buf));
 }
 
+/*
 async function importPublicKey(publickKey) {
     var binaryKey = window.atob(publickKey);
     var keyData = convertStringToArrayBuffer(binaryKey);
