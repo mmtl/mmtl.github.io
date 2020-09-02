@@ -1,4 +1,4 @@
-var revision = 10127;
+var revision = 10128;
 
 function setRevision() {
     document.getElementById('update_stamp').innerText = revision;
@@ -302,12 +302,17 @@ async function encryptRSA(key, plainText) {
     return encrypted;
 }
 
-/*
 // Send encrypt data
 var enc_send_data = document.getElementById('enc_send_data');
 enc_send_data.addEventListener('click', () => {
     var enc_send_data_value = document.getElementById('enc_send_data_value');
     var plainText = enc_send_data_value.value;
+
+    if (rsaPublicKey != null) {
+        var pubKey = await importPublicKey(rsaPublicKey);
+    }
+});
+/*
 
     try {
         const pubKey = await importPublicKey(rsaPublicKey);
@@ -317,5 +322,4 @@ enc_send_data.addEventListener('click', () => {
     } catch(error) {
         console.log(error);
     }
-});
 */
