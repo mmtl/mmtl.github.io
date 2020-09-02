@@ -1,4 +1,4 @@
-var revision = 10121;
+var revision = 10122;
 
 function set_revision() {
     document.getElementById('update_stamp').innerText = revision;
@@ -262,7 +262,6 @@ get_key.addEventListener('click', () => {
 
 });
 
-/*
 function convertStringToArrayBuffer(str) {
     const buf = new ArrayBuffer(str.length);
     const bufView = new Uint8Array(buf);
@@ -318,4 +317,3 @@ enc_send_data.addEventListener('click', () => {
         console.log(error);
     }
 });
-*/
