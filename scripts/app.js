@@ -1,4 +1,4 @@
-var revision = 10126;
+var revision = 10127;
 
 function setRevision() {
     document.getElementById('update_stamp').innerText = revision;
@@ -291,9 +291,8 @@ async function importPublicKey(publickKey) {
     );
 }
 
-/*
 async function encryptRSA(key, plainText) {
-    let encrypted = await window.crypto.subtle.encrypt(
+    var encrypted = await window.crypto.subtle.encrypt(
         {
             name: "RSA-OAEP"
         },
@@ -303,6 +302,7 @@ async function encryptRSA(key, plainText) {
     return encrypted;
 }
 
+/*
 // Send encrypt data
 var enc_send_data = document.getElementById('enc_send_data');
 enc_send_data.addEventListener('click', () => {
