@@ -1,4 +1,4 @@
-var revision = 10129;
+var revision = 10130;
 
 function setRevision() {
     document.getElementById('update_stamp').innerText = revision;
@@ -279,27 +279,35 @@ async function importPublicKey(publickKey) {
     var binaryKey = window.atob(publickKey);
     var keyData = convertStringToArrayBuffer(binaryKey);
 
-    return await window.crypto.subtle.importKey(
-        "spki",
-        keyData,
-        {
-            name: "RSA-OAEP",
-            hash: "SHA-256",
-        },
-        true,
-        ["encrypt"]
-    );
+    try {
+        return await window.crypto.subtle.importKey(
+            "spki",
+            keyData,
+            {
+                name: "RSA-OAEP",
+                hash: "SHA-256",
+            },
+            true,
+            ["encrypt"]
+        );
+    } catch(e) {
+        console.log(e);
+    }
 }
 
 async function encryptRSA(key, plainText) {
-    var encrypted = await window.crypto.subtle.encrypt(
-        {
-            name: "RSA-OAEP"
-        },
-        key,
-        plainText
-    );
-    return encrypted;
+    try {
+        var encrypted = await window.crypto.subtle.encrypt(
+            {
+                name: "RSA-OAEP"
+            },
+            key,
+            plainText
+        );
+        return encrypted;    
+    } catch(e) {
+        console.log(e);
+    }
 }
 
 // Send encrypt data
