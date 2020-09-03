@@ -1,4 +1,4 @@
-var revision = 10134;
+var revision = 10135;
 
 function setRevision() {
     document.getElementById('update_stamp').innerText = revision;
@@ -218,7 +218,7 @@ function startHandshake() {
 
 var ws_close_pwa = document.getElementById('ws_close_pwa');
 ws_close_pwa.addEventListener('click', (event) => {
-    connection.send("id=" + identifier + "&as=16");
+    connection.send("i=" + identifier + "&a=16");
 });
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -335,7 +335,7 @@ enc_send_data.addEventListener('click', () => {
                 console.log(encryptedBase64.replace(/(.{64})/g, "$1\n"));
 
                 if (connection) {
-                    connection.send("id=" + identifier + "&as=1&d=" + encodeURIComponent(encryptedBase64));
+                    connection.send("i=" + identifier + "&a=1&d=" + encodeURIComponent(encryptedBase64));
                 }
             });
         });
