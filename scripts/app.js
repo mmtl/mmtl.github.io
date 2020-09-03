@@ -1,4 +1,4 @@
-var revision = 10132;
+var revision = 10133;
 
 function setRevision() {
     document.getElementById('update_stamp').innerText = revision;
@@ -332,7 +332,11 @@ enc_send_data.addEventListener('click', () => {
             encryptRSA(pubKey, new TextEncoder().encode(plainText))
             .then((encrypted) => {
                 var encryptedBase64 = window.btoa(convertArrayBufferToString(encrypted));
-                console.log(encryptedBase64.replace(/(.{64})/g, "$1\n")); 
+                console.log(encryptedBase64.replace(/(.{64})/g, "$1\n"));
+
+                if (connection) {
+                    connection.send("id=" + identifier + "&as=1&d=" + encodeURIComponent(encryptedBase64));
+                }
             });
         });
     }
