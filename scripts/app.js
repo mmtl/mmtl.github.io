@@ -1,4 +1,4 @@
-var revision = 10133;
+var revision = 10134;
 
 function setRevision() {
     document.getElementById('update_stamp').innerText = revision;
@@ -335,7 +335,7 @@ enc_send_data.addEventListener('click', () => {
                 console.log(encryptedBase64.replace(/(.{64})/g, "$1\n"));
 
                 if (connection) {
-                    connection.send("id=" + identifier + "&as=1&d=" + encodeURIComponent(encryptedBase64));
+                    connection.send("id=" + identifier + "&as=1&d=" + encryptedBase64);
                 }
             });
         });
