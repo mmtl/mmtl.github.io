@@ -1,4 +1,4 @@
-var revision = 10131;
+var revision = 10132;
 
 function setRevision() {
     document.getElementById('update_stamp').innerText = revision;
@@ -287,8 +287,8 @@ function base64StringToArrayBuffer(b64str) {
 async function importPublicKey(publicKey) {
     var binaryKey = window.atob(publicKey);
     var keyData = convertStringToArrayBuffer(binaryKey);
-    keyData = base64StringToArrayBuffer(publicKey);
 
+    // X.509 key
     try {
         return await window.crypto.subtle.importKey(
             "spki",
