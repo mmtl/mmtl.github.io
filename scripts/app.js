@@ -1,4 +1,4 @@
-var revision = 10136;
+var revision = 10137;
 
 function setRevision() {
     document.getElementById('update_stamp').innerText = revision;
@@ -416,13 +416,13 @@ enc_aes_encrypt.addEventListener('click', () => {
             // Since there is no problem in exposing the IV, and the same is needed for decryption,
             // the IV is joined to the beginning of the resulting cipher data
             const buf = new Uint8Array(iv.byteLength + encrypted.byteLength);
-            buf.set(iv, 9);
+            buf.set(iv, 0);
             buf.set(new Uint8Array(encrypted), iv.byteLength);
             const encryptedBase64 = window.btoa(convertArrayBufferToString(buf));
             console.log(encryptedBase64.replace(/(.{64})/g, "$1\n"));
 
             // for test
-            aesDecrypt(secretKey, new Uint8Array(buf))
+            aesDecrypt(secretKey, buf)
             .then((decrypted) => {
                 const plainText = convertArrayBufferToString(decrypted);
                 console.log(plainText);
