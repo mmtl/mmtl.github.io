@@ -433,7 +433,7 @@ enc_aes_encrypt.addEventListener('click', () => {
 
 async function exportAesKey(key) {
     try {
-        return window.crypto.subtle.exportKey("spki", key);
+        return await window.crypto.subtle.exportKey("spki", key);
     } catch (e) {
         console.log(e);
     }
