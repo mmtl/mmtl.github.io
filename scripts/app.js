@@ -301,6 +301,7 @@ async function importPublicKey(publicKey) {
 }
 
 async function encryptRSA(key, plainText) {
+    // plainText: TypedArray
     try {
         var encrypted = await window.crypto.subtle.encrypt(
             {
@@ -372,6 +373,7 @@ enc_gen_key.addEventListener('click', () => {
 });
 
 async function aesEncrypt(key, iv, plainText) {
+    // plainText: TypedArray
     try {
         return await window.crypto.subtle.encrypt(
             {
@@ -388,6 +390,7 @@ async function aesEncrypt(key, iv, plainText) {
 }
 
 async function aesDecrypt(key, cipherText) {
+    // cipherText: TypedArray
     try {
         return await window.crypto.subtle.decrypt(
             {
@@ -419,7 +422,7 @@ enc_aes_encrypt.addEventListener('click', () => {
             console.log(encryptedBase64.replace(/(.{64})/g, "$1\n"));
 
             // for test
-            aesDecrypt(secretKey, buf)
+            aesDecrypt(secretKey, new Uint8Array(buf))
             .then((decrypted) => {
                 const plainText = convertArrayBufferToString(decrypted);
                 console.log(plainText);
