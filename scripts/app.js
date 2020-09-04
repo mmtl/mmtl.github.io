@@ -396,7 +396,7 @@ async function aesDecrypt(key, cipherText) {
                 tagLength: 128
             },
             key,
-            data.subarray(16)
+            cipherText.subarray(16)
         );
     } catch (e) {
         console.log(e);
