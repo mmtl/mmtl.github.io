@@ -373,7 +373,7 @@ enc_gen_key.addEventListener('click', () => {
 
 async function aesEncrypt(key, iv, plainText) {
     try {
-        return await window.crypto.encrypt(
+        return await window.crypto.subtle.encrypt(
             {
                 name: "AES-GCM",
                 iv: iv,
