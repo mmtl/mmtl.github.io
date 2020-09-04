@@ -85,10 +85,22 @@
       <div class="label">Encryption</div>
       <div>
         <div>
-          <button id="get_key">Get RSA public key</button>&nbsp;<input type="text" id="public_key_value" readonly>
+          <button id="get_key">Get RSA public key</button>&nbsp;<input type="text" id="public_key_value">
         </div>
         <div>
           <button id="enc_send_data">Send ecnrypt data</button>&nbsp;<input type="text" id="enc_send_data_value" value="This is test data from client.">
+        </div>
+        <br>
+        <div class="two_by_table">
+          <div>AES</div>
+          <div>
+            <div>
+              <button id="enc_gen_key">Generate AES key</button>&nbsp;<span id="enc_gen_key_value"></span>
+            </div>
+            <div>
+              <button id="enc_aes_encrypt">Encrypt</button>&nbsp;<input type="text" id="enc_aes_encrypt_value" value="This is AES test.">
+            </div>
+          </div>
         </div>
       </div>
     </div>

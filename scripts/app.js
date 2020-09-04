@@ -1,4 +1,4 @@
-var revision = 10135;
+var revision = 10136;
 
 function setRevision() {
     document.getElementById('update_stamp').innerText = revision;
@@ -6,6 +6,7 @@ function setRevision() {
 
 ////////////////////////////////////////////////////////////////////////////////
 // Cookies
+
 var save_coockie_btn = document.getElementById('save_cookie_btn');
 if (save_coockie_btn) {
     save_coockie_btn.addEventListener('click', (event) => {
@@ -44,6 +45,7 @@ function loadCookie() {
 
 ////////////////////////////////////////////////////////////////////////////////
 // URI schemes
+
 var nec_ib_send_btn = document.getElementById('nec_ib_send_btn');
 nec_ib_send_btn.addEventListener('click', (event) => {
     event.preventDefault();
@@ -74,6 +76,7 @@ window_open_test.addEventListener('click', (event) => {
 
 ////////////////////////////////////////////////////////////////////////////////
 // WebSockets
+
 var connection = null;
 window.addEventListener('beforeunload', () => {
     if (connection != null) {
@@ -222,8 +225,8 @@ ws_close_pwa.addEventListener('click', (event) => {
 });
 
 ////////////////////////////////////////////////////////////////////////////////
-// Encryption
-// Get public key for encryption
+// Encryption (RSA)
+
 var rsaPublicKey = null;
 var get_key = document.getElementById('get_key');
 var public_key_value = document.getElementById('public_key_value');
@@ -239,6 +242,7 @@ get_key.addEventListener('click', () => {
         }
     };
 
+    // Get public key
     req.open('get', 'http://localhost:8090/ws/key', true);
     req.send(null);
 
@@ -254,7 +258,7 @@ get_key.addEventListener('click', () => {
         return response.text();
     })
     .then((text) => {
-        ticket = text;
+        rsaPublicKey = text;
         public_key_value.value = text;
     })
     .catch(error => console.error(error));
@@ -273,15 +277,6 @@ function convertStringToArrayBuffer(str) {
     
 function convertArrayBufferToString(buf) {
     return String.fromCharCode.apply(null, new Uint8Array(buf));
-}
-
-function base64StringToArrayBuffer(b64str) {
-    var byteStr = atob(b64str);
-    var bytes = new Uint8Array(byteStr.length);
-    for (var i = 0; i < byteStr.length; i++) {
-      bytes[i] = byteStr.charCodeAt(i);
-    }
-    return bytes.buffer;
 }
 
 async function importPublicKey(publicKey) {
@@ -337,6 +332,97 @@ enc_send_data.addEventListener('click', () => {
                 if (connection) {
                     connection.send("i=" + identifier + "&a=1&d=" + encodeURIComponent(encryptedBase64));
                 }
+            });
+        });
+    }
+});
+
+////////////////////////////////////////////////////////////////////////////////
+// Encryption (AES)
+
+var secretKey = "";
+async function generateAesKey() {
+    try {
+        return await window.crypto.subtle.generateKey(
+            {
+                name: "AES-GCM",
+                length: 256
+            },
+            true,
+            [
+                "encrypt",
+                "decrypt"
+            ]
+        );
+    } catch(e) {
+        log.console(e);
+    }
+}
+
+const enc_gen_key = document.getElementById('enc_gen_key');
+enc_gen_key.addEventListener('click', () => {
+    const enc_gen_key_value = document.getElementById('enc_gen_key_value');
+    enc_gen_key_value.innerText = "";
+
+    generateAesKey()
+    .then((key) => {
+        secretKey = key;
+        enc_gen_key_value.innerText = "OK";
+    });
+});
+
+async function aesEncrypt(key, iv, plainText) {
+    try {
+        return await window.crypto.encrypt(
+            {
+                name: "AES-GCM",
+                iv: iv,
+                tagLength: 128
+            },
+            key,
+            plainText
+        );
+    } catch (e) {
+        log.console(e);
+    }
+}
+
+async function aesDecrypt(key, cipherText) {
+    try {
+        return await window.crypto.subtle.decrypt(
+            {
+                name: "AES-GCM",
+                iv: cipherText.subarray(0, 16),
+                tagLength: 128
+            },
+            key,
+            data.subarray(16)
+        );
+    } catch (e) {
+        log.console(e);
+    }
+}
+
+const enc_aes_encrypt = document.getElementById('enc_aes_encrypt');
+enc_aes_encrypt.addEventListener('click', () => {
+    const enc_aes_encrypt_value = document.getElementById('enc_aes_encrypt_value');
+    if (secretKey) {
+        const iv = window.crypto.getRandomValues(new Uint8Array(16));
+        aesEncrypt(secretKey, iv, new TextEncoder().encode(enc_aes_encrypt_value.value))
+        .then((encrypted) => {
+            // Since there is no problem in exposing the IV, and the same is needed for decryption,
+            // the IV is joined to the beginning of the resulting cipher data
+            const buf = new Uint8Array(iv.byteLength + encrypted.byteLength);
+            buf.set(iv, 9);
+            buf.set(new Uint8Array(encrypted), iv.byteLength);
+            const encryptedBase64 = window.btoa(convertArrayBufferToString(buf));
+            console.log(encryptedBase64.replace(/(.{64})/g, "$1\n"));
+
+            // for test
+            aesDecrypt(secretKey, buf)
+            .then((decrypted) => {
+                const plainText = convertArrayBufferToString(decrypted);
+                console.log(plainText);
             });
         });
     }
