@@ -430,3 +430,39 @@ enc_aes_encrypt.addEventListener('click', () => {
         });
     }
 });
+
+async function exportAesKey(key) {
+    try {
+        return window.crypto.subtle.exportKey("spki", key);
+    } catch (e) {
+        console.log(e);
+    }
+}
+
+const enc_aes_encrypt_key = document.getElementById('enc_aes_encrypt_key');
+enc_aes_encrypt_key.addEventListener('click', () => {
+    if (secretKey) {
+        exportAesKey(secretKey)
+        .then((exportKey) => {
+            const keyString = convertArrayBufferToString(exportKey);
+            console.log(keyString);
+        });
+
+        if (rsaPublicKey) {
+            importPublicKey(rsaPublicKey)
+            .then((pubKey) => {
+                encryptRSA(pubKey, new TextEncoder().encode(keyString))
+                .then((encrypted) => {
+                    var encryptedBase64 = window.btoa(convertArrayBufferToString(encrypted));
+                    console.log(encryptedBase64.replace(/(.{64})/g, "$1\n"));
+    
+                    /*
+                    if (connection) {
+                        connection.send("i=" + identifier + "&a=1&d=" + encodeURIComponent(encryptedBase64));
+                    }
+                    */
+                });
+            });
+            }
+    }
+});
