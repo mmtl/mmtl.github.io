@@ -383,7 +383,7 @@ async function aesEncrypt(key, iv, plainText) {
             plainText
         );
     } catch (e) {
-        log.console(e);
+        console.log(e);
     }
 }
 
@@ -399,7 +399,7 @@ async function aesDecrypt(key, cipherText) {
             data.subarray(16)
         );
     } catch (e) {
-        log.console(e);
+        console.log(e);
     }
 }
 
