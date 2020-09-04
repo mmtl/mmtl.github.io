@@ -1,4 +1,4 @@
-var revision = 10137;
+var revision = 10138;
 
 function setRevision() {
     document.getElementById('update_stamp').innerText = revision;
@@ -446,23 +446,23 @@ enc_aes_encrypt_key.addEventListener('click', () => {
         .then((exportKey) => {
             const keyString = convertArrayBufferToString(exportKey);
             console.log(keyString);
-        });
 
-        if (rsaPublicKey) {
-            importPublicKey(rsaPublicKey)
-            .then((pubKey) => {
-                encryptRSA(pubKey, new TextEncoder().encode(keyString))
-                .then((encrypted) => {
-                    var encryptedBase64 = window.btoa(convertArrayBufferToString(encrypted));
-                    console.log(encryptedBase64.replace(/(.{64})/g, "$1\n"));
-    
-                    /*
-                    if (connection) {
-                        connection.send("i=" + identifier + "&a=1&d=" + encodeURIComponent(encryptedBase64));
-                    }
-                    */
+            if (rsaPublicKey) {
+                importPublicKey(rsaPublicKey)
+                .then((pubKey) => {
+                    encryptRSA(pubKey, new TextEncoder().encode(keyString))
+                    .then((encrypted) => {
+                        var encryptedBase64 = window.btoa(convertArrayBufferToString(encrypted));
+                        console.log(encryptedBase64.replace(/(.{64})/g, "$1\n"));
+        
+                        /*
+                        if (connection) {
+                            connection.send("i=" + identifier + "&a=1&d=" + encodeURIComponent(encryptedBase64));
+                        }
+                        */
+                    });
                 });
-            });
             }
+        });
     }
 });
