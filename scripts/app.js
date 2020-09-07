@@ -1,4 +1,4 @@
-var revision = 10138;
+var revision = 10139;
 
 function setRevision() {
     document.getElementById('update_stamp').innerText = revision;
@@ -433,7 +433,7 @@ enc_aes_encrypt.addEventListener('click', () => {
 
 async function exportAesKey(key) {
     try {
-        return await window.crypto.subtle.exportKey("spki", key);
+        return await window.crypto.subtle.exportKey("raw", key);
     } catch (e) {
         console.log(e);
     }
