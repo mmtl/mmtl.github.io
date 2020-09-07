@@ -1,4 +1,4 @@
-var revision = 10140;
+var revision = 10141;
 
 function setRevision() {
     document.getElementById('update_stamp').innerText = revision;
@@ -447,8 +447,8 @@ enc_aes_encrypt_key.addEventListener('click', () => {
     if (secretKey) {
         exportAesKey(secretKey)
         .then((exportKey) => {
-            const keyString = convertArrayBufferToString(exportKey);
-            console.log(keyString);
+            const keyString = window.btoa(convertArrayBufferToString(exportKey));
+            console.log(keyString.replace(/(.{64})/g, "$1\n"));
 
             if (rsaPublicKey) {
                 importPublicKey(rsaPublicKey)
