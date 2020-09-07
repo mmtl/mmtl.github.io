@@ -1,4 +1,4 @@
-var revision = 10139;
+var revision = 10140;
 
 function setRevision() {
     document.getElementById('update_stamp').innerText = revision;
@@ -406,6 +406,7 @@ async function aesDecrypt(key, cipherText) {
     }
 }
 
+let aesEncryptedData = null;
 const enc_aes_encrypt = document.getElementById('enc_aes_encrypt');
 enc_aes_encrypt.addEventListener('click', () => {
     const enc_aes_encrypt_value = document.getElementById('enc_aes_encrypt_value');
@@ -420,6 +421,7 @@ enc_aes_encrypt.addEventListener('click', () => {
             buf.set(new Uint8Array(encrypted), iv.byteLength);
             const encryptedBase64 = window.btoa(convertArrayBufferToString(buf));
             console.log(encryptedBase64.replace(/(.{64})/g, "$1\n"));
+            aesEncryptedData = encryptedBase64;
 
             // for test
             aesDecrypt(secretKey, buf)
@@ -439,6 +441,7 @@ async function exportAesKey(key) {
     }
 }
 
+let rsaEncryptedKey = null;
 const enc_aes_encrypt_key = document.getElementById('enc_aes_encrypt_key');
 enc_aes_encrypt_key.addEventListener('click', () => {
     if (secretKey) {
@@ -454,15 +457,17 @@ enc_aes_encrypt_key.addEventListener('click', () => {
                     .then((encrypted) => {
                         var encryptedBase64 = window.btoa(convertArrayBufferToString(encrypted));
                         console.log(encryptedBase64.replace(/(.{64})/g, "$1\n"));
-        
-                        /*
-                        if (connection) {
-                            connection.send("i=" + identifier + "&a=1&d=" + encodeURIComponent(encryptedBase64));
-                        }
-                        */
+                        rsaEncryptedKey = encryptedBase64;
                     });
                 });
             }
         });
+    }
+});
+
+const enc_sned_data = document.getElementById('enc_sned_data');
+enc_sned_data.addEventListener('click', () => {
+    if (aesEncryptedData && rsaEncryptedKey && connection) {
+        connection.send("i=" + identifier + "&a=1&k=" + encodeURIComponent(rsaEncryptedKey) + "&d=" + encodeURIComponent(aesEncryptedData));
     }
 });
