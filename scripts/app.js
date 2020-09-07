@@ -341,12 +341,13 @@ enc_send_data.addEventListener('click', () => {
 ////////////////////////////////////////////////////////////////////////////////
 // Encryption (AES)
 
+// .NET Framework does not support AES-CGM, so use AES-CBC
 var secretKey = "";
 async function generateAesKey() {
     try {
         return await window.crypto.subtle.generateKey(
             {
-                name: "AES-GCM",
+                name: "AES-CBC",
                 length: 256
             },
             true,
@@ -377,9 +378,8 @@ async function aesEncrypt(key, iv, plainText) {
     try {
         return await window.crypto.subtle.encrypt(
             {
-                name: "AES-GCM",
-                iv: iv,
-                tagLength: 128
+                name: "AES-CBC",
+                iv: iv
             },
             key,
             plainText
@@ -394,9 +394,8 @@ async function aesDecrypt(key, cipherText) {
     try {
         return await window.crypto.subtle.decrypt(
             {
-                name: "AES-GCM",
-                iv: cipherText.subarray(0, 16),
-                tagLength: 128
+                name: "AES-CBC",
+                iv: cipherText.subarray(0, 16)
             },
             key,
             cipherText.subarray(16)
