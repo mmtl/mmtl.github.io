@@ -546,7 +546,7 @@ enc_gcm_encrypt.addEventListener('click', () => {
             aesEncryptedData = encryptedBase64;
 
             // for test
-            aesGcmDecrypt(secretKey, buf)
+            aesGcmDecrypt(secretGcmKey, buf)
             .then((decrypted) => {
                 const plainText = convertArrayBufferToString(decrypted);
                 console.log(plainText);
