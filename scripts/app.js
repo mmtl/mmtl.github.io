@@ -1,4 +1,4 @@
-var revision = 10141;
+var revision = 10142;
 
 function setRevision() {
     document.getElementById('update_stamp').innerText = revision;
@@ -339,9 +339,8 @@ enc_send_data.addEventListener('click', () => {
 });
 
 ////////////////////////////////////////////////////////////////////////////////
-// Encryption (AES)
+// Encryption (AES-CBC)
 
-// .NET Framework does not support AES-CGM, so use AES-CBC
 var secretKey = "";
 async function generateAesKey() {
     try {
@@ -469,4 +468,89 @@ enc_sned_data.addEventListener('click', () => {
     if (aesEncryptedData && rsaEncryptedKey && connection) {
         connection.send("i=" + identifier + "&a=1&k=" + encodeURIComponent(rsaEncryptedKey) + "&d=" + encodeURIComponent(aesEncryptedData));
     }
+});
+
+////////////////////////////////////////////////////////////////////////////////
+// Encryption (AES-GCM)
+
+var secretGcmKey = "";
+async function generateAesGcmKey() {
+    try {
+        return await window.crypto.subtle.generateKey(
+            {
+                name: "AES-GCM",
+                length: 256
+            },
+            true,
+            [
+                "encrypt",
+                "decrypt"
+            ]
+        );
+    } catch(e) {
+        log.console(e);
+    }
+}
+
+async function aesGcmEncrypt(key, iv, plainText) {
+    // plainText: TypedArray
+    try {
+        // The AES-GCM specification recommends that the IV should be 96 bits long, and typically contains bits from a random number generator.
+        return await window.crypto.subtle.encrypt(
+            {
+                name: "AES-GCM",
+                iv: iv
+            },
+            key,
+            plainText
+        );
+    } catch (e) {
+        console.log(e);
+    }
+}
+
+async function aesGcmDecrypt(key, cipherText) {
+    // cipherText: TypedArray
+    try {
+        return await window.crypto.subtle.decrypt(
+            {
+                name: "AES-GCM",
+                iv: cipherText.subarray(0, 12)
+            },
+            key,
+            cipherText.subarray(12)
+        );
+    } catch (e) {
+        console.log(e);
+    }
+}
+
+const enc_gcm_encrypt = document.getElementById('enc_gcm_encrypt');
+enc_gcm_encrypt.addEventListener('click', () => {
+    const enc_gcm_encrypt_value = document.getElementById('enc_gcm_encrypt_value');
+    
+    generateAesGcmKey()
+    .then((key) => {
+        secretGcmKey = key;
+        const iv = window.crypto.getRandomValues(new Uint8Array(12));   // 96 bits
+        aesEncrypt(secretGcmKey, iv, new TextEncoder().encode(enc_gcm_encrypt_value.value))
+        .then((encrypted) => {
+            // Since there is no problem in exposing the IV, and the same is needed for decryption,
+            // the IV is joined to the beginning of the resulting cipher data
+            // [IV(Nonce) 12 bytes][Encrypted data][Tag 16 bytes]
+            const buf = new Uint8Array(iv.byteLength + encrypted.byteLength);
+            buf.set(iv, 0);
+            buf.set(new Uint8Array(encrypted), iv.byteLength);
+            const encryptedBase64 = window.btoa(convertArrayBufferToString(buf));
+            console.log(encryptedBase64.replace(/(.{64})/g, "$1\n"));
+            aesEncryptedData = encryptedBase64;
+
+            // for test
+            aesDecrypt(secretKey, buf)
+            .then((decrypted) => {
+                const plainText = convertArrayBufferToString(decrypted);
+                console.log(plainText);
+            });
+        });
+    });
 });
