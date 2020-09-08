@@ -1,4 +1,4 @@
-var revision = 10143;
+var revision = 10144;
 
 function setRevision() {
     document.getElementById('update_stamp').innerText = revision;
@@ -77,7 +77,7 @@ window_open_test.addEventListener('click', (event) => {
 ////////////////////////////////////////////////////////////////////////////////
 // WebSockets
 
-var connection = null;
+let connection = null;
 window.addEventListener('beforeunload', () => {
     if (connection != null) {
         connection.close();
@@ -86,41 +86,14 @@ window.addEventListener('beforeunload', () => {
 });
 
 // Opening handshake
-var connect_server = document.getElementById('connect_server');
-var connection_message = document.getElementById('connection_message');
+const connect_server = document.getElementById('connect_server');
+const connection_message = document.getElementById('connection_message');
 connect_server.addEventListener('click', (event) => {
     getTicket();
-    /*
-    var url = "ws://localhost:8090/ws/?abc";
-    connection = new WebSocket(url);
-
-    var connection_result = document.getElementById('connection_result');
-    connection.onopen = function(event) {
-        var result_text = event.data === undefined ? "" : " (" + event.data + ")"
-        connection_result.innerText = "onopen" + result_text;
-        connection_message.innerText = "";
-    };
-
-    connection.onerror = function(event) {
-        var result_text = event.data === undefined ? "" : " (" + event.data + ")"
-        connection_result.innerText = "onerror" + result_text;
-        connection_message.innerText = "";
-    };
-
-    connection.onmessage = function(event) {
-        connection_result.innerText = "onmessage"
-        connection_message.innerText = event.data;
-    };
-
-    connection.onclose = function() {
-        connection_result.innerText = "onclose";
-        connection_message.innerText = "";
-    };
-    */   
 });
 
 // Closing handshake
-var close_connection = document.getElementById('close_connection');
+const close_connection = document.getElementById('close_connection');
 close_connection.addEventListener('click', () => {
     if (connection) {
         connection.close();
@@ -131,8 +104,8 @@ close_connection.addEventListener('click', () => {
 });
 
 // Data transfer
-var send_data_value = document.getElementById('send_data_value');
-var send_data = document.getElementById('send_data');
+const send_data_value = document.getElementById('send_data_value');
+const send_data = document.getElementById('send_data');
 send_data.addEventListener('click', (event) => {
     if (send_data_value.value) {
         connection.send(send_data_value.value);
@@ -140,15 +113,15 @@ send_data.addEventListener('click', (event) => {
 });
 
 // Get ticket for handshake
-var identifier = "identifier";
-var ticket = "";
-var connection_ticket = document.getElementById('connection_ticket');
-var connection_status = document.getElementById('connection_status');
+const identifier = "identifier";
+let ticket = "";
+const connection_ticket = document.getElementById('connection_ticket');
+const connection_status = document.getElementById('connection_status');
 function getTicket() {
     connection_ticket.innerText = "";
     connection_status.innerText = "Request ticket...";
 
-    var req = new XMLHttpRequest();
+    let req = new XMLHttpRequest();
     req.onreadystatechange = function() {
         if (req.readyState == 4) {
             if (req.status == 200) {
@@ -181,7 +154,7 @@ function getTicket() {
         connection_ticket.innerText = req.responseText;
         ticket = req.responseText;
         connection_status.innerText = "Request handshake...";
-        start_handshake();
+        startHandshake();
     })
     .catch(error => console.error(error));
     */
@@ -189,20 +162,20 @@ function getTicket() {
 
 // Start handshake
 function startHandshake() {
-    var escaped_ticket = encodeURIComponent(ticket);
-    var url = "ws://localhost:8090/ws/hs/" + identifier + "/" + escaped_ticket;
+    const escaped_ticket = encodeURIComponent(ticket);
+    const url = "ws://localhost:8090/ws/hs/" + identifier + "/" + escaped_ticket;
     connection = new WebSocket(url);
 
-    var connection_result = document.getElementById('connection_result');
+    const connection_result = document.getElementById('connection_result');
     connection.onopen = function(event) {
-        var result_text = event.data === undefined ? "" : " (" + event.data + ")"
+        const result_text = event.data === undefined ? "" : " (" + event.data + ")"
         connection_result.innerText = "onopen" + result_text;
         connection_message.innerText = "";
         connection_status.innerText = "Handshaked";
     };
 
     connection.onerror = function(event) {
-        var result_text = event.data === undefined ? "" : " (" + event.data + ")"
+        const result_text = event.data === undefined ? "" : " (" + event.data + ")"
         connection_result.innerText = "onerror" + result_text;
         connection_message.innerText = "";
     };
@@ -219,7 +192,7 @@ function startHandshake() {
 
 }
 
-var ws_close_pwa = document.getElementById('ws_close_pwa');
+const ws_close_pwa = document.getElementById('ws_close_pwa');
 ws_close_pwa.addEventListener('click', (event) => {
     connection.send("i=" + identifier + "&a=16");
 });
@@ -227,12 +200,12 @@ ws_close_pwa.addEventListener('click', (event) => {
 ////////////////////////////////////////////////////////////////////////////////
 // Encryption (RSA)
 
-var rsaPublicKey = null;
-var get_key = document.getElementById('get_key');
-var public_key_value = document.getElementById('public_key_value');
+let rsaPublicKey = null;
+const get_key = document.getElementById('get_key');
+const public_key_value = document.getElementById('public_key_value');
 get_key.addEventListener('click', () => {
 
-    var req = new XMLHttpRequest();
+    let req = new XMLHttpRequest();
     req.onreadystatechange = function() {
         if (req.readyState == 4) {
             if (req.status == 200) {
@@ -280,8 +253,8 @@ function convertArrayBufferToString(buf) {
 }
 
 async function importPublicKey(publicKey) {
-    var binaryKey = window.atob(publicKey);
-    var keyData = convertStringToArrayBuffer(binaryKey);
+    const binaryKey = window.atob(publicKey);
+    const keyData = convertStringToArrayBuffer(binaryKey);
 
     // X.509 key
     try {
@@ -303,7 +276,7 @@ async function importPublicKey(publicKey) {
 async function encryptRSA(key, plainText) {
     // plainText: TypedArray
     try {
-        var encrypted = await window.crypto.subtle.encrypt(
+        const encrypted = await window.crypto.subtle.encrypt(
             {
                 name: "RSA-OAEP"
             },
@@ -320,15 +293,15 @@ async function encryptRSA(key, plainText) {
 /*
 var enc_send_data = document.getElementById('enc_send_data');
 enc_send_data.addEventListener('click', () => {
-    var enc_send_data_value = document.getElementById('enc_send_data_value');
-    var plainText = enc_send_data_value.value;
+    const enc_send_data_value = document.getElementById('enc_send_data_value');
+    const plainText = enc_send_data_value.value;
 
     if (rsaPublicKey != null) {
         importPublicKey(rsaPublicKey)
         .then((pubKey) => {
             encryptRSA(pubKey, new TextEncoder().encode(plainText))
             .then((encrypted) => {
-                var encryptedBase64 = window.btoa(convertArrayBufferToString(encrypted));
+                const encryptedBase64 = window.btoa(convertArrayBufferToString(encrypted));
                 console.log(encryptedBase64.replace(/(.{64})/g, "$1\n"));
 
                 if (connection) {
@@ -343,7 +316,7 @@ enc_send_data.addEventListener('click', () => {
 ////////////////////////////////////////////////////////////////////////////////
 // Encryption (AES-CBC)
 
-var secretKey = "";
+let secretKey = "";
 async function generateAesKey() {
     try {
         return await window.crypto.subtle.generateKey(
@@ -361,18 +334,6 @@ async function generateAesKey() {
         log.console(e);
     }
 }
-
-const enc_gen_key = document.getElementById('enc_gen_key');
-enc_gen_key.addEventListener('click', () => {
-    const enc_gen_key_value = document.getElementById('enc_gen_key_value');
-    enc_gen_key_value.innerText = "";
-
-    generateAesKey()
-    .then((key) => {
-        secretKey = key;
-        enc_gen_key_value.innerText = "OK";
-    });
-});
 
 async function aesEncrypt(key, iv, plainText) {
     // plainText: TypedArray
@@ -406,6 +367,26 @@ async function aesDecrypt(key, cipherText) {
     }
 }
 
+async function exportAesKey(key) {
+    try {
+        return await window.crypto.subtle.exportKey("raw", key);
+    } catch (e) {
+        console.log(e);
+    }
+}
+
+const enc_gen_key = document.getElementById('enc_gen_key');
+enc_gen_key.addEventListener('click', () => {
+    const enc_gen_key_value = document.getElementById('enc_gen_key_value');
+    enc_gen_key_value.innerText = "";
+
+    generateAesKey()
+    .then((key) => {
+        secretKey = key;
+        enc_gen_key_value.innerText = "OK";
+    });
+});
+
 let aesEncryptedData = null;
 const enc_aes_encrypt = document.getElementById('enc_aes_encrypt');
 enc_aes_encrypt.addEventListener('click', () => {
@@ -433,14 +414,6 @@ enc_aes_encrypt.addEventListener('click', () => {
     }
 });
 
-async function exportAesKey(key) {
-    try {
-        return await window.crypto.subtle.exportKey("raw", key);
-    } catch (e) {
-        console.log(e);
-    }
-}
-
 let rsaEncryptedKey = null;
 const enc_aes_encrypt_key = document.getElementById('enc_aes_encrypt_key');
 enc_aes_encrypt_key.addEventListener('click', () => {
@@ -455,7 +428,7 @@ enc_aes_encrypt_key.addEventListener('click', () => {
                 .then((pubKey) => {
                     encryptRSA(pubKey, new TextEncoder().encode(keyString))
                     .then((encrypted) => {
-                        var encryptedBase64 = window.btoa(convertArrayBufferToString(encrypted));
+                        const encryptedBase64 = window.btoa(convertArrayBufferToString(encrypted));
                         console.log(encryptedBase64.replace(/(.{64})/g, "$1\n"));
                         rsaEncryptedKey = encryptedBase64;
                     });
@@ -475,7 +448,7 @@ enc_sned_data.addEventListener('click', () => {
 ////////////////////////////////////////////////////////////////////////////////
 // Encryption (AES-GCM)
 
-var secretGcmKey = "";
+let secretGcmKey = "";
 async function generateAesGcmKey() {
     try {
         return await window.crypto.subtle.generateKey(
@@ -572,7 +545,7 @@ enc_gcm_send_data.addEventListener('click', () => {
                     .then((pubKey) => {
                         encryptRSA(pubKey, new TextEncoder().encode(keyString))
                         .then((encrypted) => {
-                            var encryptedBase64 = window.btoa(convertArrayBufferToString(encrypted));
+                            const encryptedBase64 = window.btoa(convertArrayBufferToString(encrypted));
                             console.log(encryptedBase64.replace(/(.{64})/g, "$1\n"));
                             rsaEncryptedKey = encryptedBase64;
 
