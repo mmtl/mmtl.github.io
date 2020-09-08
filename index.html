@@ -84,32 +84,43 @@
 
       <div class="label">Encryption</div>
       <div>
-        <div>
-          <button id="get_key">Get RSA public key</button>&nbsp;<input type="text" id="public_key_value">
+        <div class="two_by_table">
+          <div>RSA</div>
+          <div>
+            <div>
+              <button id="get_key">Get RSA public key</button>&nbsp;<input type="text" id="public_key_value">
+            </div>
+            <!--
+            <div>
+              <button id="enc_send_data">Send ecnrypt data</button>&nbsp;<input type="text" id="enc_send_data_value" value="This is test data from client.">
+            </div>
+            -->
+          </div>
         </div>
-        <div>
-          <button id="enc_send_data">Send ecnrypt data</button>&nbsp;<input type="text" id="enc_send_data_value" value="This is test data from client.">
-        </div>
-        <br>
         <div class="two_by_table">
           <div>AES (CBC)</div>
           <div>
             <div>
-              <button id="enc_gen_key">Generate AES key</button>&nbsp;<span id="enc_gen_key_value"></span>
+              1.&nbsp;<button id="enc_gen_key">Generate AES key</button>&nbsp;<span id="enc_gen_key_value"></span>
             </div>
             <div>
-              <button id="enc_aes_encrypt">Encrypt</button>&nbsp;<input type="text" id="enc_aes_encrypt_value" value="This is AES test.">
+              2.&nbsp;<button id="enc_aes_encrypt">Encrypt</button>&nbsp;<input type="text" id="enc_aes_encrypt_value" value="This is AES test.">
             </div>
             <div>
-              <button id="enc_aes_encrypt_key">Encrypt key with RSA</button>&nbsp;<span id="enc_aes_encrypt_key_value"></span>
+              3.&nbsp;<button id="enc_aes_encrypt_key">Encrypt AES KEY with RSA</button>&nbsp;<span id="enc_aes_encrypt_key_value"></span>
             </div>
             <div>
-              <button id="enc_sned_data">Send AES key and Data</button>
+              4.&nbsp;<button id="enc_sned_data">Send AES KEY and Data</button>&nbsp;(WS handshake needed)
             </div>
           </div>
           <div>AES (GCM)</div>
           <div>
-            <div><button id="enc_gcm_encrypt">GCM encrypt/decrypt test</button></div>&nbsp;<input type="text" id="enc_gcm_encrypt_value" value="This is AES GCM test.">
+            <div>
+              1.&nbsp;<button id="enc_gcm_encrypt">GCM encrypt/decrypt test</button>&nbsp;<input type="text" id="enc_gcm_encrypt_value" value="This is AES GCM test.">
+            </div>
+            <div>
+              2.&nbsp;<button id="enc_gcm_send_data">Send GCM KEY and Data</button>&nbsp;(WS handshake needed)
+            </div>
           </div>
         </div>
       </div>

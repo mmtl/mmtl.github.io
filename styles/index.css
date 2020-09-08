@@ -27,6 +27,11 @@
     grid-template-columns: 160px auto;
 }
 
+.two_by_table div {
+    margin-top: 2px;
+    margin-bottom: 2px;
+}
+
 #commands {
     display: grid;
     grid-auto-rows: auto;

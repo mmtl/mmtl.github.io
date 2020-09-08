@@ -1,4 +1,4 @@
-var revision = 10142;
+var revision = 10143;
 
 function setRevision() {
     document.getElementById('update_stamp').innerText = revision;
@@ -317,6 +317,7 @@ async function encryptRSA(key, plainText) {
 }
 
 // Send encrypt data
+/*
 var enc_send_data = document.getElementById('enc_send_data');
 enc_send_data.addEventListener('click', () => {
     var enc_send_data_value = document.getElementById('enc_send_data_value');
@@ -337,6 +338,7 @@ enc_send_data.addEventListener('click', () => {
         });
     }
 });
+*/
 
 ////////////////////////////////////////////////////////////////////////////////
 // Encryption (AES-CBC)
@@ -466,7 +468,7 @@ enc_aes_encrypt_key.addEventListener('click', () => {
 const enc_sned_data = document.getElementById('enc_sned_data');
 enc_sned_data.addEventListener('click', () => {
     if (aesEncryptedData && rsaEncryptedKey && connection) {
-        connection.send("i=" + identifier + "&a=1&k=" + encodeURIComponent(rsaEncryptedKey) + "&d=" + encodeURIComponent(aesEncryptedData));
+        connection.send("i=" + identifier + "&a=1&c=c&k=" + encodeURIComponent(rsaEncryptedKey) + "&d=" + encodeURIComponent(aesEncryptedData));
     }
 });
 
@@ -525,6 +527,7 @@ async function aesGcmDecrypt(key, cipherText) {
     }
 }
 
+let aesGcmEncryptedData = null;
 const enc_gcm_encrypt = document.getElementById('enc_gcm_encrypt');
 enc_gcm_encrypt.addEventListener('click', () => {
     const enc_gcm_encrypt_value = document.getElementById('enc_gcm_encrypt_value');
@@ -543,7 +546,7 @@ enc_gcm_encrypt.addEventListener('click', () => {
             buf.set(new Uint8Array(encrypted), iv.byteLength);
             const encryptedBase64 = window.btoa(convertArrayBufferToString(buf));
             console.log(encryptedBase64.replace(/(.{64})/g, "$1\n"));
-            aesEncryptedData = encryptedBase64;
+            aesGcmEncryptedData = encryptedBase64;
 
             // for test
             aesGcmDecrypt(secretGcmKey, buf)
@@ -553,4 +556,31 @@ enc_gcm_encrypt.addEventListener('click', () => {
             });
         });
     });
+});
+
+const enc_gcm_send_data = document.getElementById('enc_gcm_send_data');
+enc_gcm_send_data.addEventListener('click', () => {
+    if (aesGcmEncryptedData && secretGcmKey && connection) {
+        if (secretGcmKey) {
+            exportAesKey(secretGcmKey)
+            .then((exportKey) => {
+                const keyString = window.btoa(convertArrayBufferToString(exportKey));
+                console.log(keyString.replace(/(.{64})/g, "$1\n"));
+    
+                if (rsaPublicKey) {
+                    importPublicKey(rsaPublicKey)
+                    .then((pubKey) => {
+                        encryptRSA(pubKey, new TextEncoder().encode(keyString))
+                        .then((encrypted) => {
+                            var encryptedBase64 = window.btoa(convertArrayBufferToString(encrypted));
+                            console.log(encryptedBase64.replace(/(.{64})/g, "$1\n"));
+                            rsaEncryptedKey = encryptedBase64;
+
+                            connection.send("i=" + identifier + "&a=1&c=g&k=" + encodeURIComponent(rsaEncryptedKey) + "&d=" + encodeURIComponent(aesGcmEncryptedData));
+                        });
+                    });
+                }
+            });
+        }
+    }
 });
