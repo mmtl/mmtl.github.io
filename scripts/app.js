@@ -533,7 +533,7 @@ enc_gcm_encrypt.addEventListener('click', () => {
     .then((key) => {
         secretGcmKey = key;
         const iv = window.crypto.getRandomValues(new Uint8Array(12));   // 96 bits
-        aesEncrypt(secretGcmKey, iv, new TextEncoder().encode(enc_gcm_encrypt_value.value))
+        aesGcmEncrypt(secretGcmKey, iv, new TextEncoder().encode(enc_gcm_encrypt_value.value))
         .then((encrypted) => {
             // Since there is no problem in exposing the IV, and the same is needed for decryption,
             // the IV is joined to the beginning of the resulting cipher data
@@ -546,7 +546,7 @@ enc_gcm_encrypt.addEventListener('click', () => {
             aesEncryptedData = encryptedBase64;
 
             // for test
-            aesDecrypt(secretKey, buf)
+            aesGcmDecrypt(secretKey, buf)
             .then((decrypted) => {
                 const plainText = convertArrayBufferToString(decrypted);
                 console.log(plainText);
