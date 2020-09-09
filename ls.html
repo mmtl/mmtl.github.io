@@ -15,6 +15,7 @@
   function save() {
     let value = document.getElementById('test_value').value;
     localStorage.setItem("port", value);
+    load();
   }
 
   function load() {
