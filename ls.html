@@ -5,13 +5,25 @@
 <title>WebStrage API</title>
 <script type="text/javascript">
   function init() {
-    localStorage.setItem("Edge", "latest version is 85");
+    const test = document.getElementById('test');
+    test.addEventListener('click', ()=> {
+        save();
+    });
+    load();
+  }
 
-    document.getElementById('result').innerText = localStorage.getItem("Edge");
+  function save() {
+    let value = document.getElementById('test_value').value;
+    localStorage.setItem("port", value);
+  }
+
+  function load() {
+      document.getElementById('result').innerText = localStorage.getItem("port");
   }
 </script>
 </head>
 <body onload="init()">
   <div id="result"></div>
+  <div><button id="test">test</button>&nbsp;<input type="text" id="test_value"></div>
 </body>
 </html>
