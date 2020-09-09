@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>WebStrage API</title>
+<script type="text/javascript">
+  function init() {
+    localStorage.setItem("Edge", "latest version is 85");
+
+    document.getElementById('result').innerText = localStorage.getItem("Edge");
+  }
+</script>
+</head>
+<body onload="init()">
+  <div id="result"></div>
+</body>
+</html>
