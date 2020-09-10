@@ -11,7 +11,10 @@
     let url = new URL(location.href);
     const hs = url.searchParams.get("hs");
     document.getElementById('result').innerText = hs;
-    localStorage.setItem("hs", hs);
+    if (hs) {
+        localStorage.setItem("hs", hs);
+    }
+    
   </script>
 
 </body>
