@@ -557,3 +557,12 @@ enc_gcm_send_data.addEventListener('click', () => {
         }
     }
 });
+
+////////////////////////////////////////////////////////////////////////////////
+// etc
+function getConnectionPort() {
+    if (localStorage) {
+        const port = localStorage.getItem("hs");
+        console.log("port = " + port);
+    }
+}
