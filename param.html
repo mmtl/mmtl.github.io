@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>Param test</title>
+</head>
+<body>
+  <div id="result"></div>
+  
+  <script type="text/javascript">
+    let url = new URL(location.href);
+    const hs = url.searchParams.get("hs");
+    document.getElementById('result').innerText = hs;
+  </script>
+
+</body>
+</html>
