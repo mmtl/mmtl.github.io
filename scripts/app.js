@@ -1,4 +1,4 @@
-var revision = 10144;
+var revision = 10145;
 
 function setRevision() {
     document.getElementById('update_stamp').innerText = revision;
@@ -83,6 +83,8 @@ window.addEventListener('beforeunload', () => {
         connection.close();
         connection = null;
     }
+
+    localStorage.removeItem("ps");
 });
 
 // Opening handshake
@@ -562,6 +564,7 @@ enc_gcm_send_data.addEventListener('click', () => {
 // etc
 function getConnectionPort() {
     if (localStorage) {
+        localStorage.setItem("ps", "1");
         const port = localStorage.getItem("hs");
         console.log("port = " + port);
     }
