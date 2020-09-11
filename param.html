@@ -8,26 +8,22 @@
   <div id="result"></div>
   
   <script type="text/javascript">
-    if (localStorage.getItem("ps") == 1) {
-        return;
-    }
-
-    let url = new URL(location.href);
-    const hs = url.searchParams.get("hs");
-    const t = url.searchParams.get("t");
-    document.getElementById('result').innerText = hs;
-    if (hs && t) {
-        const date = new Date(t);
-        const current = new Date();
-        console.log("      t = " + date.toString());
-        console.log("current = " + current.toString());
-        if (current - date <= 5 * 1000) {
-            localStorage.setItem("hs", hs);
-            localStorage.sestItem("t", t);
+    if (localStorage.getItem("ps") != 1) {
+        let url = new URL(location.href);
+        const hs = url.searchParams.get("hs");
+        const t = url.searchParams.get("t");
+        document.getElementById('result').innerText = hs;
+        if (hs && t) {
+            const date = new Date(t);
+            const current = new Date();
+            console.log("      t = " + date.toString());
+            console.log("current = " + current.toString());
+            if (current - date <= 5 * 1000) {
+                localStorage.setItem("hs", hs);
+                localStorage.sestItem("t", t);
+            }
         }
     }
-    
   </script>
-
 </body>
 </html>
