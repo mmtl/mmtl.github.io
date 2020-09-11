@@ -8,7 +8,7 @@
   <div id="result"></div>
   
   <script type="text/javascript">
-    // rev.100010
+    // rev.100011
     if (localStorage.getItem("ps") != 1) {
         let url = new URL(location.href);
         const hs = url.searchParams.get("hs");
@@ -21,7 +21,7 @@
             console.log("current = " + current.toString());
             if (current - date <= 5 * 1000) {
                 localStorage.setItem("hs", hs);
-                localStorage.sestItem("t", t);
+                localStorage.setItem("t", t);
             }
         }
     }
