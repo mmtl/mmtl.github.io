@@ -1,4 +1,4 @@
-var revision = 10146;
+var revision = 10147;
 
 function setRevision() {
     document.getElementById('update_stamp').innerText = revision;
@@ -573,6 +573,8 @@ function getConnectionPort() {
 function initialize() {
     if (window.matchMedia('(display-mode: fullscreen)').matches) {
         console.log("*** display-mode: fullscreen");
+    } else if (window.matchMedia('(display-mode: standalone)').matches) {
+        console.log("*** display-mode: standalone");
     } else {
         console.log("*** not PWA");
     }
