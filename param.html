@@ -15,9 +15,7 @@
         document.getElementById('result').innerText = hs;
         if (hs && t) {
             const date = new Date(t);
-            const target = new Date(date.getTime() + date.getTimezoneOffset() * 60 * 1000);
             const current = new Date();
-            const test = current.getTime();
             console.log("target  = " + target.toString());
             console.log("current = " + current.toString());
             if (current - date <= 5 * 1000) {
