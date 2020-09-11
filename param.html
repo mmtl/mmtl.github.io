@@ -11,7 +11,7 @@
     if (localStorage.getItem("ps") != 1) {
         let url = new URL(location.href);
         const hs = url.searchParams.get("hs");
-        const t = url.searchParams.get("t");
+        const t = parseInt(url.searchParams.get("t"));
         document.getElementById('result').innerText = hs;
         if (hs && t) {
             const date = new Date(t);
