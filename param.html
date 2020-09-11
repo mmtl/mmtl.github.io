@@ -15,7 +15,6 @@
         document.getElementById('result').innerText = hs;
         if (hs && t) {
             const date = new Date(t);
-            //actualDate = new Date(utcDateVal.getTime() + (utcDateVal.getTimezoneOffset() * 60 * 1000))
             const target = new Date(date.getTime() + date.getTimezoneOffset() * 60 * 1000);
             const current = new Date();
             console.log("target  = " + target.toString());
