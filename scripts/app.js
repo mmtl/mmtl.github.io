@@ -1,4 +1,4 @@
-var revision = 10145;
+var revision = 10146;
 
 function setRevision() {
     document.getElementById('update_stamp').innerText = revision;
@@ -567,5 +567,13 @@ function getConnectionPort() {
         localStorage.setItem("ps", "1");
         const port = localStorage.getItem("hs");
         console.log("port = " + port);
+    }
+}
+
+function initialize() {
+    if (window.matchMedia('(display-mode: fullscreen)').matches) {
+        console.log("*** display-mode: fullscreen");
+    } else {
+        console.log("*** not PWA");
     }
 }
