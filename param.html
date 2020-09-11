@@ -15,8 +15,10 @@
         document.getElementById('result').innerText = hs;
         if (hs && t) {
             const date = new Date(t);
+            //actualDate = new Date(utcDateVal.getTime() + (utcDateVal.getTimezoneOffset() * 60 * 1000))
+            const target = new Date(date.getTime() + date.getTimezoneOffset() * 60 * 1000);
             const current = new Date();
-            console.log("      t = " + date.toString());
+            console.log("target  = " + target.toString());
             console.log("current = " + current.toString());
             if (current - date <= 5 * 1000) {
                 localStorage.setItem("hs", hs);
