@@ -1,4 +1,4 @@
-var revision = 10147;
+var revision = 10148;
 
 function setRevision() {
     document.getElementById('update_stamp').innerText = revision;
@@ -135,12 +135,13 @@ function getTicket() {
         }
     };
 
-    req.open('get', 'http://localhost:8090/ws/ticket/' + identifier, true);
+    const url = 'http://localhost:' + port + '/ws/ticket/' + identifier;
+    req.open('get', url, true);
     req.setRequestHeader("X-Ib-Fetch", "accept");
     req.send(null);
 
     /*
-    fetch('http://localhost:8090/ws/ticket/' + identifier, {
+    fetch(url, {
         method: 'GET',
         headers: {
             'X-Ib-Fetch': "accept",
@@ -165,7 +166,7 @@ function getTicket() {
 // Start handshake
 function startHandshake() {
     const escaped_ticket = encodeURIComponent(ticket);
-    const url = "ws://localhost:8090/ws/hs/" + identifier + "/" + escaped_ticket;
+    const url = "ws://localhost:" + port + "/ws/hs/" + identifier + "/" + escaped_ticket;
     connection = new WebSocket(url);
 
     const connection_result = document.getElementById('connection_result');
@@ -218,11 +219,12 @@ get_key.addEventListener('click', () => {
     };
 
     // Get public key
-    req.open('get', 'http://localhost:8090/ws/key', true);
+    const url = 'http://localhost:' + port + '/ws/key';
+    req.open('get', url, true);
     req.send(null);
 
     /*
-    fetch('http://localhost:8090/ws/key', {
+    fetch(url, {
         method: 'GET',
         mode: 'cors'
     })
@@ -562,10 +564,11 @@ enc_gcm_send_data.addEventListener('click', () => {
 
 ////////////////////////////////////////////////////////////////////////////////
 // etc
+let port = 0;
 function getConnectionPort() {
     if (localStorage) {
         localStorage.setItem("ps", "1");
-        const port = localStorage.getItem("hs");
+        port = localStorage.getItem("hs");
         console.log("port = " + port);
     }
 }
@@ -578,4 +581,6 @@ function initialize() {
     } else {
         console.log("*** not PWA");
     }
+
+    getConnectionPort();
 }
