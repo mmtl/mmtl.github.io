@@ -1,4 +1,4 @@
-var revision = 10150;
+var revision = 10151;
 
 function setRevision() {
     document.getElementById('update_stamp').innerText = revision;
@@ -569,7 +569,7 @@ function getConnectionPort() {
     if (localStorage) {
         localStorage.setItem("ps", "1");
         const code = localStorage.getItem("hs");
-        port = convertArrayBufferToString(atob(code));
+        port = btoa(convertArrayBufferToString(code));
 
         console.log("code = " + code);
         console.log("port = " + port);
