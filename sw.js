@@ -5,6 +5,7 @@ const FILES_TO_CACHE = [
     //'/index.html',
     //'/scripts/app.js',
     ///'/scripts/install.js',
+    'param.html',
     '/styles/font-awesome.min.css',
   ];
   
@@ -45,7 +46,7 @@ self.addEventListener('fetch', (evt) => {
     console.log('[ServiceWorker] Fetch', evt.request.url);
     evt.respondWith(
         caches.open(CACHE_NAME).then((cache) => {
-            return cache.match(evt.request)
+            return cache.match(evt.request, { ignoreSearch: true })
                     .then((response) => {
                         return response || fetch(evt.request);
                     });
