@@ -2,11 +2,11 @@ const CACHE_NAME = 'static-cache-v1';
 const FILES_TO_CACHE = [
     '/',
     '/index.html',
-    '/index.css',
+    '/param.html',
     '/scripts/app.js',
     '/scripts/install.js',
-    'param.html',
-    '/styles/font-awesome.min.css',
+    '/styles/index.css',
+    '/styles/font-awesome.min.css'
   ];
   
 
