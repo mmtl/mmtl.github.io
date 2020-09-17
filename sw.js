@@ -1,10 +1,11 @@
 
 const CACHE_NAME = 'static-cache-v1';
 const FILES_TO_CACHE = [
-    //'/',
-    //'/index.html',
-    //'/scripts/app.js',
-    ///'/scripts/install.js',
+    '/',
+    '/index.html',
+    '/index.css',
+    '/scripts/app.js',
+    '/scripts/install.js',
     'param.html',
     '/styles/font-awesome.min.css',
   ];
@@ -42,6 +43,7 @@ self.addEventListener('activate', (evt) => {
 });
 
 // Fetch
+// https://developers.google.com/web/ilt/pwa/caching-files-with-service-worker
 self.addEventListener('fetch', (evt) => {
     console.log('[ServiceWorker] Fetch', evt.request.url);
     evt.respondWith(
