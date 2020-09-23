@@ -1,4 +1,4 @@
-var revision = 10152;
+var revision = 10153;
 
 function setRevision() {
     document.getElementById('update_stamp').innerText = revision;
@@ -587,3 +587,34 @@ function initialize() {
 
     getConnectionPort();
 }
+
+const port_scan = document.getElementById('port_scan');
+port_scan.addEventListener('click', () => {
+    let port = 1024;
+    while (port <= 65535) {
+        // for test
+        const url = 'http://localhost:' + port + '/ws/ticket/' + identifier;
+        fetch(url, {
+            method: 'GET',
+            headers: {
+                'X-Ib-Fetch': "accept",
+            }
+        })
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error(`${response.status} ${response.statusText}`);
+            }
+            return response.text();
+        })
+        .then((text) => {
+            const port_scan_result = document.getElementById('port_scan_result');
+            port_scan_result.innerText = "Port: " + port;
+            break;
+        })
+        .catch(error => console.error(error));
+    
+        port++;
+    }
+
+    console.log("*** Port: " + port);
+});
