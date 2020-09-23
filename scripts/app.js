@@ -1,4 +1,4 @@
-var revision = 10154;
+var revision = 10155;
 
 function setRevision() {
     document.getElementById('update_stamp').innerText = revision;
@@ -590,22 +590,20 @@ function initialize() {
 
 const port_scan = document.getElementById('port_scan');
 port_scan.addEventListener('click', () => {
-    let port = 1024;
+    let port = getAccessPort();
     let isEnd = false;
-    while (port <= 65535 && !isEnd) {
+
+    while (!isEnd) {
         // for test
-        const url = 'http://localhost:' + port + '/ws/ticket/' + identifier;
+        const url = 'http://localhost:' + port + '/ws/flight/';
         fetch(url, {
             method: 'GET',
-            headers: {
-                'X-Ib-Fetch': "accept",
-            }
+            mode: 'cors'
         })
         .then((response) => {
-            if (!response.ok) {
-                throw new Error(`${response.status} ${response.statusText}`);
+            if (response.ok) {
+                return response.text();
             }
-            return response.text();
         })
         .then((text) => {
             const port_scan_result = document.getElementById('port_scan_result');
@@ -614,8 +612,31 @@ port_scan.addEventListener('click', () => {
         })
         .catch(error => console.error(error));
     
-        port++;
+        port = getAccessPort();
+        if (port == 0) {
+            break;
+        }
     }
 
     console.log("*** Port: " + port);
 });
+
+let ports = Array(65535 - 1024 + 1).fill().map((_, i) => i + 1024);
+function getAccessPort() {
+    if (ports.length == 0) {
+      return 0;
+    }
+
+    let index = getRandomIntInclusive(0, ports.length - 1);
+    let port = ports[index];
+
+    ports.splice(index, 1);
+
+    return port;
+}
+
+function getRandomIntInclusive(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min; //The maximum is inclusive and the minimum is inclusive 
+}
