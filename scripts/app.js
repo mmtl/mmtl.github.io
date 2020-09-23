@@ -1,4 +1,4 @@
-var revision = 10153;
+var revision = 10154;
 
 function setRevision() {
     document.getElementById('update_stamp').innerText = revision;
@@ -591,7 +591,8 @@ function initialize() {
 const port_scan = document.getElementById('port_scan');
 port_scan.addEventListener('click', () => {
     let port = 1024;
-    while (port <= 65535) {
+    let isEnd = false;
+    while (port <= 65535 && !isEnd) {
         // for test
         const url = 'http://localhost:' + port + '/ws/ticket/' + identifier;
         fetch(url, {
@@ -609,7 +610,7 @@ port_scan.addEventListener('click', () => {
         .then((text) => {
             const port_scan_result = document.getElementById('port_scan_result');
             port_scan_result.innerText = "Port: " + port;
-            break;
+            isEnd = true;
         })
         .catch(error => console.error(error));
     
