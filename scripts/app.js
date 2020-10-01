@@ -1,4 +1,4 @@
-var revision = 10156;
+var revision = 10157;
 
 function setRevision() {
     document.getElementById('update_stamp').innerText = revision;
@@ -567,7 +567,6 @@ enc_gcm_send_data.addEventListener('click', () => {
 let port = 0;
 function getConnectionPort() {
     if (localStorage) {
-        localStorage.setItem("ps", "1");
         const code = localStorage.getItem("hs");
         port = atob(code);
 
@@ -587,10 +586,20 @@ function initialize() {
         console.log("*** not PWA");
     }
 
+    if (localStorage) {
+        if (localStorage.getItem("ps") == 1) {
+            isValid = false;
+        } else {
+            localStorage.setItem("ps", "1");
+        }
+    } else {
+        isValid = false;
+    }
+
     document.getElementById('blocker').style.display = isValid ? "none" : "block";
     document.getElementById('contents').style.display = isValid ? "block" : "none";
 
-    getConnectionPort();
+    if (isValid) getConnectionPort();
 }
 
 const port_scan = document.getElementById('port_scan');
