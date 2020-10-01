@@ -22,114 +22,121 @@
   </nav>
 
   <main>
-    <div>
-      <button id="butInstall" hidden>Install PWA</button>
-    </div>
-    <div class="eula_box label">
-      Test PWA rev.<span id="update_stamp">-----</span>
+    <div id="blocker" style="display:none">
+      <span>404 Not Found</span>
     </div>
 
-    <div id="container">
-      <div class="label">Cookie</div>
+    <div id="contents" style="display:none">
       <div>
-        <input type="text" id="input_value" />&nbsp;<button id="save_cookie_btn">Save</button>
-        <div>
-          Saved cookie: cookie1 = <span id="loaded_cookie"></span>
-        </div>
+        <button id="butInstall" hidden>Install PWA</button>
+      </div>
+      <div class="eula_box label">
+        Test PWA rev.<span id="update_stamp">-----</span>
       </div>
 
-      <div>URI scheme<br>(Deprecated)</div>
-      <div>
+      <div id="container">
+        <div class="label">Cookie</div>
         <div>
-          <button id="nec_ib_send_btn">nec-ib:Send data</button>&nbsp;
-        </div>
-        <div>
-          <button id="nec_ib_close_btn">nec-ib:Close</button>&nbsp;
-        </div>
-        <div>
-          <a href="https://www.google.co.jp/" target="_blank" id="open_browser_and_close_pwa">Open browser and close PWA</a>
-        </div>
-        <div>
-          <button id="window_open_test">App open url and terminate PWA</button>
-        </div>
-      </div>
-
-      <div class="label">WebSocket</div>
-      <div>
-        <div>
-          <button id="connect_server">Connect with ticket</button>&nbsp;&nbsp;<button id="close_connection">Close</button>&nbsp;
-        </div>
-        <div class="two_by_table">
-          <div>Status: </div>
-          <div><span id="connection_status"></span></div>
-          <div>Ticket: </div>
-          <div><input type="text" id="connection_ticket" readonly></div>
-          <div>Handshake status: </div>
-          <div><span id="connection_result"></span></div>
-          <div>Received data: </div>
-          <div><span id="connection_message"></span></div>
-        </div>
-        <div id="commands">
-          <div>Command:</div>
+          <input type="text" id="input_value" />&nbsp;<button id="save_cookie_btn">Save</button>
           <div>
+            Saved cookie: cookie1 = <span id="loaded_cookie"></span>
+          </div>
+        </div>
+
+        <div>URI scheme<br>(Deprecated)</div>
+        <div>
+          <div>
+            <button id="nec_ib_send_btn">nec-ib:Send data</button>&nbsp;
+          </div>
+          <div>
+            <button id="nec_ib_close_btn">nec-ib:Close</button>&nbsp;
+          </div>
+          <div>
+            <a href="https://www.google.co.jp/" target="_blank" id="open_browser_and_close_pwa">Open browser and close PWA</a>
+          </div>
+          <div>
+            <button id="window_open_test">App open url and terminate PWA</button>
+          </div>
+        </div>
+
+        <div class="label">WebSocket</div>
+        <div>
+          <div>
+            <button id="connect_server">Connect with ticket</button>&nbsp;&nbsp;<button id="close_connection">Close</button>&nbsp;
+          </div>
+          <div class="two_by_table">
+            <div>Status: </div>
+            <div><span id="connection_status"></span></div>
+            <div>Ticket: </div>
+            <div><input type="text" id="connection_ticket" readonly></div>
+            <div>Handshake status: </div>
+            <div><span id="connection_result"></span></div>
+            <div>Received data: </div>
+            <div><span id="connection_message"></span></div>
+          </div>
+          <div id="commands">
+            <div>Command:</div>
             <div>
-              <input type="text" id="send_data_value" value="i=identifier&a=16">&nbsp;<button id="send_data">Send</button>
-            </div>
-            <div>
-              <button id="ws_close_pwa">Close PWA</button>&nbsp;
+              <div>
+                <input type="text" id="send_data_value" value="i=identifier&a=16">&nbsp;<button id="send_data">Send</button>
+              </div>
+              <div>
+                <button id="ws_close_pwa">Close PWA</button>&nbsp;
+              </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <div class="label">Encryption</div>
-      <div>
-        <div class="two_by_table">
-          <div>RSA</div>
-          <div>
+        <div class="label">Encryption</div>
+        <div>
+          <div class="two_by_table">
+            <div>RSA</div>
             <div>
-              <button id="get_key">Get RSA public key</button>&nbsp;<input type="text" id="public_key_value">
+              <div>
+                <button id="get_key">Get RSA public key</button>&nbsp;<input type="text" id="public_key_value">
+              </div>
+              <!--
+              <div>
+                <button id="enc_send_data">Send ecnrypt data</button>&nbsp;<input type="text" id="enc_send_data_value" value="This is test data from client.">
+              </div>
+              -->
             </div>
-            <!--
+          </div>
+          <div class="two_by_table">
+            <div>AES (CBC)</div>
             <div>
-              <button id="enc_send_data">Send ecnrypt data</button>&nbsp;<input type="text" id="enc_send_data_value" value="This is test data from client.">
+              <div>
+                1.&nbsp;<button id="enc_gen_key">Generate AES key</button>&nbsp;<span id="enc_gen_key_value"></span>
+              </div>
+              <div>
+                2.&nbsp;<button id="enc_aes_encrypt">Encrypt</button>&nbsp;<input type="text" id="enc_aes_encrypt_value" value="This is AES test.">
+              </div>
+              <div>
+                3.&nbsp;<button id="enc_aes_encrypt_key">Encrypt AES KEY with RSA</button>&nbsp;<span id="enc_aes_encrypt_key_value"></span>
+              </div>
+              <div>
+                4.&nbsp;<button id="enc_sned_data">Send AES KEY and Data</button>&nbsp;(WS handshake needed)
+              </div>
             </div>
-            -->
+            <div>AES (GCM)</div>
+            <div>
+              <div>
+                1.&nbsp;<button id="enc_gcm_encrypt">GCM encrypt/decrypt test</button>&nbsp;<input type="text" id="enc_gcm_encrypt_value" value="This is AES GCM test.">
+              </div>
+              <div>
+                2.&nbsp;<button id="enc_gcm_send_data">Send GCM KEY and Data</button>&nbsp;(WS handshake needed)
+              </div>
+            </div>
           </div>
         </div>
-        <div class="two_by_table">
-          <div>AES (CBC)</div>
-          <div>
-            <div>
-              1.&nbsp;<button id="enc_gen_key">Generate AES key</button>&nbsp;<span id="enc_gen_key_value"></span>
-            </div>
-            <div>
-              2.&nbsp;<button id="enc_aes_encrypt">Encrypt</button>&nbsp;<input type="text" id="enc_aes_encrypt_value" value="This is AES test.">
-            </div>
-            <div>
-              3.&nbsp;<button id="enc_aes_encrypt_key">Encrypt AES KEY with RSA</button>&nbsp;<span id="enc_aes_encrypt_key_value"></span>
-            </div>
-            <div>
-              4.&nbsp;<button id="enc_sned_data">Send AES KEY and Data</button>&nbsp;(WS handshake needed)
-            </div>
-          </div>
-          <div>AES (GCM)</div>
-          <div>
-            <div>
-              1.&nbsp;<button id="enc_gcm_encrypt">GCM encrypt/decrypt test</button>&nbsp;<input type="text" id="enc_gcm_encrypt_value" value="This is AES GCM test.">
-            </div>
-            <div>
-              2.&nbsp;<button id="enc_gcm_send_data">Send GCM KEY and Data</button>&nbsp;(WS handshake needed)
-            </div>
-          </div>
-        </div>
-      </div>
 
-      <div class="label">etc</div>
-      <div>
-        <button id="port_scan">Port Scan</button>&nbsp;<span id="port_scan_result"></span>
+        <div class="label">etc</div>
+        <div>
+          <button id="port_scan">Port Scan</button>&nbsp;<span id="port_scan_result"></span>
+        </div>
       </div>
     </div>
+
 
     <!-- /.main -->
   </main>

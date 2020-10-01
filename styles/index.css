@@ -45,3 +45,12 @@
 .label {
     font-weight: bold;
 }
+
+#blocker {
+    width: 100%;
+    margin: 20px;
+}
+
+#blocker span {
+    font-weight: bold;
+}

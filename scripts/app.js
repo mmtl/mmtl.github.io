@@ -1,4 +1,4 @@
-var revision = 10155;
+var revision = 10156;
 
 function setRevision() {
     document.getElementById('update_stamp').innerText = revision;
@@ -577,13 +577,18 @@ function getConnectionPort() {
 }
 
 function initialize() {
+    let isValid = true;
     if (window.matchMedia('(display-mode: fullscreen)').matches) {
         console.log("*** display-mode: fullscreen");
     } else if (window.matchMedia('(display-mode: standalone)').matches) {
         console.log("*** display-mode: standalone");
     } else {
+        isValid = false;
         console.log("*** not PWA");
     }
+
+    document.getElementById('blocker').style.display = isValid ? "none" : "block";
+    document.getElementById('contents').style.display = isValid ? "block" : "none";
 
     getConnectionPort();
 }
