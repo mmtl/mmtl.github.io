@@ -85,6 +85,7 @@ window.addEventListener('beforeunload', () => {
     }
 
     localStorage.removeItem("ps");
+    localStorage.removeItem("hs");
 });
 
 // Opening handshake
