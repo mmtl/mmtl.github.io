@@ -1,4 +1,4 @@
-var revision = 10157;
+var revision = 10158;
 
 function setRevision() {
     document.getElementById('update_stamp').innerText = revision;
@@ -591,6 +591,14 @@ function initialize() {
             isValid = false;
         } else {
             localStorage.setItem("ps", "1");
+            const code = localStorage.getItem("hs");
+            console.log("code = " + code);
+                if (hs) {
+                port = atob(code);
+                console.log("port = " + port);
+            } else {
+                isValid = false
+            }
         }
     } else {
         isValid = false;
@@ -598,8 +606,6 @@ function initialize() {
 
     document.getElementById('blocker').style.display = isValid ? "none" : "block";
     document.getElementById('contents').style.display = isValid ? "block" : "none";
-
-    if (isValid) getConnectionPort();
 }
 
 const port_scan = document.getElementById('port_scan');
