@@ -1,4 +1,4 @@
-var revision = 10159;
+var revision = 10160;
 
 function setRevision() {
     document.getElementById('update_stamp').innerText = revision;
@@ -577,15 +577,6 @@ enc_gcm_send_data.addEventListener('click', () => {
 ////////////////////////////////////////////////////////////////////////////////
 // etc
 let port = 0;
-function getConnectionPort() {
-    if (localStorage) {
-        const code = localStorage.getItem("hs");
-        port = atob(code);
-
-        console.log("code = " + code);
-        console.log("port = " + port);
-    }
-}
 
 function initialize() {
     let isValid = true;
@@ -599,21 +590,32 @@ function initialize() {
     }
 
     // UA
-
-    if (localStorage) {
-        if (localStorage.getItem("ps") == 1) {
-            isValid = false;
-        } else {
-            localStorage.setItem("ps", "1");
-            const code = localStorage.getItem("hs");
-            console.log("code = " + code);
-                if (code) {
-                port = atob(code);
-                console.log("port = " + port);
-            } else {
-                isValid = false
-            }
+    let isEdge = false;
+    const ua = window.navigator.userAgent;
+    if (ua.indexOf("Edg") >= 0) {
+        if (ua.indexOf("Edge") < 0) {
+            isEdge = true;
         }
+    }
+    
+    if (isEdge) {
+        if (localStorage) {
+            if (localStorage.getItem("ps") == 1) {
+                isValid = false;
+            } else {
+                localStorage.setItem("ps", "1");
+                const code = localStorage.getItem("hs");
+                console.log("code = " + code);
+                    if (code) {
+                    port = atob(code);
+                    console.log("port = " + port);
+                } else {
+                    isValid = false
+                }
+            }
+        } else {
+            isValid = false;
+        }    
     } else {
         isValid = false;
     }
