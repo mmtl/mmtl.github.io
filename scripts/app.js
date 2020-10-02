@@ -1,4 +1,4 @@
-var revision = 10158;
+var revision = 10159;
 
 function setRevision() {
     document.getElementById('update_stamp').innerText = revision;
@@ -186,6 +186,7 @@ function startHandshake() {
     connection.onmessage = function(event) {
         connection_result.innerText = "onmessage"
         connection_message.innerText = event.data;
+        eventHandler(event.data);
     };
 
     connection.onclose = function() {
@@ -199,6 +200,16 @@ const ws_close_pwa = document.getElementById('ws_close_pwa');
 ws_close_pwa.addEventListener('click', (event) => {
     connection.send("i=" + identifier + "&a=16");
 });
+
+function eventHandler(arg) {
+    // c=1&m={message}
+    let commands = {};
+    arg.split('&').map(param => {
+        let command = param.split('=');
+        commands[command[0]] = decodeURIComponent(command[1]);
+        console.log(command[0] + "= " + commands[command[0]]);
+    });
+}
 
 ////////////////////////////////////////////////////////////////////////////////
 // Encryption (RSA)
@@ -585,6 +596,8 @@ function initialize() {
         isValid = false;
         console.log("*** not PWA");
     }
+
+    // UA
 
     if (localStorage) {
         if (localStorage.getItem("ps") == 1) {
