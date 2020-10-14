@@ -15,7 +15,7 @@ const IbPwaController = class {
         return "This is test";
     }
 
-    count() {
+    getCount() {
         return this.count++;
     }
 };
