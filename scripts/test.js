@@ -1,4 +1,4 @@
-import * as Controller from './IbPwaController.js';
+import IbPwaController from './IbPwaController.js';
 
-let result = Controller.test();
-let item2 = Controller.event.prepareAds;
+let result = IbPwaController.test();
+let item2 = IbPwaController.event.prepareAds;
