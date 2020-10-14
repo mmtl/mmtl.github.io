@@ -1,6 +1,6 @@
 const IbPwaController = class {
     constructor() {
-
+        this.count = 0;
     }
 
     event = {
@@ -13,6 +13,10 @@ const IbPwaController = class {
 
     test() {
         return "This is test";
+    }
+
+    count() {
+        return this.count++;
     }
 };
 
