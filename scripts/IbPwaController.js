@@ -15,3 +15,5 @@ const IbPwaController = class {
         return "This is test";
     }
 };
+
+export default new IbPwaController();
