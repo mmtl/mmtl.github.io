@@ -11,3 +11,8 @@ const tester = {
         return IbPwaController.test();
     }
 };
+
+const btn = document.getElementById('test');
+btn.addEventListener('click', () => {
+    alert(tester.test());
+});
