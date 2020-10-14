@@ -7,8 +7,14 @@
 <script type="module" src="./scripts/test.js"></script>
 <script type="module" src="./scripts/test2.js"></script>
 <script type="text/javascript">
+    document.getElementById('test').addEventListener('click', () => {
+        alert(tester.test());
+    });
 </script>
 </head>
 <body>
+<div>
+    <button id="test">TEST</button>
+</div>
 </body>
 </html>
