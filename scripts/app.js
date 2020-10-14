@@ -606,7 +606,7 @@ function initialize() {
                 localStorage.setItem("ps", "1");
                 const code = localStorage.getItem("hs");
                 console.log("code = " + code);
-                    if (code) {
+                if (code) {
                     port = atob(code);
                     console.log("port = " + port);
                 } else {
