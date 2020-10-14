@@ -1,6 +1,7 @@
 const IbPwaController = class {
     constructor() {
         this.count = 0;
+        this.status = 0;
     }
 
     event = {
@@ -17,6 +18,14 @@ const IbPwaController = class {
 
     getCount() {
         return this.count++;
+    }
+
+    getStatus() {
+        return this.status;
+    }
+
+    setStatus(status) {
+        this.status = status;
     }
 };
 
