@@ -6,7 +6,7 @@ IbPwaController.setStatus(1000);
 let result3 = IbPwaController.getStatus();
 let item2 = IbPwaController.event.prepareAds;
 
-export const tester = {
+const tester = {
     test: function () {
         return IbPwaController.test();
     }
@@ -16,3 +16,5 @@ const btn = document.getElementById('test');
 btn.addEventListener('click', () => {
     alert(tester.test());
 });
+
+export default tester;
