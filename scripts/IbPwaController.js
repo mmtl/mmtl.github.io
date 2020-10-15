@@ -2,6 +2,9 @@ const IbPwaController = class {
     constructor() {
         this.count = 0;
         this.status = 0;
+        this.connection = null;
+
+        this.init();
     }
 
     event = {
@@ -26,6 +29,19 @@ const IbPwaController = class {
 
     setStatus(status) {
         this.status = status;
+    }
+
+    init() {
+        window.addEventListener('beforeunload', () => {
+            if (this.connection != null) {
+                this.connection.close();
+                this.connection = null;
+            }
+        });
+        
+        window.addEventListener('load', () => {
+            this.count = 10;
+        });
     }
 };
 
