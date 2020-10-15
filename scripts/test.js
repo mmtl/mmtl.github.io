@@ -6,7 +6,7 @@ IbPwaController.setStatus(1000);
 let result3 = IbPwaController.getStatus();
 let item2 = IbPwaController.event.prepareAds;
 
-const tester = {
+export const tester = {
     test: function () {
         return IbPwaController.test();
     }
