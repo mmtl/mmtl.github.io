@@ -109,7 +109,7 @@ const Observer = class {
     dispatch(type, ...args) {
         const observerSet = this._observers.get(type);
         for (let it in observerSet) {
-            it(...args);
+            it.call(this, ...args);
         }
         /*
         if (observerSet) {
