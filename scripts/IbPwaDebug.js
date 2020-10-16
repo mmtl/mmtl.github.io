@@ -1,21 +1,21 @@
-const Debug = class {
+const IbPwaDebug = class {
     constructor() {
-        this.isLogging = true;
+        this._isLogging = true;
     }
 
     on() {
-        this.isLogging = true;
+        this._isLogging = true;
     }
 
     off() {
-        this.isLogging = false;
+        this._isLogging = false;
     }
 
     log(...data) {
-        if (this.isLogging) {
+        if (this._isLogging) {
             console.log(...data);
         }
     }
 };
 
-export default new Debug();
+export default new IbPwaDebug();

@@ -2,6 +2,7 @@ const IbPwaController = class {
     constructor() {
         this.count = 0;
         this.status = 0;
+
         this._connection = null;
         this._observer = new Observer();
 
@@ -12,9 +13,15 @@ const IbPwaController = class {
         // Controller -> Ads
         all: 1000,
         prepareAds: 1001,
-
-        // Ads -> Controller
+        // Ads/UI -> Controller
+        adAcquisition: 10001,
+        widgetSwitching: 10002,
+        adPlaybackCompletion: 10003,
+        signageTermination: 10004,
+        adClick: 10005
     };
+
+
 
     test() {
         return "This is test";
@@ -31,6 +38,8 @@ const IbPwaController = class {
     setStatus(status) {
         this.status = status;
     }
+
+
 
     _init() {
         window.addEventListener('beforeunload', () => {
@@ -103,7 +112,7 @@ const Observer = class {
         const observerSet = this._observers.get(type);
         if (observerSet) {
             observerSet.forEach(observer => {
-                observer.call(this, ...args);
+                observer.call(this, args);
             });
         }
     }
