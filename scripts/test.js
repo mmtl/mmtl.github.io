@@ -12,9 +12,16 @@ const tester = {
     }
 };
 
+IbPwaController.observe(IbPwaController.event.prepareAds, () => {
+    const self = this;
+    alert("observer test 1");
+});
+
 const btn = document.getElementById('test');
 btn.addEventListener('click', () => {
-    alert(tester.test());
+    IbPwaController.dispatch(IbPwaController.event.prepareAds);
+
+    //alert(tester.test());
 });
 
 export default tester;

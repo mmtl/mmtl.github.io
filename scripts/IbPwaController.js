@@ -2,9 +2,10 @@ const IbPwaController = class {
     constructor() {
         this.count = 0;
         this.status = 0;
-        this.connection = null;
+        this._connection = null;
+        this._observer = new Observer();
 
-        this.init();
+        this._init();
     }
 
     event = {
@@ -31,17 +32,69 @@ const IbPwaController = class {
         this.status = status;
     }
 
-    init() {
+    _init() {
         window.addEventListener('beforeunload', () => {
-            if (this.connection != null) {
-                this.connection.close();
-                this.connection = null;
+            if (this._connection != null) {
+                this._connection.close();
+                this._connection = null;
             }
         });
         
         window.addEventListener('load', () => {
             this.count = 10;
         });
+    }
+
+    observe(type, observer) {
+        if (this._isFunction(observer)) {
+            this._observer.observe(type, observer);
+        }
+    }
+
+    _isFunction(obj, notArrow) {
+        return toString.call(obj) === '[object Function]' && (!notArrow || 'prototype' in obj);
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////
+    // for Debug
+    dispatch(type, ...args) {
+        this._observer.dispatch(type, args);
+    }
+};
+
+const Observer = class {
+    constructor() {
+        this._observers = new Map();
+    }
+
+    observe(type, observer) {
+        if (!this._observers.has(type)) {
+            // About Set
+            // https://developer.mozilla.org/ja/docs/Web/JavaScript/Reference/Global_Objects/Set
+            this._observers.set(type, new Set());
+        }
+        const observerSet = this._observers.get(type);
+        observerSet.add(observer);
+    }
+
+    release(type, observer) {
+        const observerSet = this._observers.get(type);
+        if (observerSet) {
+            observerSet.forEach(own => {
+                if (own == observer) {
+                    observerSet.delete(observer);
+                }
+            });
+        }
+    }
+
+    dispatch(type, ...args) {
+        const observerSet = this._observers.get(type);
+        if (observerSet) {
+            observerSet.forEach(observer => {
+                observer.call(this, ...args);
+            });
+        }
     }
 };
 
