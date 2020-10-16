@@ -3,16 +3,18 @@ const Debug = class {
         this.isLogging = true;
     }
 
-    get isLogging() {
-        return this.isLogging;
+    on() {
+        this.isLogging = true;
     }
-    
-    set isLogging(isLogging) {
-        this.isLogging = isLogging;
+
+    off() {
+        this.isLogging = false;
     }
 
     log(...data) {
-        console.log(...data);
+        if (this.isLogging) {
+            console.log(...data);
+        }
     }
 };
 
