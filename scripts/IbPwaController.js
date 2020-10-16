@@ -90,12 +90,6 @@ const Observer = class {
 
     release(type, observer) {
         const observerSet = this._observers.get(type);
-        for (let it in observerSet) {
-            if (it == observer) {
-                observerSet.delete(observer);
-            }
-        }
-        /*
         if (observerSet) {
             observerSet.forEach(own => {
                 if (own == observer) {
@@ -103,21 +97,15 @@ const Observer = class {
                 }
             });
         }
-        */
     }
 
     dispatch(type, ...args) {
         const observerSet = this._observers.get(type);
-        for (let it in observerSet) {
-            it.call(this, ...args);
-        }
-        /*
         if (observerSet) {
             observerSet.forEach(observer => {
                 observer.call(this, ...args);
             });
         }
-        */
     }
 };
 

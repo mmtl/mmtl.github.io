@@ -16,6 +16,7 @@ IbPwaController.observe(IbPwaController.event.prepareAds, () => {
     const self = this;
     alert("observer test 1");
 });
+IbPwaController.observe(IbPwaController.event.prepareAds, tester.test);
 
 const btn = document.getElementById('test');
 btn.addEventListener('click', () => {
