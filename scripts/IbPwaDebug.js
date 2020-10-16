@@ -3,9 +3,10 @@ const Debug = class {
         this.isLogging = true;
     }
 
-    /**
-     * @param {any} isLogging
-     */
+    get isLogging() {
+        return this.isLogging;
+    }
+    
     set isLogging(isLogging) {
         this.isLogging = isLogging;
     }
