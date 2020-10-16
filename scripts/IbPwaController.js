@@ -46,13 +46,24 @@ const IbPwaController = class {
     }
 
     observe(type, observer) {
-        if (this._isFunction(observer)) {
+        if (this._isValidEvent(type) && this._isFunction(observer)) {
             this._observer.observe(type, observer);
         }
     }
 
     _isFunction(obj, notArrow) {
         return toString.call(obj) === '[object Function]' && (!notArrow || 'prototype' in obj);
+    }
+
+    _isValidEvent(type) {
+        for (let key in this.event) {
+            const value = this.event[key];
+            if (value === type) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -79,6 +90,12 @@ const Observer = class {
 
     release(type, observer) {
         const observerSet = this._observers.get(type);
+        for (let it in observerSet) {
+            if (it == observer) {
+                observerSet.delete(observer);
+            }
+        }
+        /*
         if (observerSet) {
             observerSet.forEach(own => {
                 if (own == observer) {
@@ -86,15 +103,21 @@ const Observer = class {
                 }
             });
         }
+        */
     }
 
     dispatch(type, ...args) {
         const observerSet = this._observers.get(type);
+        for (let it in observerSet) {
+            it(...args);
+        }
+        /*
         if (observerSet) {
             observerSet.forEach(observer => {
                 observer.call(this, ...args);
             });
         }
+        */
     }
 };
 
