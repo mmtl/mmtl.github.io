@@ -12,4 +12,4 @@ const Debug = class {
     }
 };
 
-export default Debug();
+export default new Debug();
