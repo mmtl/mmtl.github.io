@@ -5,165 +5,101 @@
 	<meta name="format-detection" content="telephone=no">
 	<meta name="viewport" content="width=device-width, initial-scale=1">    
 	<link rel="icon" type="image/png" href="images/favicon.ico">
-	<link rel="manifest" href="/manifest.json">
+	<link rel="manifest" href="manifest.json">
 	<title>test</title>
 	<link rel="stylesheet" href="styles/font-awesome.min.css">
 	<link rel="stylesheet" href="styles/index.css">
 </head>
 
 <body>
-
-  <header class="header">
-  <!-- /.header -->
-  </header>
-
-  <nav class="gnav">
-  <!-- /.gnav -->
-  </nav>
-
   <main>
-    <div id="blocker" style="display:none">
-      <span>404 Not Found</span>
+    <div class="tab_wrap">
+      <div class="tab_area">
+        <label id="tab1" class="tab1_label" for="tab1">tab1</label>
+        <label id="tab2" class="tab2_label" for="tab2">tab2</label>
+        <label id="tab3" class="tab3_label" for="tab3">tab3</label>
+      </div>
     </div>
 
-    <div id="contents" style="display:none">
-      <div>
-        <button id="butInstall" hidden>Install PWA</button>
-      </div>
-      <div class="eula_box label">
-        Test PWA rev.<span id="update_stamp">-----</span>
-      </div>
-
+    <div id="contents">
       <div id="container">
-        <div class="label">Cookie</div>
+
+        <div class="label">Observed</div>
         <div>
-          <input type="text" id="input_value" />&nbsp;<button id="save_cookie_btn">Save</button>
           <div>
-            Saved cookie: cookie1 = <span id="loaded_cookie"></span>
+            <span id="event_name">N/A</span>
           </div>
         </div>
 
-        <div>URI scheme<br>(Deprecated)</div>
+        <div class="label">Dispatcher for Observe</div>
         <div>
           <div>
-            <button id="nec_ib_send_btn">nec-ib:Send data</button>&nbsp;
+            <button id="btn_prepare_ads">prepareAds</button>
           </div>
           <div>
-            <button id="nec_ib_close_btn">nec-ib:Close</button>&nbsp;
+            <button id="btn_show_ui">showUI</button>
           </div>
           <div>
-            <a href="https://www.google.co.jp/" target="_blank" id="open_browser_and_close_pwa">Open browser and close PWA</a>
-          </div>
-          <div>
-            <button id="window_open_test">App open url and terminate PWA</button>
+            <button id="btn_exception">exception</button>
+            <form name="exception">
+              <input type="radio" id="message_none" name="message" value="0" checked="checked"><label for="message_none">none</label>&nbsp;
+              <input type="radio" id="message_not_pwa" name="message" value="1"><label for="message_not_pwa">notPwa</label>&nbsp;
+              <input type="radio" id="message_non_support_ua" name="message" value="2"><label for="message_non_support_ua">nonSupportUa</label>&nbsp;<br>
+              <input type="radio" id="message_process_started" name="message" value="3"><label for="message_process_started">processStarted</label>&nbsp;
+              <input type="radio" id="message_invalid_code" name="message" value="4"><label for="message_invalid_code">invalidCode</label>&nbsp;
+              <input type="radio" id="message_local_storage_access" name="message" value="5"><label for="message_local_storage_access">localStorageAccess</label>&nbsp;<br>
+              <input type="radio" id="message_connection_failure" name="message" value="6"><label for="message_connection_failure">connectionFailure</label>&nbsp;
+              <input type="radio" id="message_handshake_error" name="message" value="7"><label for="message_handshake_error">handshakeError</label>&nbsp;
+            </form>
           </div>
         </div>
 
-        <div class="label">WebSocket</div>
+        <div class="label">Send</div>
         <div>
           <div>
-            <button id="connect_server">Connect with ticket</button>&nbsp;&nbsp;<button id="close_connection">Close</button>&nbsp;
+            <button id="btn_ad_acquisition">adAcquisition</button>
+            <form name="adAcquisition">
+              <input type="radio" id="message_success" name="message" value="0" checked="checked"><label for="message_success">success</label>&nbsp;
+              <input type="radio" id="message_failure" name="message" value="1"><label for="message_failure">failure</label>&nbsp;
+            </form>
           </div>
-          <div class="two_by_table">
-            <div>Status: </div>
-            <div><span id="connection_status"></span></div>
-            <div>Ticket: </div>
-            <div><input type="text" id="connection_ticket" readonly></div>
-            <div>Handshake status: </div>
-            <div><span id="connection_result"></span></div>
-            <div>Received data: </div>
-            <div><span id="connection_message"></span></div>
+          <div>
+            <button id="btn_widget_switching">widgetSwitching</button>
+            <form name="widgetSwitching">
+              <input type="radio" id="message_widget_prev" name="message" value="2"><label for="message_widget_prev">widgetPrev</label>&nbsp;
+              <input type="radio" id="message_widget_next" name="message" value="3" checked="checked"><label for="message_widget_next">widgetNext</label>&nbsp;
+            </form>
           </div>
-          <div id="commands">
-            <div>Command:</div>
-            <div>
-              <div>
-                <input type="text" id="send_data_value" value="i=identifier&a=16">&nbsp;<button id="send_data">Send</button>
-              </div>
-              <div>
-                <button id="ws_close_pwa">Close PWA</button>&nbsp;
-              </div>
-            </div>
+          <div>
+            <button id="btn_ad_playback_completion">adPlaybackCompletion</button>
           </div>
-        </div>
-
-        <div class="label">Encryption</div>
-        <div>
-          <div class="two_by_table">
-            <div>RSA</div>
-            <div>
-              <div>
-                <button id="get_key">Get RSA public key</button>&nbsp;<input type="text" id="public_key_value">
-              </div>
-              <!--
-              <div>
-                <button id="enc_send_data">Send ecnrypt data</button>&nbsp;<input type="text" id="enc_send_data_value" value="This is test data from client.">
-              </div>
-              -->
-            </div>
+          <div>
+            <button id="btn_signage_termination">signageTermination</button>
           </div>
-          <div class="two_by_table">
-            <div>AES (CBC)</div>
-            <div>
-              <div>
-                1.&nbsp;<button id="enc_gen_key">Generate AES key</button>&nbsp;<span id="enc_gen_key_value"></span>
-              </div>
-              <div>
-                2.&nbsp;<button id="enc_aes_encrypt">Encrypt</button>&nbsp;<input type="text" id="enc_aes_encrypt_value" value="This is AES test.">
-              </div>
-              <div>
-                3.&nbsp;<button id="enc_aes_encrypt_key">Encrypt AES KEY with RSA</button>&nbsp;<span id="enc_aes_encrypt_key_value"></span>
-              </div>
-              <div>
-                4.&nbsp;<button id="enc_sned_data">Send AES KEY and Data</button>&nbsp;(WS handshake needed)
-              </div>
-            </div>
-            <div>AES (GCM)</div>
-            <div>
-              <div>
-                1.&nbsp;<button id="enc_gcm_encrypt">GCM encrypt/decrypt test</button>&nbsp;<input type="text" id="enc_gcm_encrypt_value" value="This is AES GCM test.">
-              </div>
-              <div>
-                2.&nbsp;<button id="enc_gcm_send_data">Send GCM KEY and Data</button>&nbsp;(WS handshake needed)
-              </div>
-            </div>
+          <div>
+            <button id="btn_ad_click">adClick</button>
           </div>
         </div>
 
-        <div class="label">etc</div>
-        <div>
-          <button id="port_scan">Port Scan</button>&nbsp;<span id="port_scan_result"></span>
-        </div>
       </div>
     </div>
 
+    <div id="contents2" style="display:none">
+    contents2
+    </div>
 
-    <!-- /.main -->
+    <div id="contents3" style="display:none">
+    contents3
+    </div>
+
+    <div id="test">
+    </div>
+
   </main>
+  <script type="module" src="scripts/IbPwaAds.js"></script>
+  <script type="module" src="scripts/IbPwaTester.js"></script>
+  <script type="module" src="scripts/IbPwaCore.js"></script>
 
-  <footer class="footer">
-  <!-- /.footer -->
-  </footer>
-
-  <script src="/scripts/app.js"></script>
-  <script src="/scripts/install.js"></script>
-  <script src="/scripts/controller.js"></script>
-  <script>
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js')
-        .then((reg) => {
-          console.log('Service worker registered.', reg);
-        })
-        .catch((err) => {
-          console.log('Service worker did not register.', err);
-        });
-
-        loadCookie();
-      });
-    }
-    setRevision();
-    initialize();
-  </script>
+  <script type="text/javascript" src="scripts/test.js"></script>
 </body>
 </html>
