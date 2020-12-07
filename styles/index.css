@@ -1,3 +1,7 @@
+body {
+	background-color: black;
+}
+
 #container {
     display: grid;
     grid-auto-rows: auto;
@@ -53,4 +57,212 @@
 
 #blocker span {
     font-weight: bold;
+}
+
+div button {
+    margin: 4px;
+}
+
+.tab_wrap {
+    width:500px;
+    height: 60px;
+    margin:10px auto;
+}
+
+.tab_area {
+    font-size:0; 
+    margin:0 10px;
+}
+
+.tab_area label {
+    width:150px; 
+    margin:0 5px;
+    display:inline-block; 
+    padding:12px 0; 
+    color:#333; 
+    background:#ddd; 
+    text-align:center; 
+    font-size:13px; 
+    cursor:pointer; 
+    transition:ease 0.2s opacity;
+}
+
+.tab_area label:hover {
+    opacity:0.5;
+}
+
+#mainContainer {
+  /* text-align: center; */
+  /* width: 800px; */
+  /* height: 450px; */
+  
+  /* width: 640px;
+  height: 360px; */
+
+	/* position: relative; */
+  position: absolute;
+	top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin:auto;
+}
+
+#content, #adContainer {
+	/* position: relative; */
+	position: absolute;
+  top: 0;
+	left: 0;
+  right: 0;
+  bottom: 0;
+  margin:auto;
+
+
+	/* top:50%;
+	left:50%;
+	transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%); */
+
+
+	/* position: relative; */
+	/* text-align: center; */
+
+	/* position: absolute; */
+  /* top: 0px; */
+  /* left: 0px; */
+  /* width: 800px; */
+  /* height: 450px; */
+  /* width: 640px;
+  height: 360px; */
+}
+
+#contentElement {
+  width: 800px;
+  height: 450px;
+  overflow: hidden;
+}
+
+#defaultText{
+	position: absolute;
+	top:50%;
+	left:50%;
+	transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+	text-align: center;	
+	font-size: 30px;
+	color: white;
+	background-color: black;
+}
+/* #playButtonArea{
+	text-align: center;	
+} */
+#playButton {
+	position: absolute;
+
+	bottom:0%;
+  margin-top:10px;
+  vertical-align: top;
+  width: 350px;
+  height: 60px;
+  padding: 0;
+  font-size: 22px;
+  color: white;
+  text-align: center;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+  background: #2c3e50;
+  border: 0;
+  border-bottom: 2px solid #22303f;
+  cursor: pointer;
+  -webkit-box-shadow: inset 0 -2px #22303f;
+  box-shadow: inset 0 -2px #22303f;
+}
+
+.prevButton {
+	position: absolute;
+	top: 50%;
+	left:0;
+	background: url("../images/ui/previous_focus.png") no-repeat;
+	background-size: contain;
+	width: 36px;
+	height: 36px;
+	visibility: hidden;
+}
+
+.prevButton a {
+	display: inline-block;
+}
+
+.prevButton a:hover {
+	background-color: transparent;
+}
+
+.prevButton a:hover img {
+	visibility: hidden;
+}
+
+.nextButton {
+	position: absolute;
+	top: 50%;
+	right:0;
+	background: url("../images/ui/next_focus.png") no-repeat;
+	background-size: contain;
+	width: 36px;
+	height: 36px;
+	visibility: hidden;
+}
+
+.nextButton a {
+	display: inline-block;
+}
+
+.nextButton a:hover {
+	background-color: transparent;
+}
+
+.nextButton a:hover img {
+	visibility: hidden;
+}
+
+.closeButton {
+	visibility: hidden;
+	position: absolute;
+	top: 0%;
+	right: 0%;
+	background: url("../images/ui/close_focus.png") no-repeat;
+	background-size: contain;
+	width: 72px;
+	height: 72px;
+}
+
+.closeButton a {
+	display: inline-block;
+}
+
+.closeButton a:hover {
+	background-color: transparent;
+}
+
+.closeButton a:hover img {
+	visibility: hidden;
+}
+
+#volume {
+	visibility: hidden;
+	position: absolute;
+	width: 42px;
+	height: 42px;
+	bottom: 12px;
+	right: 36px;
+	background-image: url("../images/ui/sound_default.png");
+	background-size: contain;
+  }
+  
+#volume.on {
+	background-image: url("../images/ui/sound_click.png");
+}
+
+#contents2{
+	background-color: black;
 }
