@@ -1,0 +1,49 @@
+body, #blur_container:before {
+    background: url("../images/bg.jpg");
+    background-position: center;
+    background-size: cover;
+    background-attachment: fixed;
+    margin: 0;
+    padding: 0;
+}
+
+#blur_container:before {
+    content: "";
+    z-index: -1;
+    filter: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='a' x='0' y='0' width='1' height='1' color-interpolation-filters='sRGB'%3E%3CfeGaussianBlur stdDeviation='10' result='b'/%3E%3CfeMorphology operator='dilate' radius='10'/%3E%3CfeMerge%3E%3CfeMergeNode/%3E%3CfeMergeNode in='b'/%3E%3C/feMerge%3E%3C/filter%3E%3C/svg%3E#a");
+    opacity: 0.6;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+#blur_container {
+    z-index: 0;
+    overflow: hidden;
+    width: 50%;
+    height: 100%;
+    background-color: rgb(0,0,0);
+    margin: 0;
+    padding: 0;
+    position: absolute;
+}
+
+#main_container {
+    width: 50%;
+    height: 100%;
+    margin: 0;
+    margin-left: 50%;
+    padding: 0;
+    position: absolute;
+}
+
+.container {
+    margin: 40px;
+}
+
+.ad_frame {
+    width: 100%;
+    height: 50%;
+}
