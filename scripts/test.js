@@ -1,31 +1,30 @@
-import IbPwaController from './IbPwaController.js';
-import IbPwaDebug from './IbPwaDebug.js';
 
-let result = IbPwaController.test();
-let result2 = IbPwaController.getCount();
-IbPwaController.setStatus(1000);
-let result3 = IbPwaController.getStatus();
-let item2 = IbPwaController.event.prepareAds;
+const tab1 = document.getElementById('tab1');
+const tab2 = document.getElementById('tab2');
+const tab3 = document.getElementById('tab3');
+const contents = document.getElementById('contents');
+const contents2 = document.getElementById('contents2');
+const contents3 = document.getElementById('contents3');
 
-IbPwaDebug.log("This is log");
-
-const tester = {
-    test: function () {
-        return IbPwaController.test();
-    }
-};
-
-IbPwaController.observe(IbPwaController.event.prepareAds, () => {
-    const self = this;
-    alert("observer test 1");
-});
-IbPwaController.observe(IbPwaController.event.prepareAds, tester.test);
-
-const btn = document.getElementById('test');
-btn.addEventListener('click', () => {
-    IbPwaController.dispatch(IbPwaController.event.prepareAds);
-
-    //alert(tester.test());
+tab1.addEventListener('click', () => {
+    contents.style.display = "block";
+    contents2.style.display = "none";
+    contents3.style.display = "none";
 });
 
-export default tester;
+tab2.addEventListener('click', () => {
+    contents.style.display = "none";
+    contents2.style.display = "block";
+    contents3.style.display = "none";
+});
+
+tab3.addEventListener('click', () => {
+    contents.style.display = "none";
+    contents2.style.display = "none";
+    contents3.style.display = "block";
+});
+
+// for test
+let url = new URL(location.href);
+const test = document.getElementById('test');
+test.innerText = url;

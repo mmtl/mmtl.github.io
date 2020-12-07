@@ -16,6 +16,10 @@ const IbPwaDebug = class {
             console.log(...data);
         }
     }
+
+    isOn() {
+        return this._isLogging;
+    }
 };
 
 export default new IbPwaDebug();

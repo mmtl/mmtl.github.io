@@ -1,21 +1,86 @@
-<!doctype html>
 <html lang="ja">
-<head>
-<meta charset="UTF-8">
-<title>test</title>
-
-<script type="module" src="./scripts/test.js"></script>
-<script type="module" src="./scripts/test2.js"></script>
-
-<script type="module">
-import tester from './scripts/test.js';
-const x = tester.test();
-</script>
-
+<head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# website: http://ogp.me/ns/website#">
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="format-detection" content="telephone=no">
+	<meta name="viewport" content="width=device-width, initial-scale=1">    
+	<title>test</title>
+	<link rel="stylesheet" href="styles/font-awesome.min.css">
+	<link rel="stylesheet" href="styles/index.css">
 </head>
+
 <body>
-<div>
-    <button id="test">TEST</button>
-</div>
+  <main>
+    <div id="contents">
+      <div id="container">
+
+        <div class="label">Observed</div>
+        <div>
+          <div>
+            <span id="event_name">N/A</span>
+          </div>
+        </div>
+
+        <div class="label">Dispatcher for Observe</div>
+        <div>
+          <div>
+            <button id="btn_prepare_ads">prepareAds</button>
+          </div>
+          <div>
+            <button id="btn_show_ui">showUI</button>
+          </div>
+          <div>
+            <button id="btn_exception">exception</button>
+            <form name="exception">
+              <input type="radio" id="message_none" name="message" value="0" checked="checked"><label for="message_none">none</label>&nbsp;
+              <input type="radio" id="message_not_pwa" name="message" value="1"><label for="message_not_pwa">notPwa</label>&nbsp;
+              <input type="radio" id="message_non_support_ua" name="message" value="2"><label for="message_non_support_ua">nonSupportUa</label>&nbsp;<br>
+              <input type="radio" id="message_process_started" name="message" value="3"><label for="message_process_started">processStarted</label>&nbsp;
+              <input type="radio" id="message_invalid_code" name="message" value="4"><label for="message_invalid_code">invalidCode</label>&nbsp;
+              <input type="radio" id="message_local_storage_access" name="message" value="5"><label for="message_local_storage_access">localStorageAccess</label>&nbsp;<br>
+              <input type="radio" id="message_connection_failure" name="message" value="6"><label for="message_connection_failure">connectionFailure</label>&nbsp;
+              <input type="radio" id="message_handshake_error" name="message" value="7"><label for="message_handshake_error">handshakeError</label>&nbsp;
+            </form>
+          </div>
+        </div>
+
+        <div class="label">Send</div>
+        <div>
+          <div>
+            <button id="btn_ad_acquisition">adAcquisition</button>
+            <form name="adAcquisition">
+              <input type="radio" id="message_success" name="message" value="0" checked="checked"><label for="message_success">success</label>&nbsp;
+              <input type="radio" id="message_failure" name="message" value="1"><label for="message_failure">failure</label>&nbsp;
+            </form>
+          </div>
+          <div>
+            <button id="btn_widget_switching">widgetSwitching</button>
+            <form name="widgetSwitching">
+              <input type="radio" id="message_widget_prev" name="message" value="2"><label for="message_widget_prev">widgetPrev</label>&nbsp;
+              <input type="radio" id="message_widget_next" name="message" value="3" checked="checked"><label for="message_widget_next">widgetNext</label>&nbsp;
+            </form>
+          </div>
+          <div>
+            <button id="btn_ad_playback_completion">adPlaybackCompletion</button>
+          </div>
+          <div>
+            <button id="btn_signage_termination">signageTermination</button>
+          </div>
+          <div>
+            <button id="btn_ad_click">adClick</button>
+          </div>
+        </div>
+
+        <div class="label">Test</div>
+        <div>
+          <div>
+            <button id="btn_fetch_ima3">fetch ima3</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+  <script type="module" src="scripts/IbPwaTester.js"></script>
 </body>
 </html>

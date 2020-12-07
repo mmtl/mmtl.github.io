@@ -1,30 +1,28 @@
-<!doctype html>
-<html lang="ja">
-<head>
-<meta charset="UTF-8">
-<title>Param test</title>
-</head>
-<body>
-  <div id="result"></div>
-  
-  <script type="text/javascript">
-    // rev.100012
+// ver.2
+if (localStorage) {
     if (localStorage.getItem("ps") != 1) {
         let url = new URL(location.href);
         const hs = url.searchParams.get("hs");
         const t = parseInt(url.searchParams.get("t"));
-        document.getElementById('result').innerText = hs;
+        const p = url.searchParams.get("p");
+
         if (hs && t) {
             const date = new Date(t);
             const current = new Date();
+
             console.log("date    = " + date.toString());
             console.log("current = " + current.toString());
+
             if (current - date <= 5 * 1000) {
                 localStorage.setItem("hs", hs);
                 localStorage.setItem("t", t);
             }
         }
-    }
-  </script>
-</body>
-</html>
+
+        let mode = 0;
+        if (p) {
+            mode = parseInt(p);
+        }
+        localStorage.setItem("p", mode);
+    }    
+}
