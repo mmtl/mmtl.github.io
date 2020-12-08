@@ -81,6 +81,7 @@ const IbPwaTester = class {
             IbPwaController.send(IbPwaController.event.adClick);
         });
 
+        /*
         // test
         const handleErrors = (res) => {
             // test
@@ -120,6 +121,7 @@ const IbPwaTester = class {
                 console.log('[ServiceWorker] err = ' + err);
             });
         });
+        */
     }
 
     exceptionHandler(observerArgs) {
