@@ -15,6 +15,7 @@ const IbPwaTester = class {
         this._adClick = document.getElementById('btn_ad_click');
         this._btnIma3 = document.getElementById('btn_fetch_ima3');
         this._requestUrl = "";
+        this._adMode = 0;   // 0:Movie, 1:Picture
     }
 
     initialize() {
@@ -26,6 +27,10 @@ const IbPwaTester = class {
         });
         IbPwaController.observe(IbPwaController.event.showUI, () => {
             this._eventName.innerText = "event.showUI";
+        });
+        IbPwaController.observe(IbPwaController.event.modeChange, (args) => {
+            const mode = parseInt(args[0]);
+            this._eventName.innerText = "event.modeChange(" + mode + ")";
         });
 
         // dispatcher
@@ -81,6 +86,10 @@ const IbPwaTester = class {
             IbPwaController.send(IbPwaController.event.adClick);
         });
 
+        if (localStorage) {
+            this._adMode = localStorage.getItem("p");
+            //
+        }
         /*
         // test
         const handleErrors = (res) => {
