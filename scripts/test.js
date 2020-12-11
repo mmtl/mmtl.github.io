@@ -25,6 +25,6 @@ tab3.addEventListener('click', () => {
 });
 
 // for test
-let url = new URL(location.href);
+const ua = window.navigator.userAgent
 const test = document.getElementById('test');
-test.innerText = url;
+test.innerText = ua;
