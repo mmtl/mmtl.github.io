@@ -33,7 +33,6 @@ const IbPwaTester = class {
             this._eventName.innerText = "event.modeChange(" + mode + ")";
             //
             if (mode != this._adMode) {
-                this._adMode = mode;
                 this._modeChange(mode);    
             }
         });
@@ -93,7 +92,6 @@ const IbPwaTester = class {
 
         if (localStorage) {
             const mode = localStorage.getItem("p");
-            this._adMode = mode;
             //
             this._modeChange(mode);
         }
@@ -188,11 +186,14 @@ const IbPwaTester = class {
         let path = "";
         switch(mode) {
         case 0:
+            path = "index.html";
             break;
         case 1:
+            path = "picture.html";
             break;
         }
-        location.href = "picture.html";
+        this._adMode = mode;
+        location.href = path;
     }
 };
 
