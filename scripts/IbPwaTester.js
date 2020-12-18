@@ -31,6 +31,11 @@ const IbPwaTester = class {
         IbPwaController.observe(IbPwaController.event.modeChange, (args) => {
             const mode = parseInt(args[0]);
             this._eventName.innerText = "event.modeChange(" + mode + ")";
+            //
+            if (mode != this._adMode) {
+                this._adMode = mode;
+                this._modeChange(mode);    
+            }
         });
 
         // dispatcher
@@ -87,8 +92,10 @@ const IbPwaTester = class {
         });
 
         if (localStorage) {
-            this._adMode = localStorage.getItem("p");
+            const mode = localStorage.getItem("p");
+            this._adMode = mode;
             //
+            this._modeChange(mode);
         }
         /*
         // test
@@ -175,6 +182,17 @@ const IbPwaTester = class {
         this._eventName.innerText = message;
 
         IbPwaDebug.log("<<< [IbPwaTester] exceptionHandler...OK");
+    }
+
+    _modeChange(mode) {
+        let path = "";
+        switch(mode) {
+        case 0:
+            break;
+        case 1:
+            break;
+        }
+        location.href = "picture.html";
     }
 };
 
