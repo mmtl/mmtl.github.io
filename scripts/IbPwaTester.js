@@ -38,57 +38,73 @@ const IbPwaTester = class {
         });
 
         // dispatcher
-        this._prepareAds.addEventListener('click', () => {
-            IbPwaController.dispatch(IbPwaController.event.prepareAds);
-        });
+        if (this._prepareAds) {
+            this._prepareAds.addEventListener('click', () => {
+                IbPwaController.dispatch(IbPwaController.event.prepareAds);
+            });    
+        }
 
-        this._showUI.addEventListener('click', () => {
-            IbPwaController.dispatch(IbPwaController.event.showUI);
-        });
+        if (this._showUI) {
+            this._showUI.addEventListener('click', () => {
+                IbPwaController.dispatch(IbPwaController.event.showUI);
+            });    
+        }
 
-        this._exception.addEventListener('click', () => {
-            for (let ele of document.exception.message) {
-                if (ele.checked) {
-                    IbPwaController.dispatch(IbPwaController.event.exception, ele.value);
-                    break;
+        if (this._exception) {
+            this._exception.addEventListener('click', () => {
+                for (let ele of document.exception.message) {
+                    if (ele.checked) {
+                        IbPwaController.dispatch(IbPwaController.event.exception, ele.value);
+                        break;
+                    }
                 }
-            }
-        });
+            });    
+        }
 
         // sender
-        this._adAcqusition.addEventListener('click', () => {
-            let value = 0;
-            for (let ele of document.adAcquisition.message) {
-                if (ele.checked) {
-                    value = ele.value;
-                    break;
+        if (this._adAcqusition) {
+            this._adAcqusition.addEventListener('click', () => {
+                let value = 0;
+                for (let ele of document.adAcquisition.message) {
+                    if (ele.checked) {
+                        value = ele.value;
+                        break;
+                    }
                 }
-            }
-            IbPwaController.send(IbPwaController.event.adAcquisition, value == 0 ? IbPwaController.message.success : IbPwaController.message.failure);
-        });
+                IbPwaController.send(IbPwaController.event.adAcquisition, value == 0 ? IbPwaController.message.success : IbPwaController.message.failure);
+            });    
+        }
 
-        this._widgetSwitching.addEventListener('click', () => {
-            let value = 0;
-            for (let ele of document.widgetSwitching.message) {
-                if (ele.checked) {
-                    value = ele.value;
-                    break;
+        if (this._widgetSwitching) {
+            this._widgetSwitching.addEventListener('click', () => {
+                let value = 0;
+                for (let ele of document.widgetSwitching.message) {
+                    if (ele.checked) {
+                        value = ele.value;
+                        break;
+                    }
                 }
-            }
-            IbPwaController.send(IbPwaController.event.widgetSwitching, value == 2 ? IbPwaController.message.widgetPrev : IbPwaController.message.widgetNext);
-        });
+                IbPwaController.send(IbPwaController.event.widgetSwitching, value == 2 ? IbPwaController.message.widgetPrev : IbPwaController.message.widgetNext);
+            });    
+        }
 
-        this._adPlayback.addEventListener('click', () => {
-            IbPwaController.send(IbPwaController.event.adPlaybackCompletion);
-        });
+        if (this._adPlayback) {
+            this._adPlayback.addEventListener('click', () => {
+                IbPwaController.send(IbPwaController.event.adPlaybackCompletion);
+            });
+        }
 
-        this._signageTermination.addEventListener('click', () => {
-            IbPwaController.send(IbPwaController.event.signageTermination);
-        });
+        if (this._signageTermination) {
+            this._signageTermination.addEventListener('click', () => {
+                IbPwaController.send(IbPwaController.event.signageTermination);
+            });
+        }
 
-        this._adClick.addEventListener('click', () => {
-            IbPwaController.send(IbPwaController.event.adClick);
-        });
+        if (this._adClick) {
+            this._adClick.addEventListener('click', () => {
+                IbPwaController.send(IbPwaController.event.adClick);
+            });
+        }
 
         if (localStorage) {
             const mode = localStorage.getItem("p");
