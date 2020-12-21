@@ -195,7 +195,9 @@ const IbPwaTester = class {
             break;
         }
 
-        this._eventName.innerText = message;
+        if (this._eventName) {
+            this._eventName.innerText = message;
+        }
 
         IbPwaDebug.log("<<< [IbPwaTester] exceptionHandler...OK");
     }
