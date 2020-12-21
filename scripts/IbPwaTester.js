@@ -208,7 +208,7 @@ const IbPwaTester = class {
 
     _modeChange(mode) {
         if (this._initialized) return;
-        
+
         let path = "";
         switch(mode) {
         case 0:
@@ -219,6 +219,9 @@ const IbPwaTester = class {
             break;
         }
         this._adMode = mode;
+        if (localStorage) {
+            localStorage.setItem("p", mode);
+        }
         location.href = path;
     }
 };
