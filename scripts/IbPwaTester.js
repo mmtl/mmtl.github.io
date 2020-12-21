@@ -30,7 +30,9 @@ const IbPwaTester = class {
         });
         IbPwaController.observe(IbPwaController.event.modeChange, (args) => {
             const mode = parseInt(args[0]);
-            this._eventName.innerText = "event.modeChange(" + mode + ")";
+            if (this._eventName) {
+                this._eventName.innerText = "event.modeChange(" + mode + ")";
+            }
             //
             if (mode != this._adMode) {
                 this._modeChange(mode);    
