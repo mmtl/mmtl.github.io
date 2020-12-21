@@ -16,7 +16,6 @@ const IbPwaTester = class {
         this._btnIma3 = document.getElementById('btn_fetch_ima3');
         this._requestUrl = "";
         this._adMode = 0;   // 0:Movie, 1:Picture
-        this._initialized = false;
     }
 
     initialize() {
@@ -115,8 +114,6 @@ const IbPwaTester = class {
             }
         }
 
-        this._initialized = true;
-
         /*
         // test
         const handleErrors = (res) => {
@@ -207,8 +204,6 @@ const IbPwaTester = class {
     }
 
     _modeChange(mode) {
-        if (this._initialized) return;
-
         let path = "";
         switch(mode) {
         case 0:
@@ -219,9 +214,6 @@ const IbPwaTester = class {
             break;
         }
         this._adMode = mode;
-        if (localStorage) {
-            localStorage.setItem("p", mode);
-        }
         location.href = path;
     }
 };
