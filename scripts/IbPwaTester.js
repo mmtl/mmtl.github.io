@@ -110,7 +110,7 @@ const IbPwaTester = class {
         if (localStorage) {
             const mode = localStorage.getItem("p");
             //
-            if (mode != this._adMode) {
+            if (parseInt(mode) != this._adMode) {
                 this._modeChange(mode);
             }
         }
