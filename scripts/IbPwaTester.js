@@ -108,6 +108,13 @@ const IbPwaTester = class {
             });
         }
 
+        // get mode
+        const url = new URL(location.href);
+        //const hs = url.searchParams.get("m");
+        this._adMode = 0;
+        if (url.href.indexOf("picture") >= 0) {
+            this._adMode = 1;
+        }
         /*
         if (localStorage) {
             const mode = localStorage.getItem("p");
@@ -217,7 +224,6 @@ const IbPwaTester = class {
             path = "picture.html";
             break;
         }
-        this._adMode = mode;
         location.href = path;
     }
 };
