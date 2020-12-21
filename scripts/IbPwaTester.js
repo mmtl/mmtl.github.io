@@ -106,6 +106,7 @@ const IbPwaTester = class {
             });
         }
 
+        /*
         if (localStorage) {
             const mode = localStorage.getItem("p");
             //
@@ -113,6 +114,7 @@ const IbPwaTester = class {
                 this._modeChange(mode);
             }
         }
+        */
 
         /*
         // test
