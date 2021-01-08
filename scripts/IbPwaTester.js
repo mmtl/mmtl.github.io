@@ -122,7 +122,7 @@ const IbPwaTester = class {
             if (localStorage) {
                 const mediaType = localStorage.getItem("bgt");
                 const data = localStorage.getItem("bg");
-                if (bg && bgt) {
+                if (mediaType && data) {
                     const img = document.createElement('img');
                     img.src = "data:" + mediaType + ";base64," + data;
                     this._imageContainer.appendChild(img);
