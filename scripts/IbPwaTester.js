@@ -14,6 +14,7 @@ const IbPwaTester = class {
         this._signageTermination = document.getElementById('btn_signage_termination');
         this._adClick = document.getElementById('btn_ad_click');
         this._btnIma3 = document.getElementById('btn_fetch_ima3');
+        this._imageContainer = document.getElementById('image_container');
         this._requestUrl = "";
         this._adMode = 0;   // 0:Movie, 1:Picture
     }
@@ -115,6 +116,20 @@ const IbPwaTester = class {
         if (url.href.indexOf("picture") >= 0) {
             this._adMode = 1;
         }
+
+        // Image test
+        if (this._imageContainer) {
+            if (localStorage) {
+                const mediaType = localStorage.getItem("bgt");
+                const data = localStorage.getItem("bg");
+                if (bg && bgt) {
+                    const img = document.createElement('img');
+                    img.src = "data:" + mediaType + ";base64," + data;
+                    this._imageContainer.appendChild(img);
+                }
+            }
+        }
+
         /*
         if (localStorage) {
             const mode = localStorage.getItem("p");

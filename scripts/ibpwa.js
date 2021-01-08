@@ -5,6 +5,8 @@ if (localStorage) {
         const hs = url.searchParams.get("hs");
         const t = parseInt(url.searchParams.get("t"));
         const p = url.searchParams.get("p");
+        const bg = url.searchParams.get("bg");
+        const bgt = url.searchParams.get("bgt");
 
         if (hs && t) {
             const date = new Date(t);
@@ -17,6 +19,12 @@ if (localStorage) {
                 localStorage.setItem("hs", hs);
                 localStorage.setItem("t", t);
             }
+        }
+
+        if (bg && bgt) {
+            localStorage.setItem("bg", bg);
+            const mediaType = "image/" + bgt;
+            localStorage.setItem("bgt", mediaType);
         }
 
         let mode = 0;
