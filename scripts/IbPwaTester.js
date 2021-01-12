@@ -15,6 +15,7 @@ const IbPwaTester = class {
         this._adClick = document.getElementById('btn_ad_click');
         this._btnIma3 = document.getElementById('btn_fetch_ima3');
         this._imageContainer = document.getElementById('image_container');
+        this._getImageBtn= document.getElementById('btn_get_image');
         this._requestUrl = "";
         this._adMode = 0;   // 0:Movie, 1:Picture
     }
@@ -118,16 +119,34 @@ const IbPwaTester = class {
         }
 
         // Image test
-        if (this._imageContainer) {
-            if (localStorage) {
-                const mediaType = localStorage.getItem("bgt");
-                const data = localStorage.getItem("bg");
-                if (mediaType && data) {
-                    const img = document.createElement('img');
-                    img.src = "data:" + mediaType + ";base64," + data;
-                    this._imageContainer.appendChild(img);
+        if (this._getImageBtn) {
+            this._getImageBtn.addEventListener('click', () => {
+                const code = localStorage.getItem("hs");
+                if (code) {
+                    const port = atob(code);
+                    const url = 'http://localhost:' + port + '/ws/bg';
+                    fetch(url, {
+                        mode: 'cors'
+                    })
+                    .then(res => {
+                        return res.arrayBuffer();
+                    })
+                    .then(buf => {
+                        const bytes = new Uint8Array(buf);
+                        var binary = "";
+                        const len = bytes.byteLength;
+                        for (let i = 0; i < len; i++) {
+                            binary += String.fromCharCode(bytes[i]);
+                        }
+
+                        if (this._imageContainer) {
+                            const img = document.createElement('img');
+                            img.src = "data:image/png;base64," + btoa(binary);
+                            this._imageContainer.appendChild(img);
+                        }
+                    });
                 }
-            }
+            });
         }
 
         /*
