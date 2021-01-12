@@ -139,11 +139,14 @@ const IbPwaTester = class {
                             binary += String.fromCharCode(bytes[i]);
                         }
 
+                        const dataUrlBg = "data:image/png;base64," + btoa(binary);
                         if (this._imageContainer) {
                             const img = document.createElement('img');
-                            img.src = "data:image/png;base64," + btoa(binary);
+                            img.src = dataUrlBg;
                             this._imageContainer.appendChild(img);
                         }
+
+                        localStorage.setItem("bg", dataUrlBg);
                     });
                 }
             });
