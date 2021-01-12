@@ -16,6 +16,7 @@ const IbPwaTester = class {
         this._btnIma3 = document.getElementById('btn_fetch_ima3');
         this._imageContainer = document.getElementById('image_container');
         this._getImageBtn= document.getElementById('btn_get_image');
+        this._getImageBtn2= document.getElementById('btn_get_image2');
         this._requestUrl = "";
         this._adMode = 0;   // 0:Movie, 1:Picture
     }
@@ -147,7 +148,25 @@ const IbPwaTester = class {
                         }
 
                         localStorage.setItem("bg", dataUrlBg);
+                        
+                        const size = getLocalStorageSize();
+                        IbPwaDebug.log("*** localStorage used size: " + size);
                     });
+                }
+            });
+        }
+
+        if (this._getImageBtn2) {
+            this._getImageBtn2.addEventListener('click', () => {
+                if (localStorage) {
+                    const imageSrc = localStorage.getItem("bg");
+                    if (imageSrc) {
+                        if (this._imageContainer) {
+                            const img = document.createElement('img');
+                            img.src = imageSrc;
+                            this._imageContainer.appendChild(img);
+                        }
+                    }
                 }
             });
         }
@@ -262,6 +281,16 @@ const IbPwaTester = class {
             break;
         }
         location.href = path;
+    }
+
+    getLocalStorageSize() {
+        let allStrings = '';
+        for (let key in localStorage) {
+            if (localStorage.hasOwnProperty(key)) {
+                allStrings += localStorage[key];
+            }
+        }
+        return allStrings ? 3 + ((allStrings.length * 16) / (8 * 1024)) + ' KB' : 'Empty (0 KB)';
     }
 };
 
