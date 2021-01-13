@@ -19,6 +19,7 @@ const IbPwaTester = class {
         this._getImageBtn = document.getElementById('btn_get_image');
         this._getImageBtn2 = document.getElementById('btn_get_image2');
         this._getRssBtn = document.getElementById('btn_get_rss');
+        this._articleContainer = document.getElementById('articles_container');
         this._requestUrl = "";
         this._adMode = 0;   // 0:Movie, 1:Picture
     }
@@ -188,6 +189,20 @@ const IbPwaTester = class {
                     })
                     .then(data => {
                         IbPwaDebug.log(data);
+                        let html = "";
+                        const items = data.querySelectorAll("item");
+                        items.forEach(item => {
+                            html += `
+                            <article>
+                            <div class="article_header">${item.querySelector("title").innerText}</div>
+                            <div class="article">${item.querySelector("description").innerHTML}</div>
+                            </article>
+                            `;
+                        });
+
+                        if (this._articleContainer) {
+                            this._articleContainer.insertAdjacentHTML("beforeend", html);
+                        }
                     });
                 }
             });

@@ -265,3 +265,11 @@ div button {
 #contents2{
 	background-color: black;
 }
+
+.article_header {
+  margin-top: 8px;
+}
+
+.article {
+  margin-left: 20px;
+}
