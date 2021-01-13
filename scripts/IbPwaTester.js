@@ -194,9 +194,9 @@ const IbPwaTester = class {
                         items.forEach(item => {
                             // <![CDATA[ 二階氏、政調会長に不快感 補選敗北「政局」発言で ]]>
                             let temp = item.querySelector("title").innerHTML;
-                            let title = temp.replace('<![CDATA[ ', "").replace(' ]]>', "");
+                            let title = temp.replace('<![CDATA[', "").replace(']]>', "");
                             temp = item.querySelector("description").innerHTML;
-                            let description = temp.replace('<![CDATA[ ', "").replace(' ]]>', "");
+                            let description = temp.replace('<![CDATA[', "").replace(']]>', "");
 
                             html += `
                             <article>
