@@ -173,15 +173,18 @@ const IbPwaTester = class {
 
         if (this._getRssBtn) {
             this._getRssBtn.addEventListener('click', () => {
-                const port = atob(code);
-                const url = 'http://localhost:' + port + '/ws/rss';
-                fetch(url, {
-                    mode: 'cors'
-                })
-                .then(res => {
-                    const rss = res;
-                    let test = 0;
-                });
+                const code = IbPwaStorage.getItem("hs");
+                if (code) {
+                    const port = atob(code);
+                    const url = 'http://localhost:' + port + '/ws/rss';
+                    fetch(url, {
+                        mode: 'cors'
+                    })
+                    .then(res => {
+                        const rss = res;
+                        let test = 0;
+                    });    
+                }
             });
         }
 
