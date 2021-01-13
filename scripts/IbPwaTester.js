@@ -192,13 +192,12 @@ const IbPwaTester = class {
                         let html = "";
                         const items = data.querySelectorAll("item");
                         items.forEach(item => {
-                            const regexp = /\!\[CDATA\[\s+(.*)\s+\]\]/;
+                            // <![CDATA[ 二階氏、政調会長に不快感 補選敗北「政局」発言で ]]>
                             let temp = item.querySelector("title").innerHTML;
-                            let match = temp.match(regexp);
-                            let title = match[1];
+                            let title = temp.replace('<![CDATA[ ', "").replace(' ]]>', "");
                             temp = item.querySelector("description").innerHTML;
-                            match = temp.match(regexp);
-                            let description = match[1];
+                            let description = temp.replace('<![CDATA[ ', "").replace(' ]]>', "");
+
                             html += `
                             <article>
                             <div class="article_header">${title}</div>
