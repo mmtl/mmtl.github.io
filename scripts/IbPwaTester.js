@@ -192,15 +192,14 @@ const IbPwaTester = class {
                         let html = "";
                         const items = data.querySelectorAll("item");
                         items.forEach(item => {
-                            // <![CDATA[ 二階氏、政調会長に不快感 補選敗北「政局」発言で ]]>
                             let temp = item.querySelector("title").innerHTML;
-                            let title = temp.replace('<![CDATA[', "").replace(']]>', "");
+                            let title = this._getCdataText(temp);
                             temp = item.querySelector("description").innerHTML;
-                            let description = temp.replace('<![CDATA[', "").replace(']]>', "");
+                            let description = this._getCdataText(temp);
 
                             html += `
-                            <article>
-                            <div class="article_header">${title}</div>
+                            <article class="article_header">
+                            <div class="article_title">${title}</div>
                             <div class="article">${description}</div>
                             </article>
                             `;
@@ -324,6 +323,10 @@ const IbPwaTester = class {
             break;
         }
         location.href = path;
+    }
+
+    _getCdataText(cdata) {
+        return cdata.replace('<![CDATA[', "").replace(']]>', "").replace("\r\n", "").replace("\n", "");
     }
 };
 

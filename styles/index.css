@@ -270,6 +270,10 @@ div button {
   margin-top: 8px;
 }
 
+.article_title {
+  font-weight: bold;
+}
+
 .article {
   margin-left: 20px;
 }
