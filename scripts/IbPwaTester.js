@@ -16,8 +16,9 @@ const IbPwaTester = class {
         this._adClick = document.getElementById('btn_ad_click');
         this._btnIma3 = document.getElementById('btn_fetch_ima3');
         this._imageContainer = document.getElementById('image_container');
-        this._getImageBtn= document.getElementById('btn_get_image');
-        this._getImageBtn2= document.getElementById('btn_get_image2');
+        this._getImageBtn = document.getElementById('btn_get_image');
+        this._getImageBtn2 = document.getElementById('btn_get_image2');
+        this._getRssBtn = document.getElementById('btn_get_rss');
         this._requestUrl = "";
         this._adMode = 0;   // 0:Movie, 1:Picture
     }
@@ -167,6 +168,20 @@ const IbPwaTester = class {
                         this._imageContainer.appendChild(img);
                     }
                 }
+            });
+        }
+
+        if (this._getRssBtn) {
+            this._getRssBtn.addEventListener('click', () => {
+                const port = atob(code);
+                const url = 'http://localhost:' + port + '/ws/rss';
+                fetch(url, {
+                    mode: 'cors'
+                })
+                .then(res => {
+                    const rss = res;
+                    let test = 0;
+                });
             });
         }
 
