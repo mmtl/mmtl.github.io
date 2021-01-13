@@ -181,9 +181,14 @@ const IbPwaTester = class {
                         mode: 'cors'
                     })
                     .then(res => {
-                        const rss = res;
-                        let test = 0;
-                    });    
+                        return res.text()
+                    })
+                    .then(str => {
+                        return new DOMParser().parseFromString(str, "text/xml");
+                    })
+                    .then(data => {
+                        IbPwaDebug.log(data);
+                    });
                 }
             });
         }
