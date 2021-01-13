@@ -192,10 +192,15 @@ const IbPwaTester = class {
                         let html = "";
                         const items = data.querySelectorAll("item");
                         items.forEach(item => {
+                            const regexp = /\!\[CDATA\[\s+(.*)\s+\]\]/;
+                            let match = regexp.exec(item.querySelector("title").innerHTML);
+                            let title = match[1];
+                            match = regexp.exec(item.querySelector("description").innerHTML);
+                            let description = match[1];
                             html += `
                             <article>
-                            <div class="article_header">${item.querySelector("title").innerText}</div>
-                            <div class="article">${item.querySelector("description").innerHTML}</div>
+                            <div class="article_header">${title}</div>
+                            <div class="article">${description}</div>
                             </article>
                             `;
                         });
