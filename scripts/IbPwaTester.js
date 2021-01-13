@@ -1,5 +1,6 @@
 import IbPwaController from './IbPwaController.js';
 import IbPwaDebug from './IbPwaDebug.js';
+import IbPwaStorage from './IbPwaStorage.js';
 
 // This is for test only.
 const IbPwaTester = class {
@@ -122,7 +123,7 @@ const IbPwaTester = class {
         // Image test
         if (this._getImageBtn) {
             this._getImageBtn.addEventListener('click', () => {
-                const code = localStorage.getItem("hs");
+                const code = IbPwaStorage.getItem("hs");
                 if (code) {
                     const port = atob(code);
                     const url = 'http://localhost:' + port + '/ws/bg';
@@ -147,9 +148,9 @@ const IbPwaTester = class {
                             this._imageContainer.appendChild(img);
                         }
 
-                        localStorage.setItem("bg", dataUrlBg);
+                        IbPwaStorage.setItem("bg", dataUrlBg);
                         
-                        const size = getLocalStorageSize();
+                        const size = IbPwaStorage.getUsedSize();
                         IbPwaDebug.log("*** localStorage used size: " + size);
                     });
                 }
@@ -158,14 +159,12 @@ const IbPwaTester = class {
 
         if (this._getImageBtn2) {
             this._getImageBtn2.addEventListener('click', () => {
-                if (localStorage) {
-                    const imageSrc = localStorage.getItem("bg");
-                    if (imageSrc) {
-                        if (this._imageContainer) {
-                            const img = document.createElement('img');
-                            img.src = imageSrc;
-                            this._imageContainer.appendChild(img);
-                        }
+                const imageSrc = IbPwaStorage.getItem("bg");
+                if (imageSrc) {
+                    if (this._imageContainer) {
+                        const img = document.createElement('img');
+                        img.src = imageSrc;
+                        this._imageContainer.appendChild(img);
                     }
                 }
             });
