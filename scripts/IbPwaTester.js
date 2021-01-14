@@ -153,7 +153,9 @@ const IbPwaTester = class {
                         IbPwaStorage.setItem("bg", dataUrlBg);
                         
                         const size = IbPwaStorage.getUsedSize();
-                        IbPwaDebug.log("*** localStorage used size: " + size);
+                        IbPwaDebug.log("*** localStorage used size: " + size + " KB");
+                        const size2 = IbPwaStorage.getUsedSize2();
+                        IbPwaDebug.log("*** localStorage used size: " + size2 + " KB");
                     });
                 }
             });
@@ -327,22 +329,6 @@ const IbPwaTester = class {
 
     _getCdataText(cdata) {
         return cdata.replace('<![CDATA[', "").replace(']]>', "").replace("\r\n", "").replace("\n", "");
-    }
-
-    getImage() {
-        const code = IbPwaStorage.getItem("hs");
-        if (code) {
-            const port = atob(code);
-            const url = 'http://localhost:' + port + '/ws/bg';
-            fetch(url, {
-                mode: 'cors'
-            })
-            .then(res => {
-                return res;
-            });
-        }
-
-        return null;
     }
 };
 
