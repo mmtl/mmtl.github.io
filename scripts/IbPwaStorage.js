@@ -87,7 +87,7 @@ const IbPwaStorage = class {
     }
 
     getUsedSize() {
-        return (new Blob(Object.values(localStorage)).size / 1024).toFixed(2);
+        return ((new Blob(Object.values(localStorage)).size / 1024) + (new Blob(Object.keys(localStorage)).size / 1024)).toFixed(2);
     }
 
     getUsedSize2() {
@@ -97,7 +97,7 @@ const IbPwaStorage = class {
             if (!localStorage.hasOwnProperty(key)) {
         		continue;
 	        }
-	        totalBytes += ((localStorage[key].length + key.length) * 2);
+            totalBytes += (new Blob([localStorage[key]])).size + (new Blob([key])).size;
         }
 
         return (totalBytes / 1024).toFixed(2);  // KB
