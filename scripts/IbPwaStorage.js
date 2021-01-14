@@ -87,20 +87,8 @@ const IbPwaStorage = class {
     }
 
     getUsedSize() {
-        return ((new Blob(Object.values(localStorage)).size / 1024) + (new Blob(Object.keys(localStorage)).size / 1024)).toFixed(2);
-    }
-
-    getUsedSize2() {
-        let totalBytes = 0;
-        let key = "";
-        for (key in localStorage) {
-            if (!localStorage.hasOwnProperty(key)) {
-        		continue;
-	        }
-            totalBytes += (new Blob([localStorage[key]])).size + (new Blob([key])).size;
-        }
-
-        return (totalBytes / 1024).toFixed(2);  // KB
+        const storage = window[this._storageType];
+        return (new Blob(Object.values(storage))).size + (new Blob(Object.keys(storage))).size; // byte
     }
 };
 

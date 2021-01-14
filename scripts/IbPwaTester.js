@@ -128,7 +128,7 @@ const IbPwaTester = class {
                 const code = IbPwaStorage.getItem("hs");
                 if (code) {
                     const port = atob(code);
-                    const url = 'http://localhost:' + port + '/ws/bg';
+                    const url = 'http://localhost:' + port + '/ws/image';
                     fetch(url, {
                         mode: 'cors'
                     })
@@ -153,9 +153,7 @@ const IbPwaTester = class {
                         IbPwaStorage.setItem("bg", dataUrlBg);
                         
                         const size = IbPwaStorage.getUsedSize();
-                        IbPwaDebug.log("*** localStorage used size: " + size + " KB");
-                        const size2 = IbPwaStorage.getUsedSize2();
-                        IbPwaDebug.log("*** localStorage used size: " + size2 + " KB");
+                        IbPwaDebug.log("*** localStorage used size: " + (size / 1024).toFixed(2) + " KB");
                     });
                 }
             });
@@ -179,7 +177,7 @@ const IbPwaTester = class {
                 const code = IbPwaStorage.getItem("hs");
                 if (code) {
                     const port = atob(code);
-                    const url = 'http://localhost:' + port + '/ws/rss';
+                    const url = 'http://localhost:' + port + '/ws/rss/news/curation';
                     fetch(url, {
                         mode: 'cors'
                     })
