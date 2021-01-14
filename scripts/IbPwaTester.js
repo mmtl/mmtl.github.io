@@ -328,6 +328,22 @@ const IbPwaTester = class {
     _getCdataText(cdata) {
         return cdata.replace('<![CDATA[', "").replace(']]>', "").replace("\r\n", "").replace("\n", "");
     }
+
+    getImage() {
+        const code = IbPwaStorage.getItem("hs");
+        if (code) {
+            const port = atob(code);
+            const url = 'http://localhost:' + port + '/ws/bg';
+            fetch(url, {
+                mode: 'cors'
+            })
+            .then(res => {
+                return res;
+            });
+        }
+
+        return null;
+    }
 };
 
 //IbPwaController.initialize();
