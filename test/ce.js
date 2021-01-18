@@ -1,3 +1,5 @@
+import TestA from 'https://iwappdev.mytimeline-news.com/cmsupload_dev/app/4/205/testA.js';
+
 class TestElement extends HTMLElement {
     constructor() {
         super();
