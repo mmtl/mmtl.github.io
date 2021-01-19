@@ -21,7 +21,7 @@ class TestElement extends HTMLElement {
     }
 
     requestTest() {
-        IbPwaService.requestRss('news', 'curation', this._callbackTest);
+        IbPwaService.requestRss('news', 'curation', this._callbackTest.bind(this));
     }
 }
 
