@@ -1,3 +1,5 @@
+//import TestB from './TestB.js';
+
 const TestA = class {
     constructor() {
 
@@ -8,6 +10,7 @@ const TestA = class {
     }
 
     getContent() {
+        //TestB.test();
         return "This is contents";
     }
 }
