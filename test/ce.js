@@ -13,6 +13,7 @@ class TestElement extends HTMLElement {
         const btn = document.createElement("button");
         btn.innerText = "event test";
         btn.onclick = this.requestTest;
+        this.shadow.appendChild(btn);
     }
 
     _callbackTest(text) {
