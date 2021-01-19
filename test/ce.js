@@ -16,12 +16,10 @@ class TestElement extends HTMLElement {
         this.shadow.appendChild(btn);
     }
 
-    _callbackTest(text) {
-        console.log("Result: " + text);
-    }
-
     requestTest() {
-        IbPwaService.requestRss('news', 'curation', this._callbackTest.bind(this));
+        IbPwaService.requestRss('news', 'curation', (text) => {
+            console.log("Result: " + text);
+        });
     }
 }
 
