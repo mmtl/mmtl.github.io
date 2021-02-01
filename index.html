@@ -1,3 +1,4 @@
+<!-- [Update] 2021/02/01 09:32 -->
 <html lang="ja">
 <head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# website: http://ogp.me/ns/website#">
 	<meta charset="utf-8">
@@ -6,125 +7,82 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">    
 	<link rel="icon" type="image/png" href="images/favicon.ico">
 	<link rel="manifest" href="manifest.json">
-	<title>test</title>
-	<link rel="stylesheet" href="styles/font-awesome.min.css">
+	<title>test</title><!--インフォボードサイネージアドイン-->
 	<link rel="stylesheet" href="styles/index.css">
 </head>
 
 <body>
-  <main>
-    <div class="tab_wrap">
-      <div class="tab_area">
-        <label id="tab1" class="tab1_label" for="tab1">tab1</label>
-        <label id="tab2" class="tab2_label" for="tab2">tab2</label>
-        <label id="tab3" class="tab3_label" for="tab3">tab3</label>
+  <!-- Panel type.A -->
+  <div id="bg_container">
+    <div id="blur_container">
+      <!-- for TEST -->
+      <div>Plate A</div>
+    </div>
+
+    <div id="main_container">
+      <div class="container">
+        <div>
+          <button id="btn_iframe" style="margin:10px; padding:4px">load service (iframe)</button>
+        </div>
+        <div>
+          <button id="btn_ce" style="margin:10px; padding:4px">load service (Custom Elements)</button>
+        </div>
+        <div>
+          <button id="btn_post" style="margin:10px; padding:4px">postMessage to service</button>
+        </div>
+        <div id="clock"><span id="clock_hour"></span> <span id="clock_separator">:</span> <span id="clock_minute"></span></div>
+        <div id="clock_date"></div>
       </div>
     </div>
 
-    <div id="contents">
-      <div id="container">
-
-        <div class="label">Observed</div>
-        <div>
-          <div>
-            <span id="event_name">N/A</span>
-          </div>
-        </div>
-
-        <div class="label">Dispatcher for Observe</div>
-        <div>
-          <div>
-            <button id="btn_prepare_ads">prepareAds</button>
-          </div>
-          <div>
-            <button id="btn_show_ui">showUI</button>
-          </div>
-          <div>
-            <button id="btn_exception">exception</button>
-            <form name="exception">
-              <input type="radio" id="message_none" name="message" value="0" checked="checked"><label for="message_none">none</label>&nbsp;
-              <input type="radio" id="message_not_pwa" name="message" value="1"><label for="message_not_pwa">notPwa</label>&nbsp;
-              <input type="radio" id="message_non_support_ua" name="message" value="2"><label for="message_non_support_ua">nonSupportUa</label>&nbsp;<br>
-              <input type="radio" id="message_process_started" name="message" value="3"><label for="message_process_started">processStarted</label>&nbsp;
-              <input type="radio" id="message_invalid_code" name="message" value="4"><label for="message_invalid_code">invalidCode</label>&nbsp;
-              <input type="radio" id="message_local_storage_access" name="message" value="5"><label for="message_local_storage_access">localStorageAccess</label>&nbsp;<br>
-              <input type="radio" id="message_connection_failure" name="message" value="6"><label for="message_connection_failure">connectionFailure</label>&nbsp;
-              <input type="radio" id="message_handshake_error" name="message" value="7"><label for="message_handshake_error">handshakeError</label>&nbsp;
-            </form>
-          </div>
-        </div>
-
-        <div class="label">Send</div>
-        <div>
-          <div>
-            <button id="btn_ad_acquisition">adAcquisition</button>
-            <form name="adAcquisition">
-              <input type="radio" id="message_success" name="message" value="0" checked="checked"><label for="message_success">success</label>&nbsp;
-              <input type="radio" id="message_failure" name="message" value="1"><label for="message_failure">failure</label>&nbsp;
-            </form>
-          </div>
-          <div>
-            <button id="btn_widget_switching">widgetSwitching</button>
-            <form name="widgetSwitching">
-              <input type="radio" id="message_widget_prev" name="message" value="2"><label for="message_widget_prev">widgetPrev</label>&nbsp;
-              <input type="radio" id="message_widget_next" name="message" value="3" checked="checked"><label for="message_widget_next">widgetNext</label>&nbsp;
-            </form>
-          </div>
-          <div>
-            <button id="btn_ad_playback_completion">adPlaybackCompletion</button>
-          </div>
-          <div>
-            <button id="btn_signage_termination">signageTermination</button>
-          </div>
-          <div>
-            <button id="btn_ad_click">adClick</button>
-          </div>
-        </div>
-
-        <div class="label">Debug</div>
-        <div>
-          <div>
-            <button id="btn_get_image">get image</button>
-          </div>
-          <div>
-            <button id="btn_get_image2">get image from localStorage</button>
-          </div>
-          <div>
-            <button id="btn_get_rss">get rss</button>
-            <form name="getRss">
-              <input type="radio" id="rss_type_news_curation" name="message" value="0" checked="checked"><label for="rss_type_news_curation">news/curation</label>&nbsp;
-              <input type="radio" id="rss_type_news_ranking" name="message" value="1"><label for="rss_type_news_ranking">news/ranking</label>&nbsp;
-              <input type="radio" id="rss_type_news_travel" name="message" value="2"><label for="rss_type_news_travel">travel</label>&nbsp;
-              <input type="radio" id="rss_type_news_recipe" name="message" value="3"><label for="rss_type_news_recipe">recipe</label>&nbsp;
-            </form>
-          </div>
-        </div>
-
+    <div id="surface_container">
+      <div id="test">
       </div>
+      <div id="test2">
+      </div>
+      <div><img id="btn_close" src="images/ui/close.png" width="72" height="72"></div>
     </div>
+  </div>
 
-    <div id="contents2" style="display:none">
-    contents2
+  <!-- Panel type.B -->
+  <div id="video_ad_container">
+    <div id="defaultText">
+      本機能はインフォボードとの<br>
+      組み合わせでのみ動作します。<br><br>
+      ※インフォボードを使用しない場合は<br>
+      アンインストールしてください。
     </div>
-
-    <div id="contents3" style="display:none">
-    contents3
+    <div id="mainContainer">
+      <div id="content">
+        <video id="contentElement">
+          <source src=""></source>
+          <!-- <source src="https://storage.googleapis.com/gvabox/media/samples/stock.mp4"></source> -->
+        </video>
+      </div>
+      <div id="adContainer"></div>
     </div>
-
-    <div id="test">
+    <button class="prevButton" id="prevButton"></button>
+    <button class="nextButton" id="nextButton"></button>
+    <button class="closeButton" id="closeButton"></button>
+    <div id="volume-button"></div>
+    <div class="volume-control">
+      <div class="volume-slider-container" id="volume-slider-container">
+        <div class="volume-slider" id="volume-slider">
+          <div class="slider-upper slider-half" id="slider-upper"></div>
+          <div class="slider-downer slider-half" id="slider-downer"></div>
+          <div class="slider-icon" id="slider-icon"></div>
+        </div>
+      <div class="volume-value" id="volume-value"></div>
     </div>
-
-    <div id="image_container">
     </div>
+  </div>
 
-    <div id="articles_container">
-    </div>
 
-  </main>
-  <script type="module" src="scripts/IbPwaAds.js"></script>
-  <script type="module" src="scripts/IbPwaTester.js"></script>
+
+	<script type="text/javascript" src="//imasdk.googleapis.com/js/sdkloader/ima3.js"></script>
   <script type="module" src="scripts/IbPwaCore.js"></script>
+	<script type="module" src="scripts/IbPwaAds.js"></script>
+	<script type="module" src="scripts/IbPwaUi.js"></script>
 
-  <script type="text/javascript" src="scripts/test.js"></script>
 </body>
 </html>

@@ -1,4 +1,5 @@
-// ver.2
+// ver.20210201
+const ibpwaTimeout = 10; // sec
 if (localStorage) {
     if (localStorage.getItem("ps") != 1) {
         let url = new URL(location.href);
@@ -34,3 +35,6 @@ if (localStorage) {
         localStorage.setItem("p", mode);
     }    
 }
+setTimeout(() => {
+	document.getElementById('loader-wrap').style.visibility = "hidden";
+}, 10000);

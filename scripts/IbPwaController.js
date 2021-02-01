@@ -1,10 +1,11 @@
 import IbPwaDebug from "./IbPwaDebug.js";
 import { IbPwaRsa } from "./IbPwaRsa.js";
 import { IbPwaAesCbc } from "./IbPwaAesCbc.js";
+import IbPwaStorage from "./IbPwaStorage.js";
 
 const IbPwaController = class {
     constructor() {
-        this._version = 2;
+        this._version = 20210201;
         this._connection = null;
         this._observer = new Observer();
         this._port = 0;
@@ -64,12 +65,7 @@ const IbPwaController = class {
                 this._connection = null;
             }
 
-            if (localStorage) {
-                localStorage.removeItem("ps");
-                // The server doesn't terminate sequentially, so the port number doesn't change.
-                // Don't erase it from localStorage as it will reuse the existing port number on next boot.
-                //localStorage.removeItem("hs");    
-            }
+            IbPwaStorage.removeItem("ps");
 
             this._observer.clear();
         });
@@ -468,28 +464,28 @@ const IbPwaController = class {
 
         // Check localStorage
         IbPwaDebug.log("*** [IbPwaController] Checking localStorage...");
-        if (localStorage) {
-            if (localStorage.getItem("ps") == 1) {
-                // Check multi launching
-                this._observer.dispatch(this.event.exception, this.exception.processStarted);
-                IbPwaDebug.log("!!! [IbPwaController] Process is already started");
-                return;
+        const process = IbPwaStorage.getItem("ps");
+        if (process && process == 1) {
+            // Check multi launching
+            this._observer.dispatch(this.event.exception, this.exception.processStarted);
+            IbPwaDebug.log("!!! [IbPwaController] Process is already started");
+            return;
+        }
+
+        if (IbPwaStorage.setItem("ps", "1")) {
+            const code = IbPwaStorage.getItem("hs");
+            if (code) {
+                this._port = atob(code);
+                IbPwaDebug.log("*** [IbPwaController] Port: " + this._port);
             } else {
-                localStorage.setItem("ps", "1");
-                const code = localStorage.getItem("hs");
-                if (code) {
-                    this._port = atob(code);
-                    IbPwaDebug.log("*** [IbPwaController] Port: " + this._port);
-                } else {
-                    this._observer.dispatch(this.event.exception, this.exception.invalidCode);
-                    IbPwaDebug.log("!!! [IbPwaController] Code is none");
-                    return;
-                }
+                this._observer.dispatch(this.event.exception, this.exception.invalidCode);
+                IbPwaDebug.log("!!! [IbPwaController] Code is none");
+                return;
             }
         } else {
             this._observer.dispatch(this.event.exception, this.exception.localStorageAccess);
             IbPwaDebug.log("!!! [IbPwaController] Cannot access localStorage");
-            return;
+            return;            
         }
 
         // Check connection (getting RSA key)

@@ -1,6 +1,160 @@
-body {
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
 }
 
+html {
+  font-size: 62.5%;
+  font-family: "segoe UI", "游ゴシック体", "Yu Gothic", YuGothic;
+}
+
+body {
+	background-color: black;
+}
+
+/********************************************************************************/
+/* Panel type.A */
+#bg_container, #blur_container:before {
+  background: url("../images/bg.jpg");
+  background-position: center;
+  background-size: cover;
+  background-attachment: fixed;
+}
+
+#bg_container {
+  display: none;
+  width: 0;
+  height: 100%;
+  user-select: none;
+  
+  position: absolute;
+  right: 0;
+  overflow: hidden;
+  transition: .5s;
+}
+
+#bg_container.init {
+  width: 100%;
+}
+
+#blur_container:before {
+  content: "";
+  z-index: -1;
+  filter: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='a' x='0' y='0' width='1' height='1' color-interpolation-filters='sRGB'%3E%3CfeGaussianBlur stdDeviation='10' result='b'/%3E%3CfeMorphology operator='dilate' radius='10'/%3E%3CfeMerge%3E%3CfeMergeNode/%3E%3CfeMergeNode in='b'/%3E%3C/feMerge%3E%3C/filter%3E%3C/svg%3E#a");
+  opacity: 0.6;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+#blur_container {
+  z-index: 0;
+  overflow: hidden;
+  width: 0px;
+  height: 100%;
+  background-color: rgb(0,0,0);
+  margin: 0;
+  padding: 0;
+  position: absolute;
+}
+
+#main_container {
+  width: 50%;
+  height: 100%;
+  margin: 0;
+  margin-left: 50%;
+  padding: 0;
+  position: absolute;
+}
+
+.container {
+  margin: 40px;
+}
+
+.inframe {
+  width: 100%;
+  height: 100%;
+  border-style: none;
+}
+
+#clock {
+  position: absolute;
+  right: 90px;
+  bottom: 130px;
+  font-size: 6vmax;
+  line-height: 6vmax;
+}
+
+#clock_separator {
+  animation: secondClock 1s infinite;
+}
+
+#clock_date {
+  position: absolute;
+  right: 90px;
+  bottom: 84px;
+  font-size: 26px;
+}
+
+@keyframes secondClock {
+  from {
+      opacity: 1;
+  }
+  to {
+      opacity: 0;
+  }
+}
+
+#surface_container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+
+#test {
+  position: absolute;
+  left: 0;
+  width: 36px;
+  height: 36px;
+  background: cornflowerblue;
+  opacity: 0.6;
+}
+
+#test2 {
+  position: absolute;
+  right: 0;
+  width: 36px;
+  height: 36px;
+  background: cornflowerblue;
+  opacity: 0.6;
+}
+
+#btn_close {
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+
+
+/********************************************************************************/
+/* Panel type.B */
+#video_ad_container {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  display: none;
+}
+
+
+
+
+
+/********************************************************************************/
 #container {
     display: grid;
     grid-auto-rows: auto;
@@ -104,7 +258,10 @@ div button {
   left: 0;
   right: 0;
   bottom: 0;
-  margin:auto;
+	margin:auto;
+	user-select: none;
+	-webkit-user-select: none;
+	-ms-user-select: none;
 }
 
 #content, #adContainer {
@@ -181,47 +338,47 @@ div button {
 .prevButton {
 	position: absolute;
 	top: 50%;
-	left:0;
-	background: url("../images/ui/previous_focus.png") no-repeat;
+	left: 0;
+	transform: translateY(-50%);
+	  -webkit-transform: translateY(-50%);
+	  -ms-transform: translateY(-50%);
+	border-radius: 0;
+	border: none;
+	outline: none;
+	background:transparent;
+	background-image: url("../images/ui/previous.png");
 	background-size: contain;
 	width: 36px;
 	height: 36px;
 	visibility: hidden;
 }
 
-.prevButton a {
-	display: inline-block;
-}
-
-.prevButton a:hover {
-	background-color: transparent;
-}
-
-.prevButton a:hover img {
-	visibility: hidden;
+.prevButton:hover {
+	opacity: 0.9;
+	background-image: url("../images/ui/previous_focus.png");
 }
 
 .nextButton {
 	position: absolute;
 	top: 50%;
 	right:0;
-	background: url("../images/ui/next_focus.png") no-repeat;
+	transform: translateY(-50%);
+	  -webkit-transform: translateY(-50%);
+	  -ms-transform: translateY(-50%);	
+	border-radius: 0;
+	border: none;
+	outline: none;
+	background:transparent;
+	background-image: url("../images/ui/next.png");
 	background-size: contain;
 	width: 36px;
 	height: 36px;
 	visibility: hidden;
 }
 
-.nextButton a {
-	display: inline-block;
-}
-
-.nextButton a:hover {
-	background-color: transparent;
-}
-
-.nextButton a:hover img {
-	visibility: hidden;
+.nextButton:hover {
+	opacity: 0.9;
+	background-image: url("../images/ui/next_focus.png");
 }
 
 .closeButton {
@@ -229,25 +386,20 @@ div button {
 	position: absolute;
 	top: 0%;
 	right: 0%;
-	background: url("../images/ui/close_focus.png") no-repeat;
+	border: none;
+	outline: none;
+	background: transparent;
+	background-image: url("../images/ui/close.png");
 	background-size: contain;
 	width: 72px;
 	height: 72px;
 }
 
-.closeButton a {
-	display: inline-block;
+.closeButton:hover {
+	background-image: url("../images/ui/close_focus.png");
 }
 
-.closeButton a:hover {
-	background-color: transparent;
-}
-
-.closeButton a:hover img {
-	visibility: hidden;
-}
-
-#volume {
+#volume-button {
 	visibility: hidden;
 	position: absolute;
 	width: 42px;
@@ -258,7 +410,7 @@ div button {
 	background-size: contain;
   }
   
-#volume.on {
+#volume-button.on {
 	background-image: url("../images/ui/sound_click.png");
 }
 
@@ -266,14 +418,56 @@ div button {
 	background-color: black;
 }
 
-.article_header {
-  margin-top: 8px;
+.volume-control {
+	position: absolute;
+  right: 36px;
+  bottom: 54px;
+	width: 42px;
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
 }
 
-.article_title {
-  font-weight: bold;
+.volume-control .volume-slider-container {
+  position: relative;
+	/* display: none; */
+	visibility: hidden;
+  text-align: center;
+  width: 36px;
+  height: 240px;
+  margin-bottom: 6px;
+  background-color: rgba(0, 0, 0, 0.75);
 }
-
-.article {
-  margin-left: 20px;
+.volume-control .volume-slider-container .volume-slider {
+  position: relative;
+  top: 10px;
+  width: 10px;
+  height: 200px;
+  margin: 0 13px;
+  cursor: pointer;
+}
+.volume-control .volume-slider-container .slider-half {
+  width: 100%;
+}
+.volume-control .volume-slider-container .slider-upper {
+  background-color: #969696;
+}
+.volume-control .volume-slider-container .slider-downer {
+  background-color: #28aaff;
+}
+.volume-control .volume-slider-container .slider-icon {
+  position: absolute;
+  left: -3px;
+  background-image: url('../images/ui/ic_slider.png');
+  width: 16px;
+  height: 16px;
+}
+.volume-control .volume-slider-container .volume-value {
+  position: absolute;
+  right: 0;
+  bottom: 6px;
+  left: 0;
+  color: #28aaff;
+  font-size: 15px;
+  line-height: 1;
 }

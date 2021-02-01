@@ -6,26 +6,27 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">    
 	<title>picture</title>
     <link rel="icon" type="image/png" href="images/favicon.ico">
-    <link rel="manifest" href="manifest.json">
 	<link rel="stylesheet" href="styles/font-awesome.min.css">
 	<link rel="stylesheet" href="styles/picture.css">
 </head>
 
 <body>
 
-<section id="blur_container">
-    <div>aaa</div>
-</section>
-
-<section id="main_container">
-    <div class="container">
-    bbb
-    <iframe class="ad_frame"></iframe>
+<div id="bg_container">
+    <div id="blur_container">
+        <iframe id="in_frame" src="inframe.html" frameborder="0" width="100%" height="100%" style="display:none"></iframe>
     </div>
-</section>
+
+    <div id="main_container">
+        <div class="container">
+            <div id="clock">14<span id="clock_separator">:</span>16</div>
+        </div>
+    </div>
+</div>
 
 <script type="module" src="scripts/IbPwaTester.js"></script>
 <script type="module" src="scripts/IbPwaCore.js"></script>
+<script src="./scripts/picture.js"></script>
 
 </body>
 </html>
