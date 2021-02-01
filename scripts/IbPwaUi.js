@@ -57,13 +57,13 @@ const IbPwaUi = class {
 		IbPwaDebug.log(">>> [IbPwaUi] _setPlate()...");
 		IbPwaDebug.log("*** [IbPwaUi] plate type: " + type);
 
-		if (type == this._plate) {
+		if (parseInt(type) == this._plate) {
 			IbPwaDebug.log("*** [IbPwaUi] plate type is same");
 			return;
 		}
 
 		// Clean up the current mode before changing modes
-		switch (type) {
+		switch (parseInt(type)) {
 		case this.plate.videoAd:
 			break;
 		case this.plate.signage:
@@ -87,7 +87,7 @@ const IbPwaUi = class {
 		}
 
 		// Change mode
-		this._plate = type;
+		this._plate = parseInt(type);
 		let isSignage = false;
 		let isVideoAd = false;
 		switch (this._plate) {
