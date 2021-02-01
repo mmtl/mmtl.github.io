@@ -232,6 +232,11 @@ const IbPwaUi = class {
 		setTimeout(() => {
 			this._bgContainer.classList.add('init');
 		}, 500);
+
+		setTimeout(() => {
+			animation.play();
+			this._blurContainer.style.width = '50%';
+		}, 1000);
 	}
 
 	////////////////////////////////////////////////////////////////////////////////
