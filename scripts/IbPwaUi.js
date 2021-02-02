@@ -8,17 +8,38 @@ const IbPwaUi = class {
 		this._version = 20210201;
 		this._isSignageInitialized = false;
 		this._isVideoAdInitialized = false;
-		this._plate = this.plate.none;
+		this._mode = this.mode.none;
 		this._adScript = null;
 		this._ibPwaAdsScript = null;
+		this._serviceScript = null;
+		this._serviceTag = null;
 		this._init();
 	}
 
-	plate = {
+	mode = {
 		none: 0,
 		videoAd: 1,
-		signage: 2
+		signageNews: 2
 	};
+
+	service = [
+		// An array corresponding to the value of this._mode
+		{
+			// 0: none
+			tag: "",
+			src: ""
+		},
+		{
+			// 1: none
+			tag: "",
+			src: ""
+		},
+		{
+			// 2: News
+			tag: "pwa-news",
+			src: "./scripts/pwa-elements.js"
+		}
+	];
 
 	_init() {
 		this._signagePlate = document.getElementById('bg_container');
@@ -35,7 +56,8 @@ const IbPwaUi = class {
 		const mode = parseInt(observerArgs[0]);
 		if (this._isValidPlate(mode)) {
 			// Change modes
-			this._setPlate(mode);
+			const modeChanged = this._setPlate(mode);
+			IbPwaController.send(IbPwaController.event.modeChanged, modeChanged ? IbPwaController.message.success : IbPwaController.message.failure);
 		} else {
 			IbPwaDebug.log("!!! [IbPwaUi] Unknown plate type");
 			return;
@@ -43,8 +65,8 @@ const IbPwaUi = class {
 	}
 
 	_isValidPlate(type) {
-		for (let key in this.plate) {
-            const value = this.plate[key];
+		for (let key in this.mode) {
+            const value = this.mode[key];
             if (value === parseInt(type)) {
                 return true;
             }
@@ -57,44 +79,37 @@ const IbPwaUi = class {
 		IbPwaDebug.log(">>> [IbPwaUi] _setPlate()...");
 		IbPwaDebug.log("*** [IbPwaUi] plate type: " + type);
 
-		if (parseInt(type) == this._plate) {
+		if (parseInt(type) == this._mode) {
 			IbPwaDebug.log("*** [IbPwaUi] plate type is same");
-			return;
+			return false;
 		}
 
 		// Clean up the current mode before changing modes
 		switch (parseInt(type)) {
-		case this.plate.videoAd:
+		case this.mode.videoAd:
+			this._removeServiceScripts();
 			break;
-		case this.plate.signage:
+		case this.mode.signageNews:
 			// Uninitialze IbPwaAds
-			if (this._plate == this.plate.videoAd) {
+			if (this._mode == this.mode.videoAd) {
 				const uninitialze = new CustomEvent('clickNextPrevBtn');
 				IbPwaEvent.dispatch(IbPwaEvent.event.ads, uninitialze);
 			}
-
-			if (this._adScript) {
-				this._videoAdPlate.removeChild(this._adScript);
-				this._adScript = null;
-			}
-			if (this._ibPwaAdsScript) {
-				this._videoAdPlate.removeChild(this._ibPwaAdsScript);
-				this._ibPwaAdsScript = null;
-			}
+			this._removeAdScripts();
 			break;
 		default:
 			break;
 		}
 
 		// Change mode
-		this._plate = parseInt(type);
+		this._mode = parseInt(type);
 		let isSignage = false;
 		let isVideoAd = false;
-		switch (this._plate) {
-		case this.plate.signage:
+		switch (this._mode) {
+		case this.mode.signageNews:
 			isSignage = true;
 			break;
-		case this.plate.videoAd:
+		case this.mode.videoAd:
 			isVideoAd = true;
 			break;
 		default:
@@ -118,6 +133,8 @@ const IbPwaUi = class {
 		}
 
 		IbPwaDebug.log("<<< [IbPwaUi] _setPlate()...OK");
+
+		return true;
 	}
 
 	_initVideoAdPlate() {
@@ -167,6 +184,28 @@ const IbPwaUi = class {
 		this._ibPwaAdsScript.type = "module";
 		this._ibPwaAdsScript.src = "scripts/IbPwaAds.js";
 		this._videoAdPlate.appendChild(this._ibPwaAdsScript);
+	}
+
+	_removeAdScripts() {
+		if (this._adScript) {
+			this._videoAdPlate.removeChild(this._adScript);
+			this._adScript = null;
+		}
+		if (this._ibPwaAdsScript) {
+			this._videoAdPlate.removeChild(this._ibPwaAdsScript);
+			this._ibPwaAdsScript = null;
+		}
+	}
+
+	_removeServiceScripts() {
+		if (this._serviceTag) {
+			this._blurContainer.removeChild(this._serviceTag);
+			this._serviceTag = null;
+		}
+		if (this._serviceScript) {
+			this._blurContainer.removeChild(this._serviceScript);
+			this._serviceScript = null;
+		}
 	}
 
 	////////////////////////////////////////////////////////////////////////////////
@@ -237,6 +276,23 @@ const IbPwaUi = class {
 			animation.play();
 			this._blurContainer.style.width = '50%';
 		}, 1000);
+
+		setTimeout(() => {
+			this._setSignageService();
+		}, 1100);
+	}
+
+	_setSignageService() {
+		const service = this.service[this._mode];
+		this._serviceScript = document.createElement('script');
+		this._serviceScript.type = "module";
+		this._serviceScript.src = service.src;
+		this._serviceScript.onload = () => {
+			this._serviceTag = document.createElement(service.tag);
+			this._blurContainer.appendChild(this._serviceTag);
+		};
+
+		this._blurContainer.appendChild(this._serviceScript);
 	}
 
 	////////////////////////////////////////////////////////////////////////////////
@@ -362,7 +418,7 @@ const IbPwaUi = class {
 		IbPwaDebug.log("*** [IbPwaUi] version= " + this._version);
 		// Mode check
 		const p = IbPwaStorage.getItem("p");
-		const plate = this._isValidPlate(p) ? p : this.plate.none;
+		const plate = this._isValidPlate(p) ? p : this.mode.none;
 		this._setPlate(plate);
 
 		// Mode change event
