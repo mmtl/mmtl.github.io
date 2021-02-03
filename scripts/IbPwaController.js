@@ -5,7 +5,7 @@ import IbPwaStorage from "./IbPwaStorage.js";
 
 const IbPwaController = class {
     constructor() {
-        this._version = 20210201;
+        this._version = "20210203a";
         this._connection = null;
         this._observer = new Observer();
         this._port = 0;
@@ -52,6 +52,13 @@ const IbPwaController = class {
         localStorageAccess: 5,
         connectionFailure: 6,
         handshakeError: 7,
+    };
+
+    requestType = {
+        image: "/api/v1/image",
+        newsCuration: "/api/v1/rss/news/curation",
+        newsRanking: "/api/v1/rss/news/ranking",
+        appInfo: "/api/v1/info"
     };
 
     _init() {
@@ -386,6 +393,37 @@ const IbPwaController = class {
         }
 
         return false;
+    }
+
+    _request(path) {
+        const url = 'http://localhost:' + this._port + path;
+        const controller = new AbortController();
+        const signal = controller.signal;
+        const timer = 30 * 1000;
+        setTimeout(() => {
+            controller.abort();
+        }, timer);
+
+        return fetch(url, {
+            mode: 'cors',
+            signal: signal
+        });
+    }
+
+    _isValidRequestType(type) {
+        for (let key in this.requestType) {
+            const value = this.requestType[key];
+            if (value === type) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    async request(type, ...args) {
+        const res = await this._request(type);
+        return res;
     }
 
     observe(type, observer) {

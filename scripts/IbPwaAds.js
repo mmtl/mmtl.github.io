@@ -4,7 +4,7 @@ import IbPwaDebug from './IbPwaDebug.js';
 
 const IbPwaAds = class {
 	constructor() {
-		this._version = 20210201;
+		this._version = "20210201";
 		this._maxVideoMillisecond = 180000;
 
 		//Fluct TagURL

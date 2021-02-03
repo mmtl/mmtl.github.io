@@ -5,7 +5,7 @@ import IbPwaStorage from './IbPwaStorage.js';
 
 const IbPwaUi = class {
 	constructor() {
-		this._version = 20210201;
+		this._version = "20210203a";
 		this._isSignageInitialized = false;
 		this._isVideoAdInitialized = false;
 		this._mode = this.mode.none;
@@ -13,48 +13,102 @@ const IbPwaUi = class {
 		this._ibPwaAdsScript = null;
 		this._serviceScript = null;
 		this._serviceTag = null;
+		this._iframeTag = null;
+		this._message = null;	// for postMessage
+		this._iframeId = "service_iframe";
 		this._init();
 	}
 
 	mode = {
 		none: 0,
-		videoAd: 1,
-		signageNews: 2
+		videoAd: 1,		// Video Ad
+		signageNews: 2	// News
+	};
+
+	serviceType = {
+		none: 0,
+		pwaTag: 1,	// provided with Custom Elements
+		iframe: 2	// provided with iframe
 	};
 
 	service = [
 		// An array corresponding to the value of this._mode
 		{
 			// 0: none
+			type: this.serviceType.none,
 			tag: "",
 			src: ""
 		},
 		{
 			// 1: none
+			type: this.serviceType.none,
 			tag: "",
 			src: ""
 		},
 		{
 			// 2: News
+			type: this.serviceType.pwaTag,
 			tag: "pwa-news",
 			src: "./scripts/pwa-elements.js"
 		}
 	];
 
+	// for postMessage
+	message = {
+		command: {
+			start: 0,
+			end: 1
+		},
+		type: {
+			news: 0,
+		},
+		error: {
+			success: 0,
+			unknown: 1,
+			noData: 2,
+		}
+	};
+
 	_init() {
 		this._signagePlate = document.getElementById('bg_container');
 		this._videoAdPlate = document.getElementById('video_ad_container');
+
+		this._initMessage();
+	}
+
+	_initMessage() {
+		this._message = {
+			command: this.message.command.start,
+			type: this.message.type.news,
+			error: this.message.error.unknown,
+			data: null,
+			config: {
+				guid: "",
+				appVer: "",
+				setting: {
+					isMeasurement: false
+				}
+			}
+		};
 	}
 
 	_changePlate(observerArgs) {
+		// observer for ModeChange event
 		IbPwaDebug.log(">>> [IbPwaUi] _changePlate args: " + observerArgs);
 
         if (!Array.isArray(observerArgs)) {
             IbPwaDebug.log("!!! [IbPwaUi] args is not array");
             return;
-        }
+		}
+		
+		this._signagePlate.style.display = "none";
+		this._videoAdPlate.style.display = "none";
+
 		const mode = parseInt(observerArgs[0]);
 		if (this._isValidPlate(mode)) {
+			// Load data
+			this._start(mode);
+
 			// Change modes
 			const modeChanged = this._setPlate(mode);
 			IbPwaController.send(IbPwaController.event.modeChanged, modeChanged ? IbPwaController.message.success : IbPwaController.message.failure);
@@ -85,9 +139,12 @@ const IbPwaUi = class {
 		}
 
 		// Clean up the current mode before changing modes
+		this._removeServiceScripts();
+		this._removeIframeTag();
+		this._removeAdScripts();
+		
 		switch (parseInt(type)) {
 		case this.mode.videoAd:
-			this._removeServiceScripts();
 			break;
 		case this.mode.signageNews:
 			// Uninitialze IbPwaAds
@@ -95,7 +152,6 @@ const IbPwaUi = class {
 				const uninitialze = new CustomEvent('clickNextPrevBtn');
 				IbPwaEvent.dispatch(IbPwaEvent.event.ads, uninitialze);
 			}
-			this._removeAdScripts();
 			break;
 		default:
 			break;
@@ -208,6 +264,63 @@ const IbPwaUi = class {
 		}
 	}
 
+	_removeIframeTag() {
+		if (this._iframeTag) {
+			this._blurContainer.removeChild(this._iframeTag);
+			this._iframeTag = null;
+		}
+	}
+
+	_start(mode) {
+		IbPwaDebug.log(">>> [IbPwaUi] _start()...");
+
+		switch (parseInt(mode)) {
+		case this.mode.signageNews:
+			IbPwaDebug.log("*** [IbPwaUi] _start request newsCuration...");
+			IbPwaController.request(IbPwaController.requestType.newsCuration)
+			.then(res => {
+				return res.text()
+			})
+			.then(rssText => {
+				this._message.data = {
+					curation: rssText,
+					ranking: null
+				};
+				IbPwaDebug.log("*** [IbPwaUi] _start request newsCuration...OK");
+				IbPwaDebug.log("*** [IbPwaUi] _start request newsRanking...");
+
+				IbPwaController.request(IbPwaController.requestType.newsRanking)
+				.then(res => {
+					return res.text()
+				})
+				.then(rssText => {
+					this._message.data.ranking = rssText;
+					IbPwaDebug.log("*** [IbPwaUi] _start request newsRanking...OK");
+					
+					// Set UI
+					this._setPlate(mode);
+				})
+				.catch(e => {
+					IbPwaDebug.log("!!! [IbPwaUi] request is failure of newsRanking");
+					IbPwaDebug.log(e);
+				});
+			})
+			.catch(e => {
+				IbPwaDebug.log("!!! [IbPwaUi] request is failure of newsCuration");
+				IbPwaDebug.log(e);
+			});	
+			break;
+		case this.mode.videoAd:
+			this._setPlate(mode);
+			break;
+		default:
+			this._setPlate(mode);
+			break;
+		}
+
+		IbPwaDebug.log("<<< [IbPwaUi] _start()...OK");
+	}
+
 	////////////////////////////////////////////////////////////////////////////////
 	// Plate type.A
 	_startSignagePlate() {
@@ -284,15 +397,49 @@ const IbPwaUi = class {
 
 	_setSignageService() {
 		const service = this.service[this._mode];
-		this._serviceScript = document.createElement('script');
-		this._serviceScript.type = "module";
-		this._serviceScript.src = service.src;
-		this._serviceScript.onload = () => {
-			this._serviceTag = document.createElement(service.tag);
-			this._blurContainer.appendChild(this._serviceTag);
-		};
+		switch (parseInt(service.type)) {
+		case this.serviceType.pwaTag:
+			this._serviceScript = document.createElement('script');
+			this._serviceScript.type = "module";
+			this._serviceScript.src = service.src;
+			this._serviceScript.onload = () => {
+				this._serviceTag = document.createElement(service.tag);
+				this._serviceTag.onload = () => {
+					this._postMessage();
+				};
+				this._blurContainer.appendChild(this._serviceTag);
+			};
+			this._blurContainer.appendChild(this._serviceScript);
+			break;
+		case this.serviceType.iframe:
+			this._iframeTag = document.createElement('iframe');
+			this._iframeTag.width = "100%";
+			this._iframeTag.height = "100%";
+			this._iframeTag.setAttribute('frameborder', "0");
+			this._iframeTag.src = service.src;
+			this._iframeTag.title = "service";
+			this._iframeTag.id = this._iframeId;
+			this._iframeTag.onload = () => {
+				this._postMessage();
+			};
+			this._blurContainer.appendChild(this._iframeTag);
+			break;		
+		}		
+	}
+	
+	_postMessage() {
+		IbPwaDebug.log(">>> [IbPwaUi] _postMessage()...");
+		IbPwaDebug.log(this._message);
+		
+		// iframe or Custom Elements
+		const target = this._iframeTag ? document.getElementById(this._iframeId).contentWindow : this._serviceTag ? window : null;
+		if (target) {
+			target.postMessage(this._message);
+		} else {
+			IbPwaDebug.log("!!! [IbPwaUi] target is not found");
+		}
 
-		this._blurContainer.appendChild(this._serviceScript);
+		IbPwaDebug.log("<<< [IbPwaUi] _postMessage()...OK");
 	}
 
 	////////////////////////////////////////////////////////////////////////////////
@@ -419,9 +566,11 @@ const IbPwaUi = class {
 		// Mode check
 		const p = IbPwaStorage.getItem("p");
 		const plate = this._isValidPlate(p) ? p : this.mode.none;
-		this._setPlate(plate);
 
-		// Mode change event
+		// Load data & set UI
+		this._start(plate);
+
+		// Observing mode change event
 		IbPwaController.observe(IbPwaController.event.modeChange, this._changePlate.bind(this));
 
 		document.oncontextmenu = () => {
