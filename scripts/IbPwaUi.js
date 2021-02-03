@@ -295,6 +295,7 @@ const IbPwaUi = class {
 				})
 				.then(rssText => {
 					this._message.data.ranking = rssText;
+					this._message.error = this.message.error.success;
 					IbPwaDebug.log("*** [IbPwaUi] _start request newsRanking...OK");
 					
 					// Set UI
@@ -411,10 +412,8 @@ const IbPwaUi = class {
 			this._serviceScript.src = service.src;
 			this._serviceScript.onload = () => {
 				this._serviceTag = document.createElement(service.tag);
-				this._serviceTag.onload = () => {
-					this._postMessage();
-				};
 				this._blurContainer.appendChild(this._serviceTag);
+				this._postMessage();
 			};
 			this._blurContainer.appendChild(this._serviceScript);
 			break;
