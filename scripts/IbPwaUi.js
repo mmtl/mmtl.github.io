@@ -16,6 +16,7 @@ const IbPwaUi = class {
 		this._iframeTag = null;
 		this._message = null;	// for postMessage
 		this._iframeId = "service_iframe";
+		this._isModeChanged = false;
 		this._init();
 	}
 
@@ -106,12 +107,8 @@ const IbPwaUi = class {
 
 		const mode = parseInt(observerArgs[0]);
 		if (this._isValidPlate(mode)) {
-			// Load data
+			this._isModeChanged = true;
 			this._start(mode);
-
-			// Change modes
-			const modeChanged = this._setPlate(mode);
-			IbPwaController.send(IbPwaController.event.modeChanged, modeChanged ? IbPwaController.message.success : IbPwaController.message.failure);
 		} else {
 			IbPwaDebug.log("!!! [IbPwaUi] Unknown plate type");
 			return;
@@ -135,6 +132,7 @@ const IbPwaUi = class {
 
 		if (parseInt(type) == this._mode) {
 			IbPwaDebug.log("*** [IbPwaUi] plate type is same");
+			this._sendModeChangedEvnet(false);
 			return false;
 		}
 
@@ -187,6 +185,8 @@ const IbPwaUi = class {
 			}
 			this._setAdSdkScript();
 		}
+
+		this._sendModeChangedEvnet(true);
 
 		IbPwaDebug.log("<<< [IbPwaUi] _setPlate()...OK");
 
@@ -319,6 +319,13 @@ const IbPwaUi = class {
 		}
 
 		IbPwaDebug.log("<<< [IbPwaUi] _start()...OK");
+	}
+
+	_sendModeChangedEvnet(modeChanged) {
+		if (this._isModeChanged) {
+			this._isModeChanged = false;
+			IbPwaController.send(IbPwaController.event.modeChanged, modeChanged ? IbPwaController.message.success : IbPwaController.message.failure);
+		}
 	}
 
 	////////////////////////////////////////////////////////////////////////////////
