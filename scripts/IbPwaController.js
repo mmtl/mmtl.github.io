@@ -405,7 +405,7 @@ const IbPwaController = class {
         }, timer);
 
         return fetch(url, {
-            mode: 'no-cors',
+            mode: 'cors',
             signal: signal
         });
     }
