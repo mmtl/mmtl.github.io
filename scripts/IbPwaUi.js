@@ -115,9 +115,6 @@ const IbPwaUi = class {
 		this._isModeChanged = true;
 		const mode = parseInt(observerArgs[0]);
 		if (this._isValidPlate(mode)) {
-			this._setNewsMessage(false, null);
-			this._postMessage();
-
 			this._start(mode);
 		} else {
 			IbPwaDebug.log("!!! [IbPwaUi] Unknown plate type");
@@ -321,6 +318,16 @@ const IbPwaUi = class {
 		this._ibConfig = JSON.parse(infoJson);
 	}
 
+	async _startVideoAd() {
+		IbPwaDebug.log(">>> [IbPwaUi] _startVideoAd()...");
+		const [infoJson] = await Promise.all([
+			IbPwaController.request(IbPwaController.requestType.appInfo)
+		]);
+		IbPwaDebug.log("<<< [IbPwaUi] _startVideoAd()...OK");
+
+		return [infoJson];
+	}
+
 	_start(mode) {
 		IbPwaDebug.log(">>> [IbPwaUi] _start()...");
 
@@ -344,7 +351,18 @@ const IbPwaUi = class {
 			});
 			break;
 		case this.mode.videoAd:
-			this._setPlate(mode);
+			this._startVideoAd()
+			.then(([infoJson]) => {
+				this._setIbConfig(infoJson);
+				this._setPlate(mode);
+			})
+			.catch(e => {
+				IbPwaDebug.log("!!! [IbPwaUi] _startVideoAd is failure");
+				IbPwaDebug.log(e);
+
+				this._isModeChanged = true;
+				this._sendModeChangedEvnet(false);
+			});
 			break;
 		default:
 			break;
