@@ -304,8 +304,8 @@ const IbPwaUi = class {
 
 		this._message.config.guid = this._ibConfig.guid;
 		this._message.config.appVer = this._ibConfig.appVer;
-		this._message.config.setting.isMeasurement = this._ibConfig.isMeasurement;
-		this._message.config.setting.cyclicInterval = this._ibConfig.cyclicInterval;
+		this._message.config.setting.isMeasurement = this._ibConfig.setting.isMeasurement;
+		this._message.config.setting.cyclicInterval = this._ibConfig.setting.cyclicInterval;
 	}
 
 	_setIbConfig(infoJson) {
