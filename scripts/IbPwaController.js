@@ -499,6 +499,14 @@ const IbPwaController = class {
             this._sendEvent(type);
             IbPwaDebug.log("*** [IbPwaController] send event " + type);
             break;
+        case this.event.modeChanged:
+            if (args && args.length > 0 && (parseInt(args[0]) == this.message.success || parseInt(args[0]) == this.message.failure)) {
+                this._send(type, args[0]);
+                IbPwaDebug.log("*** [IbPwaController] event.modeChanged - send " + args[0]);
+            } else {
+                IbPwaDebug.log("!!! [IbPwaController] event.modeChanged - data is invalid");
+            }
+            break;
         }
 
         IbPwaDebug.log("<<< [IbPwaController] send...OK");
