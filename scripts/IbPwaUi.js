@@ -17,6 +17,7 @@ const IbPwaUi = class {
 		this._message = null;	// for postMessage
 		this._iframeId = "service_iframe";
 		this._isModeChanged = false;
+		this._ibConfig = null;
 		this._init();
 	}
 
@@ -87,7 +88,8 @@ const IbPwaUi = class {
 				guid: "",
 				appVer: "",
 				setting: {
-					isMeasurement: false
+					isMeasurement: false,
+					cyclicInterval: 30
 				}
 			}
 		};
@@ -271,54 +273,74 @@ const IbPwaUi = class {
 		}
 	}
 
+	_getIbConfig() {
+		return new Promise((resolve, reject) => {
+			IbPwaDebug.log(">>> [IbPwaUi] _getIbConfig()...");
+			IbPwaController.request(IbPwaController.requestType.appInfo)
+			.then((res) => {})
+			
+			IbPwaDebug.log("<<< [IbPwaUi] _getIbConfig()...OK");
+		});
+
+	}
+
+	async _startSignageNews() {
+		IbPwaDebug.log(">>> [IbPwaUi] _startSignageNews()...");
+		const [newsJson, infoJson] = await Promise.all([
+			IbPwaController.request(IbPwaController.requestType.news),
+			IbPwaController.request(IbPwaController.requestType.appInfo)
+		]);
+		IbPwaDebug.log("<<< [IbPwaUi] _startSignageNews()...OK");
+
+		return [newsJson, infoJson];
+	}
+
+	_setNewsMessage(isStart, newsJson) {
+		this._initMessage();
+		this._message.command = isStart ? this.message.command.start : this.message.command.end;
+		this._message.type = this.message.type.news;
+		this._message.error = this.message.error.success;
+		this._message.data = isStart ? newsJson : null;
+
+		this._message.config.guid = this._ibConfig.guid;
+		this._message.config.appVer = this._ibConfig.appVer;
+		this._message.config.setting.isMeasurement = this._ibConfig.isMeasurement;
+		this._message.config.setting.cyclicInterval = this._ibConfig.cyclicInterval;
+	}
+
+	_setIbConfig(infoJson) {
+		this._ibConfig = JSON.parse(infoJson);
+	}
+
 	_start(mode) {
 		IbPwaDebug.log(">>> [IbPwaUi] _start()...");
 
 		switch (parseInt(mode)) {
 		case this.mode.signageNews:
-			IbPwaDebug.log("*** [IbPwaUi] _start request newsCuration...");
-			IbPwaController.request(IbPwaController.requestType.newsCuration)
-			.then(res => {
-				return res.text()
-			})
-			.then(rssText => {
-				this._message.data = {
-					curation: rssText,
-					ranking: null
-				};
-				IbPwaDebug.log("*** [IbPwaUi] _start request newsCuration...OK");
-				IbPwaDebug.log("*** [IbPwaUi] _start request newsRanking...");
-
-				IbPwaController.request(IbPwaController.requestType.newsRanking)
-				.then(res => {
-					return res.text()
-				})
-				.then(rssText => {
-					this._message.data.ranking = rssText;
-					this._message.error = this.message.error.success;
-					IbPwaDebug.log("*** [IbPwaUi] _start request newsRanking...OK");
-					
-					// Set UI
-					this._setPlate(mode);
-				})
-				.catch(e => {
-					IbPwaDebug.log("!!! [IbPwaUi] request is failure of newsRanking");
-					IbPwaDebug.log(e);
-				});
+			this._startSignageNews()
+			.then(([newsJson, infoJson]) => {
+				this._setIbConfig(infoJson);
+				this._setNewsMessage(true, newsJson);
+				IbPwaDebug.log("*** [IbPwaUi] _startSignageNews is succeeded");
+				IbPwaDebug.log(this._message);
+				
+				this._setPlate(mode);
 			})
 			.catch(e => {
-				IbPwaDebug.log("!!! [IbPwaUi] request is failure of newsCuration");
+				IbPwaDebug.log("!!! [IbPwaUi] _startSignageNews is failure");
 				IbPwaDebug.log(e);
-			});	
+
+				this._isModeChanged = true;
+				this._sendModeChangedEvnet(false);
+			});
 			break;
 		case this.mode.videoAd:
 			this._setPlate(mode);
 			break;
 		default:
-			this._setPlate(mode);
 			break;
 		}
-
+	
 		IbPwaDebug.log("<<< [IbPwaUi] _start()...OK");
 	}
 

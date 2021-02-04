@@ -56,8 +56,7 @@ const IbPwaController = class {
 
     requestType = {
         image: "/api/v1/image",
-        newsCuration: "/api/v1/rss/news/curation",
-        newsRanking: "/api/v1/rss/news/ranking",
+        news: "/api/v1/rss/news",
         appInfo: "/api/v1/info"
     };
 
@@ -395,7 +394,7 @@ const IbPwaController = class {
         return false;
     }
 
-    _request(path) {
+    async _request(path) {
         const url = 'http://localhost:' + this._port + path;
         const controller = new AbortController();
         const signal = controller.signal;
@@ -404,10 +403,12 @@ const IbPwaController = class {
             controller.abort();
         }, timer);
 
-        return fetch(url, {
+        const res = await fetch(url, {
             mode: 'cors',
             signal: signal
         });
+
+        return res;
     }
 
     _isValidRequestType(type) {
@@ -421,9 +422,40 @@ const IbPwaController = class {
         return false;
     }
 
-    async request(type, ...args) {
-        const res = await this._request(type);
-        return res;
+    _isValidImageOutputObject(obj) {
+        for (let key in obj) {
+
+        }
+    }
+
+    request(type, ...args) {
+        return new Promise((resolve, reject) => {
+            this._request(type)
+            .then((res) => {
+                if (args && args.length > 0) {
+                    // image
+                    IbPwaDebug.log("*** [IbPwaController] request got response for image");
+                    const outputType = args[0];
+                    //
+                    //
+                    // NEED IMPLEMENT
+                    //
+                    //
+                    resolve("dummy");
+                } else {
+                    // rss(json)
+                    IbPwaDebug.log("*** [IbPwaController] request got response");
+                    const text = res.text();
+                    IbPwaDebug.log(text);
+                    resolve(text);
+                }
+            })
+            .catch(e => {
+                IbPwaDebug.log("!!! [IbPwaController] request is failure");
+                IbPwaDebug.log(e);
+                reject(e);
+            });
+        });
     }
 
     observe(type, observer) {
