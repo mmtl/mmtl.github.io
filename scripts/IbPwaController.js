@@ -5,7 +5,7 @@ import IbPwaStorage from "./IbPwaStorage.js";
 
 const IbPwaController = class {
     constructor() {
-        this._version = "20210203a";
+        this._version = "20210204a";
         this._connection = null;
         this._observer = new Observer();
         this._port = 0;

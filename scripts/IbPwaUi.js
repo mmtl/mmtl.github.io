@@ -5,7 +5,7 @@ import IbPwaStorage from './IbPwaStorage.js';
 
 const IbPwaUi = class {
 	constructor() {
-		this._version = "20210203a";
+		this._version = "20210204a";
 		this._isSignageInitialized = false;
 		this._isVideoAdInitialized = false;
 		this._mode = this.mode.none;
@@ -59,7 +59,8 @@ const IbPwaUi = class {
 	message = {
 		command: {
 			start: 0,
-			end: 1
+			end: 1,
+			service: 2,
 		},
 		type: {
 			news: 0,
@@ -68,7 +69,11 @@ const IbPwaUi = class {
 			success: 0,
 			unknown: 1,
 			noData: 2,
-		}
+		},
+		receiver: {
+			pwa: 0,
+			ib: 1
+		},
 	};
 
 	_init() {
@@ -107,12 +112,16 @@ const IbPwaUi = class {
 		this._signagePlate.style.display = "none";
 		this._videoAdPlate.style.display = "none";
 
+		this._isModeChanged = true;
 		const mode = parseInt(observerArgs[0]);
 		if (this._isValidPlate(mode)) {
-			this._isModeChanged = true;
+			this._setNewsMessage(false, null);
+			this._postMessage();
+
 			this._start(mode);
 		} else {
 			IbPwaDebug.log("!!! [IbPwaUi] Unknown plate type");
+			this._sendModeChangedEvnet(false);
 			return;
 		}
 	}
@@ -349,6 +358,26 @@ const IbPwaUi = class {
 			this._isModeChanged = false;
 			IbPwaController.send(IbPwaController.event.modeChanged, modeChanged ? IbPwaController.message.success : IbPwaController.message.failure);
 		}
+	}
+
+	_setMessageHandler() {
+		window.addEventListener('message', (event) => {
+			const messageData = event.data;
+			if ((messageData.command != void 0) && (messageData.command == this.message.command.service)) {
+				IbPwaDebug.log(">>> [IbPwaUi] onMessage...");
+				if ((messageData.data.receiver != void 0) && (messageData.data.action != void 0)) {
+					if ((messageData.data.receiver == this.message.receiver.ib) && (messageData.data.action == IbPwaController.event.signageTermination)) {
+						IbPwaController.send(IbPwaController.event.signageTermination);
+						IbPwaDebug.log("*** [IbPwaUi] send signageTermination event");
+					} else {
+						IbPwaDebug.log("!!! [IbPwaUi] invalid data items");
+					}
+				} else {
+					IbPwaDebug.log("!!! [IbPwaUi] invalid data");
+				}
+				IbPwaDebug.log("<<< [IbPwaUi] onMessage...OK");
+			}
+		});
 	}
 
 	////////////////////////////////////////////////////////////////////////////////
@@ -590,7 +619,7 @@ const IbPwaUi = class {
 	// initialize
 	initialize() {
 		IbPwaDebug.log(">>> [IbPwaUi] initialize()...");
-		IbPwaDebug.log("*** [IbPwaUi] version= " + this._version);
+		IbPwaDebug.log("*** [IbPwaUi] version: " + this._version);
 		// Mode check
 		const p = IbPwaStorage.getItem("p");
 		const plate = this._isValidPlate(p) ? p : this.mode.none;
@@ -600,6 +629,9 @@ const IbPwaUi = class {
 
 		// Observing mode change event
 		IbPwaController.observe(IbPwaController.event.modeChange, this._changePlate.bind(this));
+
+		// postMessage handler
+		this._setMessageHandler();
 
 		document.oncontextmenu = () => {
 			return false;
