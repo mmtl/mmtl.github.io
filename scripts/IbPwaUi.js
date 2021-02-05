@@ -731,20 +731,28 @@ const IbPwaUi = class {
 		});
 
 		document.getElementById('test_btn_get_image').addEventListener('click', () => {
+			const imageBlock = document.getElementById('test_image_block');
+			if (imageBlock.firstChild) {
+				imageBlock.removeChild(imageBlock.firstChild);
+			}
 			this._getLocalStorageImage("testbg")
 			.then(src => {
 				const tag = document.createElement('img');
 				tag.src = src;
-				document.getElementById('test_image_block').appendChild(tag);	
+				imageBlock.appendChild(tag);	
 			});
 		});
 
 		document.getElementById('test_btn_dl_image').addEventListener('click', () => {
+			const imageBlock = document.getElementById('test_image_block');
+			if (imageBlock.firstChild) {
+				imageBlock.removeChild(imageBlock.firstChild);
+			}
 			const src = this._downloadImage()
 			.then(src => {
 				const tag = document.createElement('img');
 				tag.src = src;
-				document.getElementById('test_image_block').appendChild(tag);	
+				imageBlock.appendChild(tag);	
 			});
 		});
 	}
