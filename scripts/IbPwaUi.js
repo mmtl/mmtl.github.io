@@ -5,7 +5,7 @@ import IbPwaStorage from './IbPwaStorage.js';
 
 const IbPwaUi = class {
 	constructor() {
-		this._version = "20210204a";
+		this._version = "20210205a";
 		this._isSignageInitialized = false;
 		this._isVideoAdInitialized = false;
 		this._mode = this.mode.none;
@@ -398,6 +398,62 @@ const IbPwaUi = class {
 		});
 	}
 
+	async _getLocalStorageImage(key) {
+		// Retrieve an image from localStorage.
+		// If the image is not available, download it from the application and get it, at the same time, save it in localStorage.
+		// Return value is Data URI.
+		let dataUri = IbPwaStorage.getItem(key);
+		if (dataUri) {
+			return dataUri;
+		}
+
+		dataUri = await IbPwaController.request(IbPwaController.requestType.image)
+		.then(([contentType, buffer]) => {
+			const bytes = new Uint8Array(buffer);
+			let binary = "";
+			const len = bytes.byteLength;
+			for (let i = 0; i < len; i++) {
+				binary += String.fromCharCode(bytes[i]);
+			}
+
+			// test
+			const data = "data:image/webp;base64," + btoa(binary);
+			IbPwaStorage.setItem(key, data);
+			return data;
+		})
+		.catch(e => {
+			IbPwaDebug.log("!!! [IbPwaUi] request is failure");
+			IbPwaDebug.log(e);
+			return null;
+		});
+
+		return dataUri;
+	}
+
+	async _downloadImage(file) {
+		// Get the specified file from the app.
+		// If there is no specified file, it will be the specified image.
+		// The return value is the image binary data.
+		let path = file ? IbPwaController.requestType.imageSpecify + file : IbPwaController.requestType.image;
+		const binary = await IbPwaController.request(path)
+		.then(([contentType, buffer]) => {
+			const bytes = new Uint8Array(buffer);
+			let data = "";
+			const len = bytes.byteLength;
+			for (let i = 0; i < len; i++) {
+				data += String.fromCharCode(bytes[i]);
+			}
+			return data;
+		})
+		.catch(e => {
+			IbPwaDebug.log("!!! [IbPwaUi] request is failure");
+			IbPwaDebug.log(e);
+			return null;
+		});
+
+		return binary;
+	}
+
 	////////////////////////////////////////////////////////////////////////////////
 	// Plate type.A
 	_startSignagePlate() {
@@ -654,8 +710,43 @@ const IbPwaUi = class {
 		document.oncontextmenu = () => {
 			return false;
 		};
+
+		// test
+		this._test();
 		
 		IbPwaDebug.log("<<< [IbPwaUi] initialize()...OK");
+	}
+
+	////////////////////////////////////////////////////////////////////////////////
+	// test
+	_test() {
+		document.getElementById('test_btn_receive_message').addEventListener('click', () => {
+			const testMessage = {
+				command: this.message.command.service,
+				type: this.message.type.news,
+				error: this.message.error.success,
+				data: {
+					receiver: this.message.receiver.ib,
+					action: IbPwaController.event.signageTermination
+				},
+				config: null
+			};
+			window.postMessage(testMessage);
+		});
+
+		document.getElementById('test_btn_get_image').addEventListener('click', () => {
+			const src = this._getLocalStorageImage("testbg");
+			const tag = document.createElement('image');
+			tag.src = src;
+			document.getElementById('test_image_block').appendChild(tag);
+		});
+
+		document.getElementById('test_btn_dl_image').addEventListener('click', () => {
+			const src = this._downloadImage();
+			const tag = document.createElement('image');
+			tag.src = src;
+			document.getElementById('test_image_block').appendChild(tag);
+		});
 	}
 }
 

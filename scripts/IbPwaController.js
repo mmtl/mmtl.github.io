@@ -5,7 +5,7 @@ import IbPwaStorage from "./IbPwaStorage.js";
 
 const IbPwaController = class {
     constructor() {
-        this._version = "20210204a";
+        this._version = "20210205a";
         this._connection = null;
         this._observer = new Observer();
         this._port = 0;
@@ -56,6 +56,7 @@ const IbPwaController = class {
 
     requestType = {
         image: "/api/v1/image",
+        imageSpecify: "/api/v1/image/",
         news: "/api/v1/rss/news",
         appInfo: "/api/v1/info"
     };
@@ -428,20 +429,20 @@ const IbPwaController = class {
         }
     }
 
-    request(type, ...args) {
+    request(type) {
+        let path = type;
+        let isImageRequest = path.indexOf("/image") >= 0;
+        IbPwaDebug.log("*** [IbPwaUi] request path is " + path);
+
         return new Promise((resolve, reject) => {
-            this._request(type)
+            this._request(path)
             .then((res) => {
-                if (args && args.length > 0) {
+                if (isImageRequest) {
                     // image
                     IbPwaDebug.log("*** [IbPwaController] request got response for image");
-                    const outputType = args[0];
-                    //
-                    //
-                    // NEED IMPLEMENT
-                    //
-                    //
-                    resolve("dummy");
+                    const buffer = res.arrayBuffer();
+                    const contentType = res.headers.contentType;
+                    resolve([contentType, buffer]);
                 } else {
                     // rss(json)
                     IbPwaDebug.log("*** [IbPwaController] request got response");
