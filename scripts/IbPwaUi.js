@@ -417,7 +417,7 @@ const IbPwaUi = class {
 			}
 
 			// test
-			const data = "data:image/webp;base64," + btoa(binary);
+			const data = "data:" + contentType + ";base64," + btoa(binary);
 			IbPwaStorage.setItem(key, data);
 			return data;
 		})
@@ -737,7 +737,7 @@ const IbPwaUi = class {
 		document.getElementById('test_btn_get_image').addEventListener('click', () => {
 			this._getLocalStorageImage("testbg")
 			.then(src => {
-				const tag = document.createElement('image');
+				const tag = document.createElement('img');
 				tag.src = src;
 				document.getElementById('test_image_block').appendChild(tag);	
 			});
@@ -746,7 +746,7 @@ const IbPwaUi = class {
 		document.getElementById('test_btn_dl_image').addEventListener('click', () => {
 			const src = this._downloadImage()
 			.then(src => {
-				const tag = document.createElement('image');
+				const tag = document.createElement('img');
 				tag.src = src;
 				document.getElementById('test_image_block').appendChild(tag);	
 			});
