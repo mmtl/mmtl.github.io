@@ -438,12 +438,8 @@ const IbPwaUi = class {
 		const binary = await IbPwaController.request(path)
 		.then(([contentType, buffer]) => {
 			const bytes = new Uint8Array(buffer);
-			let data = "";
-			const len = bytes.byteLength;
-			for (let i = 0; i < len; i++) {
-				data += String.fromCharCode(bytes[i]);
-			}
-			return data;
+			const blobUrl = URL.createObjectURL(new Blob([bytes], { type: contentType }));
+			return blobUrl;
 		})
 		.catch(e => {
 			IbPwaDebug.log("!!! [IbPwaUi] request is failure");
