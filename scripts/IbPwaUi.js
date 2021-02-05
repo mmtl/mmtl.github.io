@@ -735,17 +735,21 @@ const IbPwaUi = class {
 		});
 
 		document.getElementById('test_btn_get_image').addEventListener('click', () => {
-			const src = this._getLocalStorageImage("testbg");
-			const tag = document.createElement('image');
-			tag.src = src;
-			document.getElementById('test_image_block').appendChild(tag);
+			this._getLocalStorageImage("testbg")
+			.then(src => {
+				const tag = document.createElement('image');
+				tag.src = src;
+				document.getElementById('test_image_block').appendChild(tag);	
+			});
 		});
 
 		document.getElementById('test_btn_dl_image').addEventListener('click', () => {
-			const src = this._downloadImage();
-			const tag = document.createElement('image');
-			tag.src = src;
-			document.getElementById('test_image_block').appendChild(tag);
+			const src = this._downloadImage()
+			.then(src => {
+				const tag = document.createElement('image');
+				tag.src = src;
+				document.getElementById('test_image_block').appendChild(tag);	
+			});
 		});
 	}
 }
