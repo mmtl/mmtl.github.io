@@ -440,15 +440,28 @@ const IbPwaController = class {
                 if (isImageRequest) {
                     // image
                     IbPwaDebug.log("*** [IbPwaController] request got response for image");
-                    const buffer = res.arrayBuffer();
-                    const contentType = res.headers.contentType;
-                    resolve([contentType, buffer]);
+                    const contentType = res.headers.get("Content-type");
+                    res.arrayBuffer().then(buffer => {
+                        resolve([contentType, buffer]);
+                    })
+                    .catch(e => {
+                        IbPwaDebug.log("!!! [IbPwaController] request is failure");
+                        IbPwaDebug.log(e);
+                        reject(["", ""]);        
+                    });
                 } else {
                     // rss(json)
                     IbPwaDebug.log("*** [IbPwaController] request got response");
-                    const text = res.text();
-                    IbPwaDebug.log(text);
-                    resolve(text);
+                    res.text()
+                    .then(text => {
+                        IbPwaDebug.log(text);
+                        resolve(text);    
+                    })
+                    .catch(e => {
+                        IbPwaDebug.log("!!! [IbPwaController] request is failure");
+                        IbPwaDebug.log(e);
+                        reject("");
+                    });
                 }
             })
             .catch(e => {
