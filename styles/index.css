@@ -14,7 +14,7 @@ body {
 }
 
 /********************************************************************************/
-/* Panel type.A */
+/* for Signage Service */
 #bg_container, #blur_container:before {
   background: url("../images/bg.jpg");
   background-position: center;
@@ -108,35 +108,80 @@ body {
   }
 }
 
-#surface_container {
+#navi_container {
   width: 100%;
   height: 100%;
   display: flex;
   align-items: center;
 }
 
-#test {
-  position: absolute;
+/* (1920x1080) Full HD Display */
+@media screen and (max-width: 1920px) {
+  :root {
+    --navi-prev-size: 51px;
+    --navi-next-size: 51px;
+    --navi-close-size: 59px;
+    --navi-close-top: 21px;
+    --navi-close-right: 21px;
+    --ad-container-right: 24px;
+    --ad-container-bottom: 91px;
+  }
+}
+
+/* (1366x768) WXGA Display */
+@media screen and (max-width: 1366px) {
+  :root {
+    --navi-prev-size: 36px;
+    --navi-next-size: 36px;
+    --navi-close-size: 42px;
+    --navi-close-top: 15px;
+    --navi-close-right: 15px;
+    --ad-container-right: 18px;
+    --ad-container-bottom: 65px;
+  }
+}
+
+#navi_prev_btn {
+  position: relative;
   left: 0;
-  width: 36px;
-  height: 36px;
-  background: cornflowerblue;
-  opacity: 0.6;
+  width: var(--navi-prev-size);
+  height: var(--navi-prev-size);
+  background: url("../images/ui/previous.png") top center / var(--navi-prev-size) var(--navi-prev-size) no-repeat content-box;
 }
 
-#test2 {
-  position: absolute;
-  right: 0;
-  width: 36px;
-  height: 36px;
-  background: cornflowerblue;
-  opacity: 0.6;
+#navi_prev_btn:hover {
+  background: url("../images/ui/previous_focus.png") top center / var(--navi-prev-size) var(--navi-prev-size) no-repeat content-box;
 }
 
-#btn_close {
+#navi_next_btn {
   position: absolute;
   right: 0;
-  top: 0;
+  width: var(--navi-next-size);
+  height: var(--navi-next-size);
+  background: url("../images/ui/next.png") top center / var(--navi-next-size) var(--navi-next-size) no-repeat content-box;
+}
+
+#navi_next_btn:hover {
+  background: url("../images/ui/next_focus.png") top center / var(--navi-next-size) var(--navi-next-size) no-repeat content-box;
+}
+
+#navi_close_btn {
+  position: absolute;
+  top: var(--navi-close-top);
+  right: var(--navi-close-right);
+  width: var(--navi-close-size);
+  height: var(--navi-close-size);
+}
+
+#ad_container {
+  position: absolute;
+  right: var(--ad-container-right);
+  bottom: var(--ad-container-bottom);
+  
+  /* test size*/
+  width: 300px;
+  height: 250px;
+  background: white;
 }
 
 

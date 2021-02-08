@@ -13,15 +13,14 @@
 </head>
 
 <body>
-  <!-- Panel type.A -->
+  <!-- for Signage Service -->
   <div id="bg_container">
     <div id="blur_container">
-      <!-- for TEST -->
-      <div>Plate A</div>
     </div>
 
     <div id="main_container">
       <div class="container">
+
         <div>
           <button id="test_btn_receive_message" style="margin:10px; padding:4px">receive service message</button>
         </div>
@@ -35,19 +34,19 @@
 
         <div id="clock"><span id="clock_hour"></span> <span id="clock_separator">:</span> <span id="clock_minute"></span></div>
         <div id="clock_date"></div>
+
+        <div id="ad_container"></div>
       </div>
     </div>
 
-    <div id="surface_container">
-      <div id="test">
-      </div>
-      <div id="test2">
-      </div>
-      <div><img id="btn_close" src="images/ui/close.png" width="72" height="72"></div>
+    <div id="navi_container">
+      <div id="navi_prev_btn"></div>
+      <div id="navi_next_btn"></div>
+      <img id="navi_close_btn" src="./images/ui/close_pwa.png" title="閉じる">
     </div>
   </div>
 
-  <!-- Panel type.B -->
+  <!-- Video Ad Only -->
   <div id="video_ad_container">
     <div id="defaultText">
       本機能はインフォボードとの<br>
@@ -59,7 +58,6 @@
       <div id="content">
         <video id="contentElement">
           <source src=""></source>
-          <!-- <source src="https://storage.googleapis.com/gvabox/media/samples/stock.mp4"></source> -->
         </video>
       </div>
       <div id="adContainer"></div>

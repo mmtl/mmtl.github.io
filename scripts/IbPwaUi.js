@@ -228,7 +228,23 @@ const IbPwaUi = class {
 		this._clockHour = document.getElementById('clock_hour');
 		this._clockDate = document.getElementById('clock_date');
 		this._bgContainer = document.getElementById('bg_container');
+		this._naviPrevBtn = document.getElementById('navi_prev_btn');
+		this._naviNextBtn = document.getElementById('navi_next_btn');
+		this._naviCloseBtn = document.getElementById('navi_close_btn');
 		this._clockTimer = null;
+
+		this._naviPrevBtn.addEventListener('click', () => {
+			IbPwaDebug.log("*** [IbPwaUi] navi_prev_btn is clicked");
+			IbPwaController.send(IbPwaController.event.widgetSwitching, IbPwaController.message.widgetPrev);
+		});
+		this._naviNextBtn.addEventListener('click', () => {
+			IbPwaDebug.log("*** [IbPwaUi] navi_next_btn is clicked");
+			IbPwaController.send(IbPwaController.event.widgetSwitching, IbPwaController.message.widgetNext);
+		});
+		this._naviCloseBtn.addEventListener('click', () => {
+			IbPwaDebug.log("*** [IbPwaUi] navi_close_btn is clicked");
+			IbPwaController.send(IbPwaController.event.signageTermination);
+		});
 
 		this._isSignageInitialized = true;
 	}

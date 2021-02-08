@@ -112,30 +112,42 @@ body {
     align-items: center;
 }
 
+:root {
+    --navi-prev-size: 51px;
+    --navi-next-size: 51px;
+}
+
 #test {
-    position: absolute;
+    position: relative;
     left: 0;
-    width: 36px;
-    height: 36px;
-    background: cornflowerblue;
-    opacity: 0.6;
+    width: var(--navi-prev-size);
+    height: var(--navi-prev-size);
+    background: url("../images/ui/previous.png") top center / var(--navi-prev-size) var(--navi-prev-size) no-repeat content-box;
+}
+
+#test:hover {
+    background: url("../images/ui/previous_focus.png") top center / var(--navi-prev-size) var(--navi-prev-size) no-repeat content-box;
 }
 
 #test2 {
     position: absolute;
     right: 0;
-    width: 36px;
-    height: 36px;
-    background: cornflowerblue;
-    opacity: 0.6;
+    width: 51px;
+    height: 51px;
+    background: url("../images/ui/next.png") top center / 51px 51px no-repeat content-box;
 }
 
-#btn_close {
+#test2:hover {
+    background: url("../images/ui/next_focus.png") top center / 51px 51px no-repeat content-box;
+}
+
+#navi_close_btn {
     position: absolute;
-    right: 0;
-    top: 0;
+    top: 21px;
+    right: 21px;
+    width: 59px;
+    height: 59px;
 }
-
 
 
 
