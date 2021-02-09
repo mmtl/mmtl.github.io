@@ -77,6 +77,7 @@ const IbPwaUi = class {
 	};
 
 	_init() {
+		IbPwaDebug.log("*** [IbPwaUi] Last update : " , document.lastModified);
 		this._signagePlate = document.getElementById('bg_container');
 		this._videoAdPlate = document.getElementById('video_ad_container');
 
