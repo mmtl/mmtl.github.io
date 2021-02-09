@@ -5,7 +5,6 @@ import IbPwaStorage from './IbPwaStorage.js';
 
 const IbPwaUi = class {
 	constructor() {
-		this._version = "20210205a";
 		this._isSignageInitialized = false;
 		this._isVideoAdInitialized = false;
 		this._mode = this.mode.none;
@@ -18,6 +17,8 @@ const IbPwaUi = class {
 		this._iframeId = "service_iframe";
 		this._isModeChanged = false;
 		this._ibConfig = null;
+		this._imageInfo = null;
+		this._idleRequestIds = [];
 		this._init();
 	}
 
@@ -77,11 +78,11 @@ const IbPwaUi = class {
 	};
 
 	_init() {
-		IbPwaDebug.log("*** [IbPwaUi] Last update : " , document.lastModified);
 		this._signagePlate = document.getElementById('bg_container');
 		this._videoAdPlate = document.getElementById('video_ad_container');
 
 		this._initMessage();
+		this._setIdleRequest();
 	}
 
 	_initMessage() {
@@ -382,6 +383,7 @@ const IbPwaUi = class {
 			});
 			break;
 		default:
+			this._setPlate(mode);
 			break;
 		}
 	
@@ -414,6 +416,26 @@ const IbPwaUi = class {
 			}
 		});
 	}
+
+	async _getImageInfo() {
+		const info = await IbPwaController.request(IbPwaController.requestType.image)
+		.then(jsonInfo => {
+			this._imageInfo = JSON.parse(jsonInfo);
+			IbPwaDebug.log("*** [IbPwaUi] _getImageInfo is succeeded");
+			IbPwaDebug.log(this._imageInfo);
+			return this._imageInfo;
+		})
+		.catch(e => {
+			IbPwaDebug.log("!!! [IbPwaUi] request is failure");
+			IbPwaDebug.log(e);
+			return null;
+		});
+
+		return info;
+	}
+
+
+
 
 	async _getLocalStorageImage(key) {
 		// Retrieve an image from localStorage.
@@ -465,6 +487,10 @@ const IbPwaUi = class {
 		});
 
 		return binary;
+	}
+
+	_setIdleRequest() {
+		//this._idleRequestIds.push(requestIdleCallback());
 	}
 
 	////////////////////////////////////////////////////////////////////////////////
@@ -706,7 +732,7 @@ const IbPwaUi = class {
 	// initialize
 	initialize() {
 		IbPwaDebug.log(">>> [IbPwaUi] initialize()...");
-		IbPwaDebug.log("*** [IbPwaUi] version: " + this._version);
+		IbPwaDebug.log("*** [IbPwaUi] Last update: " , document.lastModified);
 		// Mode check
 		const p = IbPwaStorage.getItem("p");
 		const plate = this._isValidPlate(p) ? p : this.mode.none;
@@ -770,6 +796,13 @@ const IbPwaUi = class {
 				const tag = document.createElement('img');
 				tag.src = src;
 				imageBlock.appendChild(tag);	
+			});
+		});
+
+		document.getElementById('test_btn_get_image_info').addEventListener('click', () => {
+			this._getImageInfo()
+			.then(info => {
+				
 			});
 		});
 	}

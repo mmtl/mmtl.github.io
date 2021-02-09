@@ -5,7 +5,6 @@ import IbPwaStorage from "./IbPwaStorage.js";
 
 const IbPwaController = class {
     constructor() {
-        this._version = "20210205a";
         this._connection = null;
         this._observer = new Observer();
         this._port = 0;
@@ -62,7 +61,7 @@ const IbPwaController = class {
     };
 
     _init() {
-        IbPwaDebug.log("*** [IbPwaController] version: " + this._version);
+		IbPwaDebug.log("*** [IbPwaController] Last update: " , document.lastModified);
 
         this._identifier = this._uuid();
 
@@ -431,7 +430,7 @@ const IbPwaController = class {
 
     request(type) {
         let path = type;
-        let isImageRequest = path.indexOf("/image") >= 0;
+        let isImageRequest = path.indexOf("/image/") >= 0;
         IbPwaDebug.log("*** [IbPwaUi] request path is " + path);
 
         return new Promise((resolve, reject) => {

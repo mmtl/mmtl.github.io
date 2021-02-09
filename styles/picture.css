@@ -149,6 +149,12 @@ body {
     height: 59px;
 }
 
+.copyright {
+    position: absolute;
+    right: 32px;
+    bottom: 35px;
+    font-size: 17px;
+}
 
 
 #ad_movie_container {
