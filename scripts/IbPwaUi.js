@@ -434,46 +434,21 @@ const IbPwaUi = class {
 		return info;
 	}
 
-
-
-
-	async _getLocalStorageImage(key) {
+	_getLocalStorageImage(key) {
 		// Retrieve an image from localStorage.
 		// If the image is not available, download it from the application and get it, at the same time, save it in localStorage.
 		// Return value is Data URI.
-		let dataUri = IbPwaStorage.getItem(key);
-		if (dataUri) {
-			return dataUri;
-		}
-
-		dataUri = await IbPwaController.request(IbPwaController.requestType.image)
-		.then(([contentType, buffer]) => {
-			const bytes = new Uint8Array(buffer);
-			let binary = "";
-			const len = bytes.byteLength;
-			for (let i = 0; i < len; i++) {
-				binary += String.fromCharCode(bytes[i]);
-			}
-
-			// test
-			const data = "data:" + contentType + ";base64," + btoa(binary);
-			IbPwaStorage.setItem(key, data);
-			return data;
-		})
-		.catch(e => {
-			IbPwaDebug.log("!!! [IbPwaUi] request is failure");
-			IbPwaDebug.log(e);
-			return null;
-		});
-
-		return dataUri;
+		return IbPwaStorage.getItem(key);
 	}
 
 	async _downloadImage(file) {
 		// Get the specified file from the app.
 		// If there is no specified file, it will be the specified image.
 		// The return value is the image binary data.
-		let path = file ? IbPwaController.requestType.imageSpecify + file : IbPwaController.requestType.image;
+
+		// file check
+
+		let path = IbPwaController.requestType.imageSpecify + file;
 		const binary = await IbPwaController.request(path)
 		.then(([contentType, buffer]) => {
 			const bytes = new Uint8Array(buffer);
@@ -778,12 +753,11 @@ const IbPwaUi = class {
 			if (imageBlock.firstChild) {
 				imageBlock.removeChild(imageBlock.firstChild);
 			}
-			this._getLocalStorageImage("testbg")
-			.then(src => {
+			if (this._getLocalStorageImage("testbg")) {
 				const tag = document.createElement('img');
 				tag.src = src;
-				imageBlock.appendChild(tag);	
-			});
+				imageBlock.appendChild(tag);
+			}
 		});
 
 		document.getElementById('test_btn_dl_image').addEventListener('click', () => {
@@ -791,7 +765,7 @@ const IbPwaUi = class {
 			if (imageBlock.firstChild) {
 				imageBlock.removeChild(imageBlock.firstChild);
 			}
-			const src = this._downloadImage()
+			const src = this._downloadImage("Clipboard01.webp")
 			.then(src => {
 				const tag = document.createElement('img');
 				tag.src = src;
@@ -802,7 +776,7 @@ const IbPwaUi = class {
 		document.getElementById('test_btn_get_image_info').addEventListener('click', () => {
 			this._getImageInfo()
 			.then(info => {
-				
+
 			});
 		});
 	}
