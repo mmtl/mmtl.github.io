@@ -2,7 +2,8 @@ import IbPwaController from './IbPwaController.js';
 import IbPwaEvent from './IbPwaEvent.js';
 import IbPwaDebug from './IbPwaDebug.js';
 import IbPwaStorage from './IbPwaStorage.js';
-import { IbPwaL10n } from "./IbPwaL10n.js";
+import { IbPwaL10n } from './IbPwaL10n.js';
+import { IbPwaConst } from './IbPwaConst.js';
 
 const IbPwaUi = class {
 	constructor() {
