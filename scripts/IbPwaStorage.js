@@ -90,6 +90,10 @@ const IbPwaStorage = class {
         const storage = window[this._storageType];
         return (new Blob(Object.values(storage))).size + (new Blob(Object.keys(storage))).size; // byte
     }
+
+    hasKey(key) {
+        return this.getItem(key) == null ? false : true;
+    }
 };
 
 export default new IbPwaStorage();

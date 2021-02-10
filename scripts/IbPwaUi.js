@@ -2,6 +2,7 @@ import IbPwaController from './IbPwaController.js';
 import IbPwaEvent from './IbPwaEvent.js';
 import IbPwaDebug from './IbPwaDebug.js';
 import IbPwaStorage from './IbPwaStorage.js';
+import { IbPwaL10n } from "./IbPwaL10n.js";
 
 const IbPwaUi = class {
 	constructor() {
@@ -187,7 +188,7 @@ const IbPwaUi = class {
 			if (!this._isSignageInitialized) {
 				this._initSignagePlate();
 			}
-			this._startSignagePlate();
+			//this._startSignagePlate();
 			this._startSignageAnimation();
 		} else if (isVideoAd) {
 			if (!this._isVideoAdInitialized) {
@@ -297,26 +298,16 @@ const IbPwaUi = class {
 		}
 	}
 
-	_getIbConfig() {
-		return new Promise((resolve, reject) => {
-			IbPwaDebug.log(">>> [IbPwaUi] _getIbConfig()...");
-			IbPwaController.request(IbPwaController.requestType.appInfo)
-			.then((res) => {})
-			
-			IbPwaDebug.log("<<< [IbPwaUi] _getIbConfig()...OK");
-		});
-
-	}
-
 	async _startSignageNews() {
 		IbPwaDebug.log(">>> [IbPwaUi] _startSignageNews()...");
-		const [newsJson, infoJson] = await Promise.all([
+		const [newsJson, infoJson, imageInfoJson] = await Promise.all([
 			IbPwaController.request(IbPwaController.requestType.news),
-			IbPwaController.request(IbPwaController.requestType.appInfo)
+			IbPwaController.request(IbPwaController.requestType.appInfo),
+			this._getImageInfo()
 		]);
 		IbPwaDebug.log("<<< [IbPwaUi] _startSignageNews()...OK");
 
-		return [newsJson, infoJson];
+		return [newsJson, infoJson, imageInfoJson];
 	}
 
 	_setNewsMessage(isStart, newsJson) {
@@ -336,6 +327,18 @@ const IbPwaUi = class {
 		this._ibConfig = JSON.parse(infoJson);
 	}
 
+	_saveImageInfo(imageInfoJson) {
+		for (const bg of imageInfoJson.backgrounds) {
+			const copyright = bg.name + "c";
+			if (!IbPwaStorage.setItem(`${bg.name}C`, bg.copyright)) {
+				IbPwaDebug.log("!!! [IbPwaUi] _saveImageInfo is failure (C)");
+			}
+			if (!IbPwaStorage.setItem(`${bg.name}O`, bg.order)) {
+				IbPwaDebug.log("!!! [IbPwaUi] _saveImageInfo is failure (O)");
+			}
+		}
+	}
+
 	async _startVideoAd() {
 		IbPwaDebug.log(">>> [IbPwaUi] _startVideoAd()...");
 		const [infoJson] = await Promise.all([
@@ -352,9 +355,11 @@ const IbPwaUi = class {
 		switch (parseInt(mode)) {
 		case this.mode.signageNews:
 			this._startSignageNews()
-			.then(([newsJson, infoJson]) => {
+			.then(([newsJson, infoJson, imageInfoJson]) => {
 				this._setIbConfig(infoJson);
 				this._setNewsMessage(true, newsJson);
+				this._saveImageInfo(imageInfoJson);
+				this._setIdleRequest();
 				IbPwaDebug.log("*** [IbPwaUi] _startSignageNews is succeeded");
 				IbPwaDebug.log(this._message);
 				
@@ -434,6 +439,10 @@ const IbPwaUi = class {
 		return info;
 	}
 
+
+
+
+
 	_getLocalStorageImage(key) {
 		// Retrieve an image from localStorage.
 		// If the image is not available, download it from the application and get it, at the same time, save it in localStorage.
@@ -464,12 +473,40 @@ const IbPwaUi = class {
 		return binary;
 	}
 
+	_saveBackgroundImage(file) {
+		let path = IbPwaController.requestType.imageSpecify + file;
+		IbPwaController.request(path)
+		.then(([contentType, buffer]) => {
+			const bytes = new Uint8Array(buffer);
+			var binary = "";
+			const len = bytes.byteLength;
+			for (let i = 0; i < len; i++) {
+				binary += String.fromCharCode(bytes[i]);
+			}
+			const dataUrl = `data:${contentType};base64,` + btoa(binary);
+			IbPwaStorage.setItem(file, dataUrl);
+			IbPwaDebug.log(`*** [IbPwaUi] _saveBackgroundImage(${file}) is succeeded`);
+		})
+		.catch(e => {
+			IbPwaDebug.log("!!! [IbPwaUi] request is failure");
+			IbPwaDebug.log(e);
+		});
+	}
+
 	_setIdleRequest() {
 		//this._idleRequestIds.push(requestIdleCallback());
+		if (this._imageInfo == null) {
+			IbPwaDebug.log("!!! [IbPwaUi] image info is null");
+			return;
+		}
+
+		for (const bg of this._imageInfo.backgrounds) {
+			this._idleRequestIds.push(requestIdleCallback(() => this._saveBackgroundImage(bg.name)));
+		}
 	}
 
 	////////////////////////////////////////////////////////////////////////////////
-	// Plate type.A
+	// for Signage Service
 	_startSignagePlate() {
 		const startClock = () => {
 			const zeroPadding = (digits, number) => {
@@ -477,8 +514,8 @@ const IbPwaUi = class {
 			};
 					
 			const getDateString = (date) => {
-				const weeks = ["日", "月", "火", "水", "木", "金", "土"];
-				return (date.getMonth() + 1) + " 月 " + date.getDate() + " 日 " + weeks[date.getDay()] + "曜日";
+				const weeks = IbPwaL10n.dayOfWeeks;
+				return `${(date.getMonth() + 1)} ${IbPwaL10n.labelMonth} ${date.getDate()} ${IbPwaL10n.labelDay} ${weeks[date.getDay()]}${IbPwaL10n.labelWeek}`;
 			};
 
 			let minute = 0;
@@ -588,7 +625,7 @@ const IbPwaUi = class {
 	}
 
 	////////////////////////////////////////////////////////////////////////////////
-	// Plate type.B
+	// for Video Ad
 	_initVolUiListener(event) {
 		this._updateVolumeDisplay(0);
 		// this._lastVolume = 0;
@@ -599,13 +636,13 @@ const IbPwaUi = class {
 
 	//Display button for observer
 	_displayButton() {
-		IbPwaDebug.log(">>> [IbPwaUi] showUI...");
+		IbPwaDebug.log(">>> [IbPwaUi] _displayButton...");
 		document.getElementById('defaultText').style.visibility = "hidden";
 		this._prevButton.style.visibility = "visible";
 		this._nextButton.style.visibility = "visible";
 		this._volumeButton.style.visibility = "visible";
 		this._closeButton.style.visibility = "visible";
-		IbPwaDebug.log("<<< [IbPwaUi] showUI...done");
+		IbPwaDebug.log("<<< [IbPwaUi] _displayButton...done");
 	}
 	
 	_initVolumeControl() {

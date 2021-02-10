@@ -422,12 +422,6 @@ const IbPwaController = class {
         return false;
     }
 
-    _isValidImageOutputObject(obj) {
-        for (let key in obj) {
-
-        }
-    }
-
     request(type) {
         let path = type;
         let isImageRequest = path.indexOf("/image/") >= 0;
