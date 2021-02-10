@@ -329,7 +329,6 @@ const IbPwaUi = class {
 
 	_saveImageInfo(imageInfoJson) {
 		for (const bg of imageInfoJson.backgrounds) {
-			const copyright = bg.name + "c";
 			if (!IbPwaStorage.setItem(`${bg.name}C`, bg.copyright)) {
 				IbPwaDebug.log("!!! [IbPwaUi] _saveImageInfo is failure (C)");
 			}
@@ -420,89 +419,6 @@ const IbPwaUi = class {
 				IbPwaDebug.log("<<< [IbPwaUi] onMessage...OK");
 			}
 		});
-	}
-
-	async _getImageInfo() {
-		const info = await IbPwaController.request(IbPwaController.requestType.image)
-		.then(jsonInfo => {
-			this._imageInfo = JSON.parse(jsonInfo);
-			IbPwaDebug.log("*** [IbPwaUi] _getImageInfo is succeeded");
-			IbPwaDebug.log(this._imageInfo);
-			return this._imageInfo;
-		})
-		.catch(e => {
-			IbPwaDebug.log("!!! [IbPwaUi] request is failure");
-			IbPwaDebug.log(e);
-			return null;
-		});
-
-		return info;
-	}
-
-
-
-
-
-	_getLocalStorageImage(key) {
-		// Retrieve an image from localStorage.
-		// If the image is not available, download it from the application and get it, at the same time, save it in localStorage.
-		// Return value is Data URI.
-		return IbPwaStorage.getItem(key);
-	}
-
-	async _downloadImage(file) {
-		// Get the specified file from the app.
-		// If there is no specified file, it will be the specified image.
-		// The return value is the image binary data.
-
-		// file check
-
-		let path = IbPwaController.requestType.imageSpecify + file;
-		const binary = await IbPwaController.request(path)
-		.then(([contentType, buffer]) => {
-			const bytes = new Uint8Array(buffer);
-			const blobUrl = URL.createObjectURL(new Blob([bytes], { type: contentType }));
-			return blobUrl;
-		})
-		.catch(e => {
-			IbPwaDebug.log("!!! [IbPwaUi] request is failure");
-			IbPwaDebug.log(e);
-			return null;
-		});
-
-		return binary;
-	}
-
-	_saveBackgroundImage(file) {
-		let path = IbPwaController.requestType.imageSpecify + file;
-		IbPwaController.request(path)
-		.then(([contentType, buffer]) => {
-			const bytes = new Uint8Array(buffer);
-			var binary = "";
-			const len = bytes.byteLength;
-			for (let i = 0; i < len; i++) {
-				binary += String.fromCharCode(bytes[i]);
-			}
-			const dataUrl = `data:${contentType};base64,` + btoa(binary);
-			IbPwaStorage.setItem(file, dataUrl);
-			IbPwaDebug.log(`*** [IbPwaUi] _saveBackgroundImage(${file}) is succeeded`);
-		})
-		.catch(e => {
-			IbPwaDebug.log("!!! [IbPwaUi] request is failure");
-			IbPwaDebug.log(e);
-		});
-	}
-
-	_setIdleRequest() {
-		//this._idleRequestIds.push(requestIdleCallback());
-		if (this._imageInfo == null) {
-			IbPwaDebug.log("!!! [IbPwaUi] image info is null");
-			return;
-		}
-
-		for (const bg of this._imageInfo.backgrounds) {
-			this._idleRequestIds.push(requestIdleCallback(() => this._saveBackgroundImage(bg.name)));
-		}
 	}
 
 	////////////////////////////////////////////////////////////////////////////////
@@ -622,6 +538,110 @@ const IbPwaUi = class {
 		}
 
 		IbPwaDebug.log("<<< [IbPwaUi] _postMessage()...OK");
+	}
+
+	async _getImageInfo() {
+		const info = await IbPwaController.request(IbPwaController.requestType.image)
+		.then(jsonInfo => {
+			this._imageInfo = JSON.parse(jsonInfo);
+			IbPwaDebug.log("*** [IbPwaUi] _getImageInfo is succeeded");
+			IbPwaDebug.log(this._imageInfo);
+			return this._imageInfo;
+		})
+		.catch(e => {
+			IbPwaDebug.log("!!! [IbPwaUi] request is failure");
+			IbPwaDebug.log(e);
+			return null;
+		});
+
+		return info;
+	}
+
+
+
+
+
+	_getLocalStorageImage(key) {
+		// Retrieve an image from localStorage.
+		// If the image is not available, download it from the application and get it, at the same time, save it in localStorage.
+		// Return value is Data URI.
+		return IbPwaStorage.getItem(key);
+	}
+
+	async _downloadImage(file) {
+		// Get the specified file from the app.
+		// If there is no specified file, it will be the specified image.
+		// The return value is the image binary data.
+
+		// file check
+
+		let path = IbPwaController.requestType.imageSpecify + file;
+		const binary = await IbPwaController.request(path)
+		.then(([contentType, buffer]) => {
+			const bytes = new Uint8Array(buffer);
+			const blobUrl = URL.createObjectURL(new Blob([bytes], { type: contentType }));
+			return blobUrl;
+		})
+		.catch(e => {
+			IbPwaDebug.log("!!! [IbPwaUi] request is failure");
+			IbPwaDebug.log(e);
+			return null;
+		});
+
+		return binary;
+	}
+
+	_saveBackgroundImage(file) {
+		let path = IbPwaController.requestType.imageSpecify + file;
+		IbPwaController.request(path)
+		.then(([contentType, buffer]) => {
+			const bytes = new Uint8Array(buffer);
+			var binary = "";
+			const len = bytes.byteLength;
+			for (let i = 0; i < len; i++) {
+				binary += String.fromCharCode(bytes[i]);
+			}
+			if (binary) {
+				const dataUrl = `data:${contentType};base64,` + btoa(binary);
+				IbPwaStorage.setItem(file, dataUrl);
+				IbPwaDebug.log(`*** [IbPwaUi] _saveBackgroundImage(${file}) is succeeded`);	
+			} else {
+				IbPwaDebug.log("!!! [IbPwaUi] _saveBackgroundImage failed to request");	
+			}
+		})
+		.catch(e => {
+			IbPwaDebug.log("!!! [IbPwaUi] request is failure");
+			IbPwaDebug.log(e);
+		});
+	}
+
+	_setIdleRequest() {
+		if (this._imageInfo == null) {
+			IbPwaDebug.log("!!! [IbPwaUi] image info is null");
+			return;
+		}
+
+		for (const bg of this._imageInfo.backgrounds) {
+			this._idleRequestIds.push(requestIdleCallback(() => this._saveBackgroundImage(bg.name)));
+		}
+	}
+
+	_getBackgroundImage() {
+		if (this._imageInfo == null) {
+			IbPwaDebug.log("!!! [IbPwaUi] _getBackgroundImage is failure");
+			return;
+		}
+
+		let validImages = [];
+		const sortedBackgrounds = this._imageInfo.backgrounds.sort((a, b) => {a.order - b.order});
+		for (const bg of sortedBackgrounds) {
+			if (IbPwaStorage.hasKey(bg.name)) {
+				validImages.push(bg);
+			}
+		}
+
+		const selected = validImages.length > 0 ? validImages[0] : null;
+		
 	}
 
 	////////////////////////////////////////////////////////////////////////////////
@@ -813,7 +833,7 @@ const IbPwaUi = class {
 		document.getElementById('test_btn_get_image_info').addEventListener('click', () => {
 			this._getImageInfo()
 			.then(info => {
-
+				this._getBackgroundImage();
 			});
 		});
 	}
