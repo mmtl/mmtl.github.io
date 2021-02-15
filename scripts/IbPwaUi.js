@@ -187,6 +187,7 @@ const IbPwaUi = class {
 		this._videoAdPlate.style.display = isVideoAd ? "block" : "none";
 
 		if (isSignage) {
+			this._setBackground();
 			if (!this._isSignageInitialized) {
 				this._initSignagePlate();
 			}
@@ -709,6 +710,13 @@ const IbPwaUi = class {
 		return false;
 	}
 
+	_setBackground() {
+		if (this._selectDefaultBackground()) {
+			this._copyright.innerText = this._backgroundImageInfo.copyright;
+			document.body.style = `--bg-image: url('${IbPwaStorage.getItem(this._backgroundImageInfo.name)}');`;
+		}
+	}
+
 	////////////////////////////////////////////////////////////////////////////////
 	// for Video Ad
 	_initVolUiListener(event) {
@@ -830,13 +838,6 @@ const IbPwaUi = class {
 	initialize() {
 		IbPwaDebug.log(">>> [IbPwaUi] initialize()...");
 		IbPwaDebug.log("*** [IbPwaUi] Last update: " , document.lastModified);
-
-		window.addEventListener('DOMContentLoaded', () => {
-			if (this._selectDefaultBackground()) {
-				this._copyright.innerText = this._backgroundImageInfo.copyright;
-				document.body.style = `--bg-image: url('${IbPwaStorage.getItem(this._backgroundImageInfo.name)}');`;
-			}
-		});
 
 		// Mode check
 		const p = IbPwaStorage.getItem("p");
