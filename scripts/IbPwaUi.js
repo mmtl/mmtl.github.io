@@ -83,7 +83,7 @@ const IbPwaUi = class {
 	};
 
 	_init() {
-		this._signagePlate = document.getElementById('bg_container');
+		this._signagePlate = document.getElementById('signage_bg_container');
 		this._videoAdPlate = document.getElementById('video_ad_container');
 
 		this._initMessage();
@@ -232,11 +232,11 @@ const IbPwaUi = class {
 
 	_initSignagePlate() {
 		// Initialize only once
-		this._blurContainer = document.getElementById('blur_container');
+		this._blurContainer = document.getElementById('signage_blur_container');
 		this._clockMinute = document.getElementById('clock_minute');
 		this._clockHour = document.getElementById('clock_hour');
 		this._clockDate = document.getElementById('clock_date');
-		this._bgContainer = document.getElementById('bg_container');
+		this._bgContainer = document.getElementById('signage_bg_container');
 		this._naviPrevBtn = document.getElementById('navi_prev_btn');
 		this._naviNextBtn = document.getElementById('navi_next_btn');
 		this._naviCloseBtn = document.getElementById('navi_close_btn');
@@ -909,7 +909,7 @@ const IbPwaUi = class {
 		});
 
 		let clickCount = 0;
-		document.getElementById('main_container').addEventListener('click', () => {
+		document.getElementById('signage_main_container').addEventListener('click', () => {
 			clickCount++;
 			if (clickCount == 7) {
 				clickCount = 0;

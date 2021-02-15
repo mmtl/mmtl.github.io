@@ -17,14 +17,14 @@ body {
 
 /********************************************************************************/
 /* for Signage Service */
-#bg_container, #blur_container:before {
+#signage_bg_container, #signage_blur_container:before {
   background: var(--bg-image);
   background-position: center;
   background-size: cover;
   background-attachment: fixed;
 }
 
-#bg_container {
+#signage_bg_container {
   display: none;
   width: 0;
   height: 100%;
@@ -36,11 +36,11 @@ body {
   transition: .5s;
 }
 
-#bg_container.init {
+#signage_bg_container.init {
   width: 100%;
 }
 
-#blur_container:before {
+#signage_blur_container:before {
   content: "";
   z-index: -1;
   filter: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='a' x='0' y='0' width='1' height='1' color-interpolation-filters='sRGB'%3E%3CfeGaussianBlur stdDeviation='10' result='b'/%3E%3CfeMorphology operator='dilate' radius='10'/%3E%3CfeMerge%3E%3CfeMergeNode/%3E%3CfeMergeNode in='b'/%3E%3C/feMerge%3E%3C/filter%3E%3C/svg%3E#a");
@@ -52,7 +52,7 @@ body {
   padding: 0;
 }
 
-#blur_container {
+#signage_blur_container {
   z-index: 0;
   overflow: hidden;
   width: 0px;
@@ -63,7 +63,7 @@ body {
   position: absolute;
 }
 
-#main_container {
+#signage_main_container {
   width: 50%;
   height: 100%;
   margin: 0;
@@ -112,7 +112,7 @@ body {
   }
 }
 
-#navi_container {
+#signage_navi_container {
   width: 100%;
   height: 100%;
   display: flex;
