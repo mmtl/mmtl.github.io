@@ -10,18 +10,20 @@ const IbPwaUi = class {
 		this._isSignageInitialized = false;
 		this._isVideoAdInitialized = false;
 		this._mode = this.mode.none;
+		// Tags
 		this._adScript = null;
 		this._ibPwaAdsScript = null;
 		this._serviceScript = null;
 		this._serviceTag = null;
 		this._iframeTag = null;
+
 		this._message = null;	// for postMessage
 		this._iframeId = "service_iframe";
-		this._isModeChanged = false;
-		this._ibConfig = null;
-		this._imageInfo = null;
+		this._isModeChanged = false;	// for mode change event
+		this._ibConfig = null;	// IB configuration JSON object
+		this._imageInfo = null;	// IB image JSON object
 		this._idleRequestIds = [];
-		this._backgroundImageInfo = null;
+		this._backgroundImageInfo = null;	// Current used IbPwaConst.backgrounds object
 		this._init();
 	}
 
@@ -140,6 +142,7 @@ const IbPwaUi = class {
 	}
 
 	_setPlate(type) {
+		// UI construction function called after the data for each mode is prepared.
 		IbPwaDebug.log(">>> [IbPwaUi] _setPlate()...");
 		IbPwaDebug.log("*** [IbPwaUi] plate type: " + type);
 
@@ -332,6 +335,11 @@ const IbPwaUi = class {
 	}
 
 	_saveImageInfo(imageInfoJson) {
+		if (imageInfoJson == null) {
+			IbPwaDebug.log("*** [IbPwaUi] _saveImageInfo imageInfoJson is null");
+			return;
+		}
+
 		for (const bg of imageInfoJson.backgrounds) {
 			if (!IbPwaStorage.setItem(`${bg.name}C`, bg.copyright)) {
 				IbPwaDebug.log("!!! [IbPwaUi] _saveImageInfo is failure (C)");
@@ -377,6 +385,12 @@ const IbPwaUi = class {
 			});
 			break;
 		case this.mode.videoAd:
+			if (this._isModeChanged) {
+				IbPwaDebug.log("*** [IbPwaUi] notify end message to Signage service");
+				this._setNewsMessage(false, null);
+				this._postMessage();
+			}
+
 			this._startVideoAd()
 			.then(([infoJson]) => {
 				this._setIbConfig(infoJson);
@@ -561,10 +575,6 @@ const IbPwaUi = class {
 		return info;
 	}
 
-
-
-
-
 	_getLocalStorageImage(key) {
 		// Retrieve an image from localStorage.
 		// If the image is not available, download it from the application and get it, at the same time, save it in localStorage.
@@ -576,8 +586,6 @@ const IbPwaUi = class {
 		// Get the specified file from the app.
 		// If there is no specified file, it will be the specified image.
 		// The return value is the image binary data.
-
-		// file check
 
 		let path = IbPwaController.requestType.imageSpecify + file;
 		const binary = await IbPwaController.request(path)
@@ -678,8 +686,8 @@ const IbPwaUi = class {
 
 	_getBackgroundImage() {
 		if (this._imageInfo == null) {
-			IbPwaDebug.log("!!! [IbPwaUi] _getBackgroundImage is failure");
-			return;
+			IbPwaDebug.log("*** [IbPwaUi] _imageInfo is null in _getBackgroundImage");
+			return null;
 		}
 
 		let validImages = [];
@@ -766,17 +774,9 @@ const IbPwaUi = class {
 				const rect = this._volumeSlider.getBoundingClientRect();
 				const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
 				const offsetTop = rect.top + scrollTop;
-				//0～100の間
-				const val =
-					100 -
-					(((event.clientY || event.touches[0].clientY) -
-					offsetTop) /
-					this._volumeSlider.getBoundingClientRect().height) *
-						100;
-				//丸める
+				const val = 100 - (((event.clientY || event.touches[0].clientY) - offsetTop) / this._volumeSlider.getBoundingClientRect().height) * 100;
 				this._volume = parseInt(Math.max(Math.min(val, 100), 0).toFixed(1), 10);
-				//0～1にする
-				// this._adsManager.setVolume(this._volume * 0.01);
+
 				IbPwaDebug.log("*** [IbPwaUi] setVolumeFromUpdateVolume=", this._volume*0.01);
 				const setVolEvent = new CustomEvent('setVolume', {
 					bubbles: true,
@@ -852,10 +852,6 @@ const IbPwaUi = class {
 
 		// postMessage handler
 		this._setMessageHandler();
-
-		document.oncontextmenu = () => {
-			return false;
-		};
 
 		// test
 		this._test();
