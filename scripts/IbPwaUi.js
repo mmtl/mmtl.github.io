@@ -912,13 +912,12 @@ const IbPwaUi = class {
 			});
 		});
 
-		const testContainer = document.getElementById('test_container');
 		let clickCount = 0;
-		testContainer.addEventListener('click', () => {
+		document.getElementById('main_container').addEventListener('click', () => {
 			clickCount++;
 			if (clickCount == 7) {
 				clickCount = 0;
-				testContainer.style.display = "block";
+				document.getElementById('test_container').style.display = "block";
 			}
 		});
 	}
