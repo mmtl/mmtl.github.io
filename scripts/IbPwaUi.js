@@ -187,10 +187,10 @@ const IbPwaUi = class {
 		this._videoAdPlate.style.display = isVideoAd ? "block" : "none";
 
 		if (isSignage) {
-			this._setBackground();
 			if (!this._isSignageInitialized) {
 				this._initSignagePlate();
 			}
+			this._setBackground();
 			//this._startSignagePlate();
 			this._startSignageAnimation();
 		} else if (isVideoAd) {
