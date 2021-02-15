@@ -647,12 +647,18 @@ const IbPwaUi = class {
 	}
 
 	_selectDefaultBackground() {
+		let images = [];
 		for (const background of IbPwaConst.backgrounds.sort((a, b) => {a.order - b.order})) {
 			const image = IbPwaStorage.getItem(background.name);
 			if (image) {
-				this._backgroundImageInfo = background;
-				return true;
+				images.push(background);
 			}
+		}
+
+		if (images.length > 0) {
+			const index = Math.floor(Math.random() * Math.floor(images.length));
+			this._backgroundImageInfo = images[index];
+			return true;	
 		}
 
 		return false;
