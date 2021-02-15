@@ -712,7 +712,7 @@ const IbPwaUi = class {
 
 	_setBackground() {
 		if (this._selectDefaultBackground()) {
-			this._copyright.innerText = this._backgroundImageInfo.copyright;
+			this._copyright.innerHTML = this._backgroundImageInfo.copyright;
 			document.body.style = `--bg-image: url('${IbPwaStorage.getItem(this._backgroundImageInfo.name)}');`;
 		}
 	}
