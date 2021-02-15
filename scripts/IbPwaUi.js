@@ -631,8 +631,8 @@ const IbPwaUi = class {
 
 	_saveBackgroundImages(file) {
 		const url = `../images/${file}`;
-		try {
-			const res = IbPwaController.requestExternal(url);
+		IbPwaController.requestExternal(url)
+		.then(res => {
 			const contentType = res.headers.get("Content-type");
 			res.arrayBuffer()
 			.then(buffer => {
@@ -645,13 +645,14 @@ const IbPwaUi = class {
 				}
 			})
 			.catch(e => {
-				IbPwaDebug.log("!!! [IbPwaUi] _saveBackgroundImages is failure");
+				IbPwaDebug.log("!!! [IbPwaUi] _saveBackgroundImages is failure of ArrayBuffer");
 				IbPwaDebug.log(e);	
-			});
-		} catch(e) {
-			IbPwaDebug.log("!!! [IbPwaUi] _saveBackgroundImages is failure");
-			IbPwaDebug.log(e);
-		}
+			});	
+		})
+		.catch(e => {
+			IbPwaDebug.log("!!! [IbPwaUi] requestExternal is failure");
+			IbPwaDebug.log(e);	
+		});
 	}
 
 	_setIdleRequest() {

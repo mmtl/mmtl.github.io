@@ -422,7 +422,7 @@ const IbPwaController = class {
         return false;
     }
 
-    requestExternal(url) {
+    async requestExternal(url) {
         const controller = new AbortController();
         const signal = controller.signal;
         const timer = 30 * 1000;
