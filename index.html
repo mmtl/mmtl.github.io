@@ -23,19 +23,21 @@
     <div id="main_container">
       <div class="container">
 
-        <div>
-          <button id="test_btn_receive_message" style="margin:10px; padding:4px">receive service message</button>
+        <div id="test_container" style="display:none;">
+          <div>
+            <button id="test_btn_receive_message" style="margin:10px; padding:4px">receive service message</button>
+          </div>
+          <div>
+            <button id="test_btn_get_image_info" style="margin:10px; padding:4px">_getImageInfo</button>
+          </div>
+          <div>
+            <button id="test_btn_get_image" style="margin:10px; padding:4px">_getLocalStorageImage</button>
+          </div>
+          <div>
+            <button id="test_btn_dl_image" style="margin:10px; padding:4px">_downloadImage</button>
+          </div>
+          <div id="test_image_block"></div>
         </div>
-        <div>
-          <button id="test_btn_get_image_info" style="margin:10px; padding:4px">_getImageInfo</button>
-        </div>
-        <div>
-          <button id="test_btn_get_image" style="margin:10px; padding:4px">_getLocalStorageImage</button>
-        </div>
-        <div>
-          <button id="test_btn_dl_image" style="margin:10px; padding:4px">_downloadImage</button>
-        </div>
-        <div id="test_image_block"></div>
 
         <div id="clock"><span id="clock_hour"></span> <span id="clock_separator">:</span> <span id="clock_minute"></span></div>
         <div id="clock_date"></div>

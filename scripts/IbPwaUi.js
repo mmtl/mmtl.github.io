@@ -670,6 +670,7 @@ const IbPwaUi = class {
 			return;
 		}
 
+		IbPwaDebug.log("*** [IbPwaUi] idle request for imagainfo background images");
 		for (const bg of this._imageInfo.backgrounds) {
 			this._idleRequestIds.push(requestIdleCallback(() => this._saveBackgroundImageOfServer(bg.name)));
 		}
@@ -909,6 +910,16 @@ const IbPwaUi = class {
 			.then(info => {
 				const bg = this._getBackgroundImage();
 			});
+		});
+
+		const testContainer = document.getElementById('test_container');
+		let clickCount = 0;
+		testContainer.addEventListener('click', () => {
+			clickCount++;
+			if (clickCount == 7) {
+				clickCount = 0;
+				testContainer.style.display = "block";
+			}
 		});
 	}
 }
