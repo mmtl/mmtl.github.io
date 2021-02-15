@@ -422,6 +422,22 @@ const IbPwaController = class {
         return false;
     }
 
+    requestExternal(url) {
+        const controller = new AbortController();
+        const signal = controller.signal;
+        const timer = 30 * 1000;
+        setTimeout(() => {
+            controller.abort();
+        }, timer);
+
+        const res = await fetch(url, {
+            mode: 'cors',
+            signal: signal
+        });
+
+        return res;
+    }
+
     request(type) {
         let path = type;
         let isImageRequest = path.indexOf("/image/") >= 0;

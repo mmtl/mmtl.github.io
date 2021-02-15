@@ -571,7 +571,7 @@ const IbPwaUi = class {
 		return IbPwaStorage.getItem(key);
 	}
 
-	async _downloadImage(file) {
+	async _loadImageFromServer(file) {
 		// Get the specified file from the app.
 		// If there is no specified file, it will be the specified image.
 		// The return value is the image binary data.
@@ -594,22 +594,33 @@ const IbPwaUi = class {
 		return binary;
 	}
 
-	_saveBackgroundImage(file) {
+	_getDataUri(contentType, arrayBuffer) {
+		const bytes = new Uint8Array(arrayBuffer);
+		var binary = "";
+		const len = bytes.byteLength;
+		for (let i = 0; i < len; i++) {
+			binary += String.fromCharCode(bytes[i]);
+		}
+
+		if (binary) {
+			return `data:${contentType};base64,` + btoa(binary);
+		} else {
+			IbPwaDebug.log("!!! [IbPwaUi] _getDataUri no binary");
+		}
+
+		return null;
+	}
+
+	_saveBackgroundImageOfServer(file) {
 		let path = IbPwaController.requestType.imageSpecify + file;
 		IbPwaController.request(path)
 		.then(([contentType, buffer]) => {
-			const bytes = new Uint8Array(buffer);
-			var binary = "";
-			const len = bytes.byteLength;
-			for (let i = 0; i < len; i++) {
-				binary += String.fromCharCode(bytes[i]);
-			}
-			if (binary) {
-				const dataUrl = `data:${contentType};base64,` + btoa(binary);
-				IbPwaStorage.setItem(file, dataUrl);
-				IbPwaDebug.log(`*** [IbPwaUi] _saveBackgroundImage(${file}) is succeeded`);	
+			const dataUri = this._getDataUri(contentType, buffer);
+			if (dataUri) {
+				IbPwaStorage.setItem(file, dataUri);
+				IbPwaDebug.log(`*** [IbPwaUi] _saveBackgroundImageOfServer(${file}) is succeeded`);	
 			} else {
-				IbPwaDebug.log("!!! [IbPwaUi] _saveBackgroundImage failed to request");	
+				IbPwaDebug.log("!!! [IbPwaUi] _saveBackgroundImageOfServer failed to request");	
 			}
 		})
 		.catch(e => {
@@ -618,14 +629,47 @@ const IbPwaUi = class {
 		});
 	}
 
+	_saveBackgroundImages(file) {
+		const url = `../images/${file}`;
+		try {
+			const res = IbPwaController.requestExternal(url);
+			const contentType = res.headers.get("Content-type");
+			res.arrayBuffer()
+			.then(buffer => {
+				const dataUri = this._getDataUri(contentType, buffer);
+				if (dataUri) {
+					IbPwaStorage.setItem(file, dataUri);
+					IbPwaDebug.log(`*** [IbPwaUi] _saveBackgroundImage(${file}) is succeeded`);	
+				} else {
+					IbPwaDebug.log("!!! [IbPwaUi] _saveBackgroundImage failed to request");	
+				}
+			})
+			.catch(e => {
+				IbPwaDebug.log("!!! [IbPwaUi] _saveBackgroundImages is failure");
+				IbPwaDebug.log(e);	
+			});
+		} catch(e) {
+			IbPwaDebug.log("!!! [IbPwaUi] _saveBackgroundImages is failure");
+			IbPwaDebug.log(e);
+		}
+	}
+
 	_setIdleRequest() {
+		// Default images
+		IbPwaDebug.log("*** [IbPwaUi] idle request for default background images");
+		for (const bg of IbPwaConst.backgrounds) {
+			if (IbPwaStorage.getItem(bg.name) == null) {
+				this._idleRequestIds.push(requestIdleCallback(() => this._saveBackgroundImages(bg.name)));	
+			}
+		}
+
 		if (this._imageInfo == null) {
-			IbPwaDebug.log("!!! [IbPwaUi] image info is null");
+			IbPwaDebug.log("*** [IbPwaUi] image info is null");
 			return;
 		}
 
 		for (const bg of this._imageInfo.backgrounds) {
-			this._idleRequestIds.push(requestIdleCallback(() => this._saveBackgroundImage(bg.name)));
+			this._idleRequestIds.push(requestIdleCallback(() => this._saveBackgroundImageOfServer(bg.name)));
 		}
 	}
 
@@ -850,7 +894,7 @@ const IbPwaUi = class {
 			if (imageBlock.firstChild) {
 				imageBlock.removeChild(imageBlock.firstChild);
 			}
-			const src = this._downloadImage("Clipboard01.webp")
+			const src = this._loadImageFromServer("Clipboard01.webp")
 			.then(src => {
 				const tag = document.createElement('img');
 				tag.src = src;
