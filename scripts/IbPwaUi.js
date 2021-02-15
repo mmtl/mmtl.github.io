@@ -783,8 +783,8 @@ const IbPwaUi = class {
 		window.addEventListener('DOMContentLoaded', () => {
 			if (this._selectDefaultBackground()) {
 				this._copyright.innerText = this._backgroundImageInfo.copyright;
+				document.body.style = `--bg-image: url('../images/${this._backgroundImageInfo.name}');`;
 			}
-			document.body.style = `--bg-image: url('../images/${this._backgroundImageInfo.name}');`;
 		});
 
 		// Mode check
