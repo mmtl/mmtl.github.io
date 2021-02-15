@@ -21,6 +21,7 @@ const IbPwaUi = class {
 		this._ibConfig = null;
 		this._imageInfo = null;
 		this._idleRequestIds = [];
+		this._backgroundImageInfo = null;
 		this._init();
 	}
 
@@ -235,6 +236,7 @@ const IbPwaUi = class {
 		this._naviPrevBtn = document.getElementById('navi_prev_btn');
 		this._naviNextBtn = document.getElementById('navi_next_btn');
 		this._naviCloseBtn = document.getElementById('navi_close_btn');
+		this._copyright = document.getElementById('copyright_container');
 		this._clockTimer = null;
 
 		this._naviPrevBtn.addEventListener('click', () => {
@@ -641,8 +643,19 @@ const IbPwaUi = class {
 			}
 		}
 
-		const selected = validImages.length > 0 ? validImages[0] : null;
-		
+		return validImages.length > 0 ? validImages[0] : null;
+	}
+
+	_selectDefaultBackground() {
+		for (const background of IbPwaConst.backgrounds.sort((a, b) => {a.order - b.order})) {
+			const image = IbPwaStorage.getItem(background.name);
+			if (image) {
+				this._backgroundImageInfo = background;
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	////////////////////////////////////////////////////////////////////////////////
@@ -766,6 +779,14 @@ const IbPwaUi = class {
 	initialize() {
 		IbPwaDebug.log(">>> [IbPwaUi] initialize()...");
 		IbPwaDebug.log("*** [IbPwaUi] Last update: " , document.lastModified);
+
+		window.addEventListener('DOMContentLoaded', () => {
+			if (this._selectDefaultBackground()) {
+				this._copyright.innerText = this._backgroundImageInfo.copyright;
+			}
+			document.body.style = `--bg-image: url('../images/${this._backgroundImageInfo.name}');`;
+		});
+
 		// Mode check
 		const p = IbPwaStorage.getItem("p");
 		const plate = this._isValidPlate(p) ? p : this.mode.none;
@@ -834,7 +855,7 @@ const IbPwaUi = class {
 		document.getElementById('test_btn_get_image_info').addEventListener('click', () => {
 			this._getImageInfo()
 			.then(info => {
-				this._getBackgroundImage();
+				const bg = this._getBackgroundImage();
 			});
 		});
 	}
