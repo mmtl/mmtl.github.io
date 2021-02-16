@@ -194,7 +194,7 @@ const IbPwaUi = class {
 				this._initSignagePlate();
 			}
 			this._setBackground();
-			//this._startSignagePlate();
+			this._setAd();
 			this._startSignageAnimation();
 		} else if (isVideoAd) {
 			if (!this._isVideoAdInitialized) {
@@ -724,6 +724,10 @@ const IbPwaUi = class {
 			this._copyright.innerHTML = this._backgroundImageInfo.copyright;
 			document.body.style = `--bg-image: url('${IbPwaStorage.getItem(this._backgroundImageInfo.name)}');`;
 		}
+	}
+
+	_setAd() {
+		// Picture Ad
 	}
 
 	////////////////////////////////////////////////////////////////////////////////

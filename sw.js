@@ -1,8 +1,21 @@
-const SW_VERSION = 5;
+const SW_VERSION = 6;
 const CACHE_NAME = 'static-cache-v1';
 const FILES_TO_CACHE = [
     './index.html',
     './styles/index.css',
+    './images/favicon.ico',
+    './images/icons/icon-128x128.png',
+    './images/icons/icon-256x256.png',
+    './images/icons/icon-512x512.png',
+    './images/ui/close.png',
+    './images/ui/close_focus.png',
+    './images/ui/ic_slider.png',
+    './images/ui/next_focus.png',
+    './images/ui/next.png',
+    './images/ui/previous_focus.png',
+    './images/ui/previous.png',
+    './images/ui/sound_click.png',
+    './images/ui/sound_default.png',
 ];
 const SW_DEBUG = true;
 
