@@ -175,6 +175,23 @@ body {
   background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEgAAABICAYAAABV7bNHAAACOklEQVR4Xu2crW4CQRSFLwIBAoPBYBAgMCBYwUv1VfpMCAQIMAgQGAwGg1gEYptDsklbmNktd7kzDWcMTQrTma/fnjs/CTURkSzLPkXkAz+z/SRQIxy/EgCU0Ro3AQIqsIOACEgXIDSIBtEgHQEapOPHDKJBNEhHgAbp+DGDaBAN0hGgQTp+zCAaRIN0BGI06Hq9Sr1ef+nEqurcNIM2m43s9/vb2BuNhozHY2m321XN5SX9mAE6HA6yXq/vJjEajaTb7b5kclV0agZou93Kbrd7OOZeryfD4bCK+VTeRxSAMKtOpyOwKbZsMgOUpqnMZjNBQLtaq9WSyWQizWazchOe7dAMEAZ4Pp9ltVrdXl0NBk2nUwGsGJopIEwYBi2XSzmdTt75xxLe5oByKqhoqGy+1u/3ZTAYBBUpGCDM2lX6vxPBEgAVLlR4BwUEEMfj8bY+Kgpv5FIISMEB5eG9WCzkcrlEF95RAMrDez6fF1Y4PG6WK+9oAP0lvPG4We3hogMEUNjQYmPrapbVjYAKFhHRASqzPnrLRwxlniHt0Bl7M5Z5BxwuFD0hyK2GB06ZMLYs566hmlcxHnd4rOGBmQcOj1wLVqS+Ww189O0P7XntU2AQLw5LnBz/vnpOkiSa24toynx+OBbi+LTE//DuLebroGcGGfIzBPTfzoNC2vLob9MgGqRzkgbRIBqkI0CDdPyYQTSIBukI0CAdP2YQDaJBOgI0SMePGUSD9AbxG/A8DGv4Hb8Jz03oC+yb8TiOF7XIAAAAAElFTkSuQmCC") top center / var(--navi-next-size) var(--navi-next-size) no-repeat content-box;
 }
 
+@keyframes fadeout {
+  0% {
+      opacity: 1;
+  }
+  100% {
+      opacity: 0;
+  }
+}
+
+#navi_prev_btn.fadeout {
+  animation: fadeout 1.5s ease 0.2s 1 forwards;
+}
+
+#navi_next_btn.fadeout {
+  animation: fadeout 1.5s ease 0.2s 1 forwards;
+}
+
 #navi_close_btn {
   position: absolute;
   top: var(--navi-close-top);

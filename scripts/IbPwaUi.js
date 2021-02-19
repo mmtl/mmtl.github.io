@@ -25,6 +25,8 @@ const IbPwaUi = class {
 		this._imageInfo = null;	// IB image JSON object
 		this._idleRequestIds = [];
 		this._backgroundImageInfo = null;	// Current used IbPwaConst.backgrounds object
+		this._fadeoutTimer = null;
+		this._mousemoveListener = this._playNaviAnimation.bind(this);
 		this._init();
 	}
 
@@ -160,6 +162,7 @@ const IbPwaUi = class {
 		
 		switch (parseInt(type)) {
 		case this.mode.videoAd:
+			document.removeEventListener('mousemove', this._mousemoveListener);
 			break;
 		case this.mode.signageNews:
 			// Uninitialze IbPwaAds
@@ -196,6 +199,7 @@ const IbPwaUi = class {
 			this._setBackground();
 			this._setAd();
 			this._startSignageAnimation();
+			document.addEventListener('mousemove', this._mousemoveListener);
 		} else if (isVideoAd) {
 			if (!this._isVideoAdInitialized) {
 				this._initVideoAdPlate();
@@ -507,8 +511,10 @@ const IbPwaUi = class {
 		setTimeout(() => {
 			animation.play();
 			this._blurContainer.style.width = '50%';
+			this._toggleNaviAnimation(true);
 		}, 1000);
 
+		// Call service
 		setTimeout(() => {
 			this._setSignageService();
 		}, 1100);
@@ -604,6 +610,33 @@ const IbPwaUi = class {
 		if (this._selectDefaultBackground()) {
 			this._copyright.innerHTML = this._backgroundImageInfo.copyright;
 			document.body.style = `--bg-image: url('${IbPwaStorage.getItem(this._backgroundImageInfo.name)}');`;
+		}
+	}
+
+	_toggleNaviAnimation(isOn) {
+		if (isOn) {
+			this._naviPrevBtn.classList.add('fadeout');
+			this._naviNextBtn.classList.add('fadeout');
+		} else {
+			this._naviPrevBtn.classList.remove('fadeout');
+			this._naviNextBtn.classList.remove('fadeout');	
+		}
+	}
+
+	_playNaviAnimation(eventId) {
+		this._toggleNaviAnimation(false);
+		if (this._fadeoutTimer) {
+			clearTimeout(this._fadeoutTimer);
+		}
+		this._fadeoutTimer = setTimeout(() => {
+			this._toggleNaviAnimation(true);
+		}, 1000);
+
+		if (eventId == 'navi_prev_btn' || eventId == 'navi_next_btn') {
+			if (this._fadeoutTimer) {
+				clearTimeout(this._fadeoutTimer);
+			}
+			this._toggleNaviAnimation(false);
 		}
 	}
 

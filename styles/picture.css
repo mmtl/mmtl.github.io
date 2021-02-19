@@ -141,6 +141,23 @@ body {
     background: url("../images/ui/next_focus.png") top center / 51px 51px no-repeat content-box;
 }
 
+@keyframes fadeout {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}
+
+#test.fadeout {
+    animation: fadeout 1.5s ease 0.2s 1 forwards;
+}
+
+#test2.fadeout {
+    animation: fadeout 1.5s ease 0.2s 1 forwards;
+}
+
 #navi_close_btn {
     position: absolute;
     top: 21px;
