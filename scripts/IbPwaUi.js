@@ -4,6 +4,7 @@ import IbPwaDebug from './IbPwaDebug.js';
 import IbPwaStorage from './IbPwaStorage.js';
 import { IbPwaL10n } from './IbPwaL10n.js';
 import { IbPwaConst } from './IbPwaConst.js';
+import { IbPwaUiService } from './IbPwaUiService.js';
 
 const IbPwaUi = class {
 	constructor() {
@@ -163,8 +164,7 @@ const IbPwaUi = class {
 		case this.mode.signageNews:
 			// Uninitialze IbPwaAds
 			if (this._mode == this.mode.videoAd) {
-				const uninitialze = new CustomEvent('clickNextPrevBtn');
-				IbPwaEvent.dispatch(IbPwaEvent.event.ads, uninitialze);
+				IbPwaEvent.dispatch(IbPwaEvent.event.ads, new CustomEvent('clickNextPrevBtn'));
 			}
 			break;
 		default:
@@ -310,7 +310,7 @@ const IbPwaUi = class {
 		const [newsJson, infoJson, imageInfoJson] = await Promise.all([
 			IbPwaController.request(IbPwaController.requestType.news),
 			IbPwaController.request(IbPwaController.requestType.appInfo),
-			this._getImageInfo()
+			IbPwaUiService.getImageInfo()
 		]);
 		IbPwaDebug.log("<<< [IbPwaUi] _startSignageNews()...OK");
 
@@ -340,6 +340,7 @@ const IbPwaUi = class {
 			return;
 		}
 
+		this._imageInfo = imageInfoJson;
 		for (const bg of imageInfoJson.backgrounds) {
 			if (!IbPwaStorage.setItem(`${bg.name}C`, bg.copyright)) {
 				IbPwaDebug.log("!!! [IbPwaUi] _saveImageInfo is failure (C)");
@@ -545,12 +546,11 @@ const IbPwaUi = class {
 	
 	_postMessage() {
 		IbPwaDebug.log(">>> [IbPwaUi] _postMessage()...");
-		IbPwaDebug.log(this._message);
 		
 		// iframe or Custom Elements
 		const target = this._iframeTag ? document.getElementById(this._iframeId).contentWindow : this._serviceTag ? window : null;
 		if (target) {
-			target.postMessage(this._message);
+			IbPwaUiService.postMessage(target, this._message);
 		} else {
 			IbPwaDebug.log("!!! [IbPwaUi] target is not found");
 		}
@@ -558,49 +558,8 @@ const IbPwaUi = class {
 		IbPwaDebug.log("<<< [IbPwaUi] _postMessage()...OK");
 	}
 
-	async _getImageInfo() {
-		const info = await IbPwaController.request(IbPwaController.requestType.image)
-		.then(jsonInfo => {
-			this._imageInfo = JSON.parse(jsonInfo);
-			IbPwaDebug.log("*** [IbPwaUi] _getImageInfo is succeeded");
-			IbPwaDebug.log(this._imageInfo);
-			return this._imageInfo;
-		})
-		.catch(e => {
-			IbPwaDebug.log("!!! [IbPwaUi] request is failure");
-			IbPwaDebug.log(e);
-			return null;
-		});
-
-		return info;
-	}
-
 	_getLocalStorageImage(key) {
-		// Retrieve an image from localStorage.
-		// If the image is not available, download it from the application and get it, at the same time, save it in localStorage.
-		// Return value is Data URI.
 		return IbPwaStorage.getItem(key);
-	}
-
-	async _loadImageFromServer(file) {
-		// Get the specified file from the app.
-		// If there is no specified file, it will be the specified image.
-		// The return value is the image binary data.
-
-		let path = IbPwaController.requestType.imageSpecify + file;
-		const binary = await IbPwaController.request(path)
-		.then(([contentType, buffer]) => {
-			const bytes = new Uint8Array(buffer);
-			const blobUrl = URL.createObjectURL(new Blob([bytes], { type: contentType }));
-			return blobUrl;
-		})
-		.catch(e => {
-			IbPwaDebug.log("!!! [IbPwaUi] request is failure");
-			IbPwaDebug.log(e);
-			return null;
-		});
-
-		return binary;
 	}
 
 	_getDataUri(contentType, arrayBuffer) {
@@ -620,56 +579,12 @@ const IbPwaUi = class {
 		return null;
 	}
 
-	_saveBackgroundImageOfServer(file) {
-		let path = IbPwaController.requestType.imageSpecify + file;
-		IbPwaController.request(path)
-		.then(([contentType, buffer]) => {
-			const dataUri = this._getDataUri(contentType, buffer);
-			if (dataUri) {
-				IbPwaStorage.setItem(file, dataUri);
-				IbPwaDebug.log(`*** [IbPwaUi] _saveBackgroundImageOfServer(${file}) is succeeded`);	
-			} else {
-				IbPwaDebug.log("!!! [IbPwaUi] _saveBackgroundImageOfServer failed to request");	
-			}
-		})
-		.catch(e => {
-			IbPwaDebug.log("!!! [IbPwaUi] request is failure");
-			IbPwaDebug.log(e);
-		});
-	}
-
-	_saveBackgroundImages(file) {
-		const url = `../images/${file}`;
-		IbPwaController.requestExternal(url)
-		.then(res => {
-			const contentType = res.headers.get("Content-type");
-			res.arrayBuffer()
-			.then(buffer => {
-				const dataUri = this._getDataUri(contentType, buffer);
-				if (dataUri) {
-					IbPwaStorage.setItem(file, dataUri);
-					IbPwaDebug.log(`*** [IbPwaUi] _saveBackgroundImage(${file}) is succeeded`);	
-				} else {
-					IbPwaDebug.log("!!! [IbPwaUi] _saveBackgroundImage failed to request");	
-				}
-			})
-			.catch(e => {
-				IbPwaDebug.log("!!! [IbPwaUi] _saveBackgroundImages is failure of ArrayBuffer");
-				IbPwaDebug.log(e);	
-			});	
-		})
-		.catch(e => {
-			IbPwaDebug.log("!!! [IbPwaUi] requestExternal is failure");
-			IbPwaDebug.log(e);	
-		});
-	}
-
 	_setIdleRequest() {
 		// Default images
 		IbPwaDebug.log("*** [IbPwaUi] idle request for default background images");
 		for (const bg of IbPwaConst.backgrounds) {
 			if (IbPwaStorage.getItem(bg.name) == null) {
-				this._idleRequestIds.push(requestIdleCallback(() => this._saveBackgroundImages(bg.name)));	
+				this._idleRequestIds.push(requestIdleCallback(() => IbPwaUiService.saveBackgroundImages(bg.name)));	
 			}
 		}
 
@@ -680,25 +595,8 @@ const IbPwaUi = class {
 
 		IbPwaDebug.log("*** [IbPwaUi] idle request for imagainfo background images");
 		for (const bg of this._imageInfo.backgrounds) {
-			this._idleRequestIds.push(requestIdleCallback(() => this._saveBackgroundImageOfServer(bg.name)));
+			this._idleRequestIds.push(requestIdleCallback(() => IbPwaUiService.saveBackgroundImageOfServer(bg.name)));
 		}
-	}
-
-	_getBackgroundImage() {
-		if (this._imageInfo == null) {
-			IbPwaDebug.log("*** [IbPwaUi] _imageInfo is null in _getBackgroundImage");
-			return null;
-		}
-
-		let validImages = [];
-		const sortedBackgrounds = this._imageInfo.backgrounds.sort((a, b) => {a.order - b.order});
-		for (const bg of sortedBackgrounds) {
-			if (IbPwaStorage.hasKey(bg.name)) {
-				validImages.push(bg);
-			}
-		}
-
-		return validImages.length > 0 ? validImages[0] : null;
 	}
 
 	_selectDefaultBackground() {
@@ -803,9 +701,6 @@ const IbPwaUi = class {
 		} else {
 			vsContainer.style.visibility = "visible";
 		}
-
-		// const getVolEvent = new CustomEvent('getVolume', { bubbles: true });
-		// IbPwaEvent.dispatch(IbPwaEvent.event.ads, getVolEvent);
 	}
 
 	_updateVolumeDisplay(vol) {
@@ -897,7 +792,7 @@ const IbPwaUi = class {
 			if (imageBlock.firstChild) {
 				imageBlock.removeChild(imageBlock.firstChild);
 			}
-			const src = this._loadImageFromServer("Clipboard01.webp")
+			const src = IbPwaUiService.loadImageFromServer("Clipboard01.webp")
 			.then(src => {
 				const tag = document.createElement('img');
 				tag.src = src;
@@ -906,9 +801,9 @@ const IbPwaUi = class {
 		});
 
 		document.getElementById('test_btn_get_image_info').addEventListener('click', () => {
-			this._getImageInfo()
+			IbPwaUiService.getImageInfo()
 			.then(info => {
-				const bg = this._getBackgroundImage();
+				const bgs = IbPwaUiService.getOrderedBackgroundImageInfo(this._imageInfo);
 			});
 		});
 
@@ -923,5 +818,5 @@ const IbPwaUi = class {
 	}
 }
 
-const Ui = new IbPwaUi();
-Ui.initialize();
+const UibyInfoboard = new IbPwaUi();
+UibyInfoboard.initialize();
