@@ -623,7 +623,7 @@ const IbPwaUi = class {
 		}
 	}
 
-	_playNaviAnimation(eventId) {
+	_playNaviAnimation(event) {
 		this._toggleNaviAnimation(false);
 		if (this._fadeoutTimer) {
 			clearTimeout(this._fadeoutTimer);
@@ -632,6 +632,7 @@ const IbPwaUi = class {
 			this._toggleNaviAnimation(true);
 		}, 1000);
 
+		const eventId = event.target.id;
 		if (eventId == 'navi_prev_btn' || eventId == 'navi_next_btn') {
 			if (this._fadeoutTimer) {
 				clearTimeout(this._fadeoutTimer);
