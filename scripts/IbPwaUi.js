@@ -562,23 +562,6 @@ const IbPwaUi = class {
 		return IbPwaStorage.getItem(key);
 	}
 
-	_getDataUri(contentType, arrayBuffer) {
-		const bytes = new Uint8Array(arrayBuffer);
-		var binary = "";
-		const len = bytes.byteLength;
-		for (let i = 0; i < len; i++) {
-			binary += String.fromCharCode(bytes[i]);
-		}
-
-		if (binary) {
-			return `data:${contentType};base64,` + btoa(binary);
-		} else {
-			IbPwaDebug.log("!!! [IbPwaUi] _getDataUri no binary");
-		}
-
-		return null;
-	}
-
 	_setIdleRequest() {
 		// Default images
 		IbPwaDebug.log("*** [IbPwaUi] idle request for default background images");
