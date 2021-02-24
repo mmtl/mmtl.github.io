@@ -60,7 +60,7 @@ const IbPwaUi = class {
 			// 2: News
 			type: this.serviceType.pwaTag,
 			tag: "pwa-news",
-			src: "./scripts/pwa-elements.js"
+			src: "./scripts/pwa-elements.js"//"./scripts/service/ibpwa-news.js"//"./scripts/pwa-elements.js"
 		}
 	];
 
