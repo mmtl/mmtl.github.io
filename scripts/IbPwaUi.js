@@ -17,6 +17,9 @@ const IbPwaUi = class {
 		this._serviceScript = null;
 		this._serviceTag = null;
 		this._iframeTag = null;
+		this._adSenseScript = null;
+		this._adSenseExecuteScript = null;
+		this._adSenseInsTag = null;
 
 		this._message = null;	// for postMessage
 		this._iframeId = "service_iframe";
@@ -159,6 +162,7 @@ const IbPwaUi = class {
 		this._removeServiceScripts();
 		this._removeIframeTag();
 		this._removeAdScripts();
+		this._removeAdSenseTags();
 		
 		switch (parseInt(type)) {
 		case this.mode.videoAd:
@@ -245,6 +249,7 @@ const IbPwaUi = class {
 		this._naviNextBtn = document.getElementById('navi_next_btn');
 		this._naviCloseBtn = document.getElementById('navi_close_btn');
 		this._copyright = document.getElementById('copyright_container');
+		this._adContainer = document.getElementById('ad_container');
 		this._clockTimer = null;
 
 		this._naviPrevBtn.addEventListener('click', () => {
@@ -306,6 +311,21 @@ const IbPwaUi = class {
 		if (this._iframeTag) {
 			this._blurContainer.removeChild(this._iframeTag);
 			this._iframeTag = null;
+		}
+	}
+
+	_removeAdSenseTags() {
+		if (this._adSenseExecuteScript) {
+			this._adContainer.removeChild(this._adSenseExecuteScript);
+			this._adSenseExecuteScript = null;
+		}
+		if (this._adSenseInsTag) {
+			this._adContainer.removeChild(this._adSenseInsTag);
+			this._adSenseInsTag = null;
+		}
+		if (this._adSenseScript) {
+			this._adContainer.removeChild(this._adSenseScript);
+			this._adSenseScript = null;
 		}
 	}
 
@@ -642,7 +662,25 @@ const IbPwaUi = class {
 	}
 
 	_setAd() {
-		// Picture Ad
+		// AdSense
+		this._adSenseInsTag = document.createElement('ins');
+		this._adSenseInsTag.className = "adsbygoogle";
+		this._adSenseInsTag.style = `display:inline-block;width:${IbPwaConst.adsenses.width};height:${IbPwaConst.adsenses.height}`;
+		this._adSenseInsTag.setAttribute("data-ad-client", IbPwaConst.adsenses.client);
+		this._adSenseInsTag.setAttribute("data-ad-slot", IbPwaConst.adsenses.slot);
+
+		this._adSenseExecuteScript = document.createElement('script');
+		this._adSenseExecuteScript.innerHTML = "(adsbygoogle=window.adsbygoogle || []).push({});";
+
+		this._adSenseScript = document.createElement('script');
+		this._adSenseScript.async = true;
+		this._adSenseScript.src = IbPwaConst.adsenses.url;
+		this._adSenseScript.onload = () => {
+			this._adContainer.appendChild(this._adSenseInsTag);
+			this._adContainer.appendChild(this._adSenseExecuteScript);
+		};
+
+		this._adContainer.appendChild(this._adSenseScript);
 	}
 
 	////////////////////////////////////////////////////////////////////////////////

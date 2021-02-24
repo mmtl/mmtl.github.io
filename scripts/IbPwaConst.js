@@ -28,4 +28,12 @@ export const IbPwaConst = class {
             order: 0
         },
     ];
+
+    static adsenses = {
+        url: "//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js",
+        client: "pub-5624081900886324",
+        slot: "9190084377",
+        width: "300px",
+        height: "250px"
+    };
 };
