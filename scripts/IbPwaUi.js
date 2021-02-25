@@ -201,7 +201,7 @@ const IbPwaUi = class {
 				this._initSignagePlate();
 			}
 			this._setBackground();
-			this._setAd();
+			//this._setAd();
 			this._startSignageAnimation();
 			document.addEventListener('mousemove', this._mousemoveListener);
 		} else if (isVideoAd) {
