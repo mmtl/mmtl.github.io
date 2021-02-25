@@ -680,7 +680,9 @@ const IbPwaUi = class {
 			this._adContainer.appendChild(this._adSenseInsTag);
 			this._adContainer.appendChild(this._adSenseExecuteScript);
 
-			this._hasAdSense();
+			setTimeout(() => {
+				this._hasAdSense();
+			}, 500);
 		};
 
 		this._adContainer.appendChild(this._adSenseScript);
