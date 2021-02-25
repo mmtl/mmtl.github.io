@@ -63,7 +63,7 @@ const IbPwaUi = class {
 			// 2: News
 			type: this.serviceType.pwaTag,
 			tag: "pwa-news",
-			src: "./scripts/service/ibpwa-news.js"//"./scripts/service/ibpwa-news.js"//"./scripts/pwa-elements.js"
+			src: "./scripts/pwa-elements.js"//"./scripts/service/ibpwa-news.js"//"./scripts/pwa-elements.js"
 		}
 	];
 
@@ -201,7 +201,7 @@ const IbPwaUi = class {
 				this._initSignagePlate();
 			}
 			this._setBackground();
-			//this._setAd();
+			this._setAd();
 			this._startSignageAnimation();
 			document.addEventListener('mousemove', this._mousemoveListener);
 		} else if (isVideoAd) {
