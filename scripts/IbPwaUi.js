@@ -668,6 +668,7 @@ const IbPwaUi = class {
 		this._adSenseInsTag.style = `display:inline-block;width:${IbPwaConst.adsenses.width};height:${IbPwaConst.adsenses.height}`;
 		this._adSenseInsTag.setAttribute("data-ad-client", IbPwaConst.adsenses.client);
 		this._adSenseInsTag.setAttribute("data-ad-slot", IbPwaConst.adsenses.slot);
+		this._adSenseInsTag.id = IbPwaConst.adsenses.id;
 
 		this._adSenseExecuteScript = document.createElement('script');
 		this._adSenseExecuteScript.innerHTML = "(adsbygoogle=window.adsbygoogle || []).push({});";
@@ -678,9 +679,29 @@ const IbPwaUi = class {
 		this._adSenseScript.onload = () => {
 			this._adContainer.appendChild(this._adSenseInsTag);
 			this._adContainer.appendChild(this._adSenseExecuteScript);
+
+			this._hasAdSense();
 		};
 
 		this._adContainer.appendChild(this._adSenseScript);
+	}
+
+	_hasAdSense() {
+		const ins = document.getElementById(IbPwaConst.adsenses.id);
+		if (ins) {
+			const adsenseIframe = ins.getElementsByTagName('iframe');
+			if (adsenseIframe && adsenseIframe.length == 1) {
+				const iframeDocument = adsenseIframe[0].contentDocument;
+				if (iframeDocument && iframeDocument.body) {
+					const children = iframeDocument.body.children;
+					if (children) {
+						return children.length > 0;
+					}
+				}
+			}
+		}
+
+		return false;
 	}
 
 	////////////////////////////////////////////////////////////////////////////////

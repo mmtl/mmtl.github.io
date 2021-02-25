@@ -34,6 +34,7 @@ export const IbPwaConst = class {
         client: "pub-5624081900886324",
         slot: "9190084377",
         width: "300px",
-        height: "250px"
+        height: "250px",
+        id: "signage_adsense"
     };
 };
