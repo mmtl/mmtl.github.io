@@ -200,7 +200,7 @@ body {
   height: var(--navi-close-size);
 }
 
-#ad_container {
+#signage_ad_container {
   position: absolute;
   right: var(--ad-container-right);
   bottom: var(--ad-container-bottom);
@@ -211,7 +211,7 @@ body {
   background: white;
 }
 
-#copyright_container {
+#signage_copyright_container {
   position: absolute;
   right: var(--copyright-container-right);
   bottom: var(--copyright-container-bottom);

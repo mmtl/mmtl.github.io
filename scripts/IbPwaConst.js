@@ -37,4 +37,8 @@ export const IbPwaConst = class {
         height: "250px",
         id: "signage_adsense"
     };
+
+    static timer = {
+        updateAppInfo: 60 * 1000,   // msec
+    };
 };

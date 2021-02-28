@@ -29,6 +29,7 @@ const IbPwaUi = class {
 		this._idleRequestIds = [];
 		this._backgroundImageInfo = null;	// Current used IbPwaConst.backgrounds object
 		this._fadeoutTimer = null;
+		this._updateAppinfoTimer = null;
 		this._mousemoveListener = this._playNaviAnimation.bind(this);
 		this._init();
 	}
@@ -62,8 +63,8 @@ const IbPwaUi = class {
 		{
 			// 2: News
 			type: this.serviceType.pwaTag,
-			tag: "pwa-news",
-			src: "./scripts/pwa-elements.js"//"./scripts/service/ibpwa-news.js"//"./scripts/pwa-elements.js"
+			tag: "ibpwa-news",
+			src: "./scripts/service/ibpwa-news.js"//"./scripts/service/ibpwa-news.js"//"./scripts/pwa-elements.js"
 		}
 	];
 
@@ -248,8 +249,8 @@ const IbPwaUi = class {
 		this._naviPrevBtn = document.getElementById('navi_prev_btn');
 		this._naviNextBtn = document.getElementById('navi_next_btn');
 		this._naviCloseBtn = document.getElementById('navi_close_btn');
-		this._copyright = document.getElementById('copyright_container');
-		this._adContainer = document.getElementById('ad_container');
+		this._copyright = document.getElementById('signage_copyright_container');
+		this._adContainer = document.getElementById('signage_ad_container');
 		this._clockTimer = null;
 
 		this._naviPrevBtn.addEventListener('click', () => {
@@ -706,6 +707,24 @@ const IbPwaUi = class {
 		return false;
 	}
 
+	_updateAppInfo() {
+		IbPwaDebug.log(">>> [IbPwaUi] _updateAppInfo...");
+
+		this._startSignageNews()
+		.then(([newsJson, infoJson, imageInfoJson]) => {
+			this._setIbConfig(infoJson);
+			this._setNewsMessage(true, newsJson);
+			this._saveImageInfo(imageInfoJson);
+			IbPwaDebug.log("*** [IbPwaUi] _updateAppInfo is succeeded");
+		})
+		.catch(e => {
+			IbPwaDebug.log("!!! [IbPwaUi] _updateAppInfo is failure");
+			IbPwaDebug.log(e);
+		});
+
+		IbPwaDebug.log("<<< [IbPwaUi] _updateAppInfo...OK");
+	}
+
 	////////////////////////////////////////////////////////////////////////////////
 	// for Video Ad
 	_initVolUiListener(event) {
@@ -829,6 +848,9 @@ const IbPwaUi = class {
 
 		// postMessage handler
 		this._setMessageHandler();
+
+		// update app info timer
+		this._updateAppinfoTimer = setInterval(this._updateAppInfo.bind(this), IbPwaConst.timer.updateAppInfo);
 
 		// test
 		this._test();
