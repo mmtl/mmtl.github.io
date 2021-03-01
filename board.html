@@ -27,9 +27,19 @@
       box-sizing: border-box;
     }
   </style>
-  <script src="https://iwappdev.mytimeline-news.com/cmsupload_dev/app/53/153/ibpwa-news.js"></script>
-  <ibpwa-news></ibpwa-news>
-  <div class="container">
+  <script>
+  	const test = document.getElementById('test');
+  	window.onload = () => {
+  		const sc = document.createElement('script');
+  		sc.src = "https://iwappdev.mytimeline-news.com/cmsupload_dev/app/53/153/ibpwa-news.js";
+  		sc.onload = () => {
+  			const ib = document.createElement('ibpwa-news');
+  			test.appendChild(ib);
+  		};
+  		test.appendChild(test);
+  	};
+  </script>
+  <div class="container" id="test">
     
   </div>
 </body>
