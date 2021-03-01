@@ -547,7 +547,7 @@ const IbPwaUi = class {
 		switch (parseInt(service.type)) {
 		case this.serviceType.pwaTag:
 			this._serviceScript = document.createElement('script');
-			//this._serviceScript.type = "module";
+			this._serviceScript.type = "module";
 			this._serviceScript.src = service.src;
 			this._serviceScript.onload = () => {
 				this._serviceTag = document.createElement(service.tag);
