@@ -556,6 +556,7 @@ const IbPwaUi = class {
 			};
 			this._serviceScript.onerror = () => {
 				IbPwaDebug.log("*** [IbPwaUi] _setSignageService loading script error");
+				this._blurContainer.innerHTML = IbPwaL10n.errors.loadService;
 			};
 			this._blurContainer.appendChild(this._serviceScript);
 			break;

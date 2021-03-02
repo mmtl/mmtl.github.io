@@ -12,4 +12,8 @@ export const IbPwaL10n = class {
         "菊池渓谷 ©AFLO, Hideki Nawate",
         "青い池 ©AFLO"
     ];
+
+    static errors = {
+        loadService: "サービスが読み込めませんでした",
+    };
 };
