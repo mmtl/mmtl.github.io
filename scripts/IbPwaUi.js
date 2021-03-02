@@ -554,6 +554,9 @@ const IbPwaUi = class {
 				this._blurContainer.appendChild(this._serviceTag);
 				this._postMessage();
 			};
+			this._serviceScript.onerror = () => {
+				IbPwaDebug.log("*** [IbPwaUi] _setSignageService loading script error");
+			};
 			this._blurContainer.appendChild(this._serviceScript);
 			break;
 		case this.serviceType.iframe:
