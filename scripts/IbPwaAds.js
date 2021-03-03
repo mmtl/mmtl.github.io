@@ -1,17 +1,14 @@
 import IbPwaController from './IbPwaController.js';
 import IbPwaEvent from './IbPwaEvent.js';
 import IbPwaDebug from './IbPwaDebug.js';
+import { IbPwaConst } from './IbPwaConst.js';
 
 const IbPwaAds = class {
 	constructor() {
-		this._maxVideoMillisecond = 180000;
+		this._maxVideoMillisecond = IbPwaConst.videoAd.maxPlayMillisecond;
 
 		//Fluct TagURL
-		this._adTagUrl = "https://sh.adingo.jp/vast/v3/?G=1000126634&u=1000218210&mimes=video%2Fmp4%2Cvideo%2Fogg%2Cvideo%2Fwebm&protocols=1%2C2%2C3%2C4%2C5%2C6%2C7%2C8&api=1%2C2&href=https%3A%2F%2Fwww.microsoft.com%2Fja-jp%2Fp%2F%25e3%2582%25a4%25e3%2583%25b3%25e3%2583%2595%25e3%2582%25a9%25e3%2583%259c%25e3%2583%25bc%25e3%2583%2589%2F9n6wn9d0gtll%3Frtc%3D1%26activetab%3Dpivot%3Aoverviewtab";
-		// for test
-		this._adTagUrl = "https://sh.adingo.jp/vast/v3/?G=1000126431&u=1000217943&mimes=video%2Fmp4%2Cvideo%2Fogg%2Cvideo%2Fwebm&protocols=1%2C2%2C3%2C4%2C5%2C6%2C7%2C8&api=1%2C2&href=https%3A%2F%2Fwww.microsoft.com%2Fja-jp%2Fp%2F%25e3%2582%25a4%25e3%2583%25b3%25e3%2583%2595%25e3%2582%25a9%25e3%2583%259c%25e3%2583%25bc%25e3%2583%2589%2F9n6wn9d0gtll";
-		// for Freakout
-		this._adTagUrl = "https://ad.rfp.fout.jp/ad?media_id=3828&adspot_id=NTgzOjExNDIx&ad_type=12";
+		this._adTagUrl = IbPwaConst.videoAd.tagUrl;
 
 		this._adDisplayContainer;
 		this._intervalTimer;
