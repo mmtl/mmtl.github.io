@@ -129,14 +129,7 @@ const IbPwaUi = class {
 
 		this._isModeChanged = true;
 		
-		//const mode = parseInt(observerArgs[0]);
-		// --> test code
-		let mode = parseInt(observerArgs[0]);
-		if (isNaN(mode)) {
-			mode = 2;
-		}
-		// <-- test code
-
+		const mode = parseInt(observerArgs[0]);
 		if (this._isValidPlate(mode)) {
 			this._start(mode);
 		} else {
