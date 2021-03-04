@@ -128,7 +128,15 @@ const IbPwaUi = class {
 		this._videoAdPlate.style.display = "none";
 
 		this._isModeChanged = true;
-		const mode = parseInt(observerArgs[0]);
+		
+		//const mode = parseInt(observerArgs[0]);
+		// --> test code
+		let mode = parseInt(observerArgs[0]);
+		if (isNaN(mode)) {
+			mode = 2;
+		}
+		// <-- test code
+
 		if (this._isValidPlate(mode)) {
 			this._start(mode);
 		} else {
