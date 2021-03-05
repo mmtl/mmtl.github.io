@@ -493,10 +493,10 @@ div button {
 .volume_control .volume_slider_container .volume_slider .slider_half {
   width: 100%;
 }
-.volume_control .volume_slider_container .volume_slider .vslider_upper {
+.volume_control .volume_slider_container .volume_slider .slider_upper {
   background-color: #969696;
 }
-.volume_control .volume_slider_container .volume_slider .slslider_downer {
+.volume_control .volume_slider_container .volume_slider .slider_downer {
   background-color: #28aaff;
 }
 .volume_control .volume_slider_container .volume_slider .slider_icon {
