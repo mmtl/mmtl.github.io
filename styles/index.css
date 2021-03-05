@@ -272,97 +272,6 @@ body {
   background: url("../images/ui/close_focus.png") top center / 72px 72px no-repeat content-box;
 }
 
-
-/********************************************************************************/
-#container {
-    display: grid;
-    grid-auto-rows: auto;
-    grid-template-columns: 150px 1fr;
-    grid-gap: 20px;
-    -ms-grid-row-align: 20px;
-    margin: 20px;
-}
-
-.eula_box {
-    margin: 20px;
-    padding: 10px;
-    border: medium solid #000;
-}
-
-#send_data_value {
-    width: 300px;
-}
-
-#input_value {
-    width: 300px;
-}
-
-.two_by_table {
-    display: grid;
-    grid-auto-rows: auto;
-    grid-template-columns: 160px auto;
-}
-
-.two_by_table div {
-    margin-top: 2px;
-    margin-bottom: 2px;
-}
-
-#commands {
-    display: grid;
-    grid-auto-rows: auto;
-    grid-template-columns: 100px 1fr;
-}
-
-#update_stamp {
-    text-decoration-line: underline;
-}
-
-.label {
-    font-weight: bold;
-}
-
-#blocker {
-    width: 100%;
-    margin: 20px;
-}
-
-#blocker span {
-    font-weight: bold;
-}
-
-div button {
-    margin: 4px;
-}
-
-.tab_wrap {
-    width:500px;
-    height: 60px;
-    margin:10px auto;
-}
-
-.tab_area {
-    font-size:0; 
-    margin:0 10px;
-}
-
-.tab_area label {
-    width:150px; 
-    margin:0 5px;
-    display:inline-block; 
-    padding:12px 0; 
-    color:#333; 
-    background:#ddd; 
-    text-align:center; 
-    font-size:13px; 
-    cursor:pointer; 
-    transition:ease 0.2s opacity;
-}
-
-.tab_area label:hover {
-    opacity:0.5;
-}
-
 #video_ad_frame {
   position: absolute;
 	top: 0;
@@ -382,25 +291,6 @@ div button {
   right: 0;
   bottom: 0;
   margin:auto;
-
-
-	/* top:50%;
-	left:50%;
-	transform: translate(-50%, -50%);
-    -webkit-transform: translate(-50%, -50%);
-    -ms-transform: translate(-50%, -50%); */
-
-
-	/* position: relative; */
-	/* text-align: center; */
-
-	/* position: absolute; */
-  /* top: 0px; */
-  /* left: 0px; */
-  /* width: 800px; */
-  /* height: 450px; */
-  /* width: 640px;
-  height: 360px; */
 }
 
 #video_ad_content_element {
@@ -420,29 +310,6 @@ div button {
 	font-size: 30px;
 	color: white;
 }
-/* #playButtonArea{
-	text-align: center;	
-} */
-#playButton {
-	position: absolute;
-
-	bottom:0%;
-  margin-top:10px;
-  vertical-align: top;
-  width: 350px;
-  height: 60px;
-  padding: 0;
-  font-size: 22px;
-  color: white;
-  text-align: center;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
-  background: #2c3e50;
-  border: 0;
-  border-bottom: 2px solid #22303f;
-  cursor: pointer;
-  -webkit-box-shadow: inset 0 -2px #22303f;
-  box-shadow: inset 0 -2px #22303f;
-}
 
 #video_ad_volume_btn {
 	position: absolute;
@@ -456,10 +323,6 @@ div button {
   
 #video_ad_volume_btn.on {
 	background-image: url("../images/ui/sound_click.png");
-}
-
-#contents2{
-	background-color: black;
 }
 
 .volume_control {
@@ -482,6 +345,7 @@ div button {
   margin-bottom: 6px;
   background-color: rgba(0, 0, 0, 0.75);
 }
+
 .volume_control .volume_slider_container .volume_slider {
   position: relative;
   top: 10px;
@@ -490,15 +354,19 @@ div button {
   margin: 0 13px;
   cursor: pointer;
 }
+
 .volume_control .volume_slider_container .volume_slider .slider_half {
   width: 100%;
 }
+
 .volume_control .volume_slider_container .volume_slider .slider_upper {
   background-color: #969696;
 }
+
 .volume_control .volume_slider_container .volume_slider .slider_downer {
   background-color: #28aaff;
 }
+
 .volume_control .volume_slider_container .volume_slider .slider_icon {
   position: absolute;
   left: -3px;
@@ -506,6 +374,7 @@ div button {
   width: 16px;
   height: 16px;
 }
+
 .volume_control .volume_slider_container .volume_value {
   position: absolute;
   right: 0;
