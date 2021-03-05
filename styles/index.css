@@ -490,16 +490,16 @@ div button {
   margin: 0 13px;
   cursor: pointer;
 }
-.volume_control .volume_slider_container .slider_half {
+.volume_control .volume_slider_container .volume_slider .slider_half {
   width: 100%;
 }
-.volume_control .volume_slider_container .vslider_upper {
+.volume_control .volume_slider_container .volume_slider .vslider_upper {
   background-color: #969696;
 }
-.volume_control .volume_slider_container .slslider_downer {
+.volume_control .volume_slider_container .volume_slider .slslider_downer {
   background-color: #28aaff;
 }
-.volume_control .volume_slider_container .slider_icon {
+.volume_control .volume_slider_container .volume_slider .slider_icon {
   position: absolute;
   left: -3px;
   background-image: url('../images/ui/ic_slider.png');
