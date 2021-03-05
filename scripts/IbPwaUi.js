@@ -752,32 +752,7 @@ const IbPwaUi = class {
 	
 	_initVolumeControl() {
 		this._volumeSlider = document.getElementById('volume_slider');
-
-		this._volumeSlider.onmousedown = (event) => {
-			this._sliderSliding = true;
-			_updateVolume(event);
-		};
-
-		this._volumeSlider.onmouseup = (event) => {
-			_updateVolume(event);
-			this._sliderSliding = false;
-		};
-
-		this._volumeSlider.onmouseleave = (event) => {
-			_updateVolume(event);
-			this._sliderSliding = false;
-		};
-
-		this._volumeSlider.onmousemove = (event) => {
-			_updateVolume(event);
-		};
-
-		this._volumeSlider.addEventListener('touchstart', (event) => {
-			this._sliderSliding = true;
-			_updateVolume(event);
-		}, {passive: true});
-
-		const _updateVolume = (event) => {
+		const updateVolume = (event) => {
 			if (this._sliderSliding && event !== undefined) {
 				const rect = this._volumeSlider.getBoundingClientRect();
 				const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
@@ -790,12 +765,35 @@ const IbPwaUi = class {
 					bubbles: true,
 					detail: this._volume * 0.01
 				});
-				// this._volumeSlider.dispatchEvent(setVolEvent);
 				IbPwaEvent.dispatch(IbPwaEvent.event.ads, setVolEvent);
 
 				this._updateVolumeDisplay(this._volume);
 			}
 		}
+
+		this._volumeSlider.onmousedown = (event) => {
+			this._sliderSliding = true;
+			updateVolume(event);
+		};
+
+		this._volumeSlider.onmouseup = (event) => {
+			updateVolume(event);
+			this._sliderSliding = false;
+		};
+
+		this._volumeSlider.onmouseleave = (event) => {
+			updateVolume(event);
+			this._sliderSliding = false;
+		};
+
+		this._volumeSlider.onmousemove = (event) => {
+			updateVolume(event);
+		};
+
+		this._volumeSlider.addEventListener('touchstart', (event) => {
+			this._sliderSliding = true;
+			updateVolume(event);
+		}, {passive: true});
 	}
 
 	_volumeClick() {
