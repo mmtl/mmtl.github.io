@@ -20,10 +20,10 @@ const IbPwaAds = class {
 		IbPwaDebug.log(">>> [IbPwaAds] initialize()...");	
 		IbPwaDebug.log("*** [IbPwaAds] Last update: " + document.lastModified);
 
-		this._videoContent = document.getElementById('contentElement');
+		this._videoContent = document.getElementById('video_ad_content_element');
 		IbPwaEvent.addEventListener(IbPwaEvent.event.ads, "setVolume", this._setVolumeListener.bind(this));
 		IbPwaEvent.addEventListener(IbPwaEvent.event.ads, "clickNextPrevBtn", this._clickNextPrevButton.bind(this));
-		IbPwaController.observe(IbPwaController.event.prepareAds, this._setUpIMA.bind(this));	
+		IbPwaController.observe(IbPwaController.event.prepareAds, this._setUpIMA.bind(this));
 
 		IbPwaDebug.log("<<< [IbPwaAds] initialize()...OK");
 	}
@@ -49,7 +49,7 @@ const IbPwaAds = class {
 	}
 
 	_setUpIMA() {
-		this._adDisplayContainer = new google.ima.AdDisplayContainer(document.getElementById('adContainer'), this._videoContent);
+		this._adDisplayContainer = new google.ima.AdDisplayContainer(document.getElementById('video_ad_display_container'), this._videoContent);
 
 		// Create ads loader.
 		let adsLoader = new google.ima.AdsLoader(this._adDisplayContainer);

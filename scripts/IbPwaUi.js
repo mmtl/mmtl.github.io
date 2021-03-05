@@ -223,10 +223,11 @@ const IbPwaUi = class {
 
 	_initVideoAdPlate() {
 		// Initialize only once
-		this._closeButton = document.getElementById('closeButton');
-		this._nextButton = document.getElementById('nextButton');
-		this._volumeButton = document.getElementById('volume-button');
-		this._prevButton = document.getElementById('prevButton');
+		this._videoAdNaviContainer = document.getElementById('video_ad_navi_container');
+		this._closeButton = document.getElementById('video_ad_close_btn');
+		this._nextButton = document.getElementById('video_ad_next_btn');
+		this._volumeButton = document.getElementById('video_ad_volume_btn');
+		this._prevButton = document.getElementById('video_ad_prev_btn');
 
 		this._closeButton.addEventListener('click', this._clickCloseButton);
 		this._prevButton.addEventListener('click', this._clickPrevButton);
@@ -736,7 +737,7 @@ const IbPwaUi = class {
 	_initVolUiListener(event) {
 		this._updateVolumeDisplay(0);
 		// this._lastVolume = 0;
-		document.getElementById('volume-slider-container').style.visibility = "hidden";
+		document.getElementById('video_ad_volume_slider_container').style.visibility = "hidden";
 		this._volumeButton.classList.remove("on");
 		//document.body.classList.remove("cursor_off");
 	}
@@ -744,16 +745,19 @@ const IbPwaUi = class {
 	//Display button for observer
 	_displayButton() {
 		IbPwaDebug.log(">>> [IbPwaUi] _displayButton...");
-		document.getElementById('defaultText').style.visibility = "hidden";
-		this._prevButton.style.visibility = "visible";
-		this._nextButton.style.visibility = "visible";
+		document.getElementById('video_ad_defaultText').style.visibility = "hidden";
+
+		this._videoAdNaviContainer.style.display = "block";
+
+		//this._prevButton.style.visibility = "visible";
+		//this._nextButton.style.visibility = "visible";
 		this._volumeButton.style.visibility = "visible";
-		this._closeButton.style.visibility = "visible";
+		//this._closeButton.style.visibility = "visible";
 		IbPwaDebug.log("<<< [IbPwaUi] _displayButton...done");
 	}
 	
 	_initVolumeControl() {
-		this._volumeSlider = document.getElementById('volume-slider');
+		this._volumeSlider = document.getElementById('volume_slider');
 		this._volumeSlider.onmousedown = function (event) {
 			this._sliderSliding = true;
 			_updateVolume(event);
@@ -798,7 +802,7 @@ const IbPwaUi = class {
 	_volumeClick() {
 		//Change button
 		this._volumeButton.classList.toggle("on");
-		let vsContainer = document.getElementById('volume-slider-container');
+		let vsContainer = document.getElementById('video_ad_volume_slider_container');
 		if (vsContainer.style.visibility=="visible") {
 			vsContainer.style.visibility = "hidden";
 		} else {
@@ -807,11 +811,11 @@ const IbPwaUi = class {
 	}
 
 	_updateVolumeDisplay(vol) {
-		document.getElementById('slider-upper').style.height = 100 - vol + '%';
-		document.getElementById('slider-downer').style.height = vol + '%';
-		document.getElementById('slider-icon').style.bottom = vol + '%';
-		document.getElementById('slider-icon').style.transform = 'translateY(8px)';
-		document.getElementById('volume-value').innerText = Math.round(vol);
+		document.getElementById('slider_upper').style.height = 100 - vol + '%';
+		document.getElementById('slider_downer').style.height = vol + '%';
+		document.getElementById('slider_icon').style.bottom = vol + '%';
+		document.getElementById('slider_icon').style.transform = 'translateY(8px)';
+		document.getElementById('volume_value').innerText = Math.round(vol);
 	}
 
 	_clickPrevButton() {

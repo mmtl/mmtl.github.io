@@ -15,12 +15,13 @@
 <body style="--bg-image: url('../images/InfoWindow.Resource.Images.IBBG.aflo_AXHA018774.webp');">
   <!-- for Signage Service (signage_bg_container) -->
   <div id="signage_bg_container">
+
     <div id="signage_blur_container">
     </div>
 
     <div id="signage_main_container">
       <div class="signage_content_container">
-
+        <!-- for test -->
         <div id="test_container" style="display:none;">
           <div>
             <button id="test_btn_receive_message" style="margin:10px; padding:4px">receive service message</button>
@@ -50,42 +51,46 @@
       <div id="navi_next_btn"></div>
       <img id="navi_close_btn" src="./images/ui/close_pwa.png" title="閉じる">
     </div>
+
   </div>
 
   <!-- for Video Ad (video_ad_container) -->
   <div id="video_ad_container">
-    <div id="defaultText">
+
+    <div id="video_ad_defaultText">
       本機能はインフォボードとの<br>
       組み合わせでのみ動作します。<br><br>
       ※インフォボードを使用しない場合は<br>
       アンインストールしてください。
     </div>
-    <div id="mainContainer">
-      <div id="content">
-        <video id="contentElement">
+
+    <div id="video_ad_frame">
+      <div id="video_ad_content">
+        <video id="video_ad_content_element">
           <source src=""></source>
         </video>
       </div>
-      <div id="adContainer"></div>
+      <div id="video_ad_display_container"></div>
     </div>
-    <button class="prevButton" id="prevButton"></button>
-    <button class="nextButton" id="nextButton"></button>
-    <button class="closeButton" id="closeButton"></button>
-    <div id="volume-button"></div>
-    <div class="volume-control">
-      <div class="volume-slider-container" id="volume-slider-container">
-        <div class="volume-slider" id="volume-slider">
-          <div class="slider-upper slider-half" id="slider-upper"></div>
-          <div class="slider-downer slider-half" id="slider-downer"></div>
-          <div class="slider-icon" id="slider-icon"></div>
-        </div>
-      <div class="volume-value" id="volume-value"></div>
-    </div>
-    </div>
-  </div>
 
-  <!-- for AdSense crawler -->
-  <!--<script data-ad-client="ca-pub-2167434787537350" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>-->
+    <div id="video_ad_navi_container">
+      <div id="video_ad_prev_btn"></div>
+      <div id="video_ad_next_btn"></div>
+      <div id="video_ad_close_btn"></div>
+
+      <div id="video_ad_volume_btn"></div>
+      <div class="volume_control">
+        <div class="volume_slider_container" id="video_ad_volume_slider_container">
+          <div class="volume_slider" id="volume_slider">
+            <div class="slider_upper slider_half" id="slider_upper"></div>
+            <div class="slider_downer slider_half" id="slider_downer"></div>
+            <div class="slider_icon" id="slider_icon"></div>
+          </div>
+        <div class="volume_value" id="volume_value"></div>
+      </div>
+    </div>
+
+  </div>
 
   <script type="module" src="scripts/IbPwaCore.js"></script>
   <script type="module" src="scripts/IbPwaUi.js"></script>
