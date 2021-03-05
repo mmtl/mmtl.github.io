@@ -6,8 +6,6 @@ import { IbPwaConst } from './IbPwaConst.js';
 const IbPwaAds = class {
 	constructor() {
 		this._maxVideoMillisecond = IbPwaConst.videoAd.maxPlayMillisecond;
-
-		//Fluct TagURL
 		this._adTagUrl = IbPwaConst.videoAd.tagUrl;
 
 		this._adDisplayContainer;

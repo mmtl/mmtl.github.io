@@ -747,11 +747,11 @@ const IbPwaUi = class {
 		IbPwaDebug.log(">>> [IbPwaUi] _displayButton...");
 		document.getElementById('video_ad_defaultText').style.visibility = "hidden";
 
-		this._videoAdNaviContainer.style.display = "block";
+		this._videoAdNaviContainer.style.display = "flex";
 
 		//this._prevButton.style.visibility = "visible";
 		//this._nextButton.style.visibility = "visible";
-		this._volumeButton.style.visibility = "visible";
+		//this._volumeButton.style.visibility = "visible";
 		//this._closeButton.style.visibility = "visible";
 		IbPwaDebug.log("<<< [IbPwaUi] _displayButton...done");
 	}

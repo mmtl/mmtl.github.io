@@ -248,7 +248,7 @@ body {
 }
 
 #video_ad_next_btn {
-  position: relative;
+  position: absolute;
   right: 0;
   width: 36px;
   height: 36px;
@@ -260,7 +260,7 @@ body {
 }
 
 #video_ad_close_btn {
-  position: relative;
+  position: absolute;
   top: 0;
   right: 0;
   width: 72px;
