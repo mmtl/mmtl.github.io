@@ -64,8 +64,7 @@ const IbPwaUi = class {
 			// 2: News
 			type: this.serviceType.pwaTag,
 			tag: "ibpwa-news",
-			src: "https://iwappdev.mytimeline-news.com/cmsupload_dev/app/53/153/ibpwa-news.js"//"./scripts/service/ibpwa-news.js"//"./scripts/pwa-elements.js"
-			// 
+			src: "https://iwappdev.mytimeline-news.com/cmsupload_dev/app/53/153/ibpwa-news.js"
 		}
 	];
 
@@ -748,36 +747,36 @@ const IbPwaUi = class {
 		document.getElementById('video_ad_defaultText').style.visibility = "hidden";
 
 		this._videoAdNaviContainer.style.display = "flex";
-
-		//this._prevButton.style.visibility = "visible";
-		//this._nextButton.style.visibility = "visible";
-		//this._volumeButton.style.visibility = "visible";
-		//this._closeButton.style.visibility = "visible";
 		IbPwaDebug.log("<<< [IbPwaUi] _displayButton...done");
 	}
 	
 	_initVolumeControl() {
 		this._volumeSlider = document.getElementById('volume_slider');
-		this._volumeSlider.onmousedown = function (event) {
+
+		this._volumeSlider.onmousedown = (event) => {
 			this._sliderSliding = true;
 			_updateVolume(event);
-		}.bind(this);
-		this._volumeSlider.onmouseup = function (event) {
+		};
+
+		this._volumeSlider.onmouseup = (event) => {
 			_updateVolume(event);
 			this._sliderSliding = false;
-		}.bind(this);
-		this._volumeSlider.onmouseleave = function (event) {
+		};
+
+		this._volumeSlider.onmouseleave = (event) => {
 			_updateVolume(event);
 			this._sliderSliding = false;
-		}.bind(this);
-		this._volumeSlider.onmousemove = function (event) {
+		};
+
+		this._volumeSlider.onmousemove = (event) => {
 			_updateVolume(event);
-		}.bind(this);
-		this._volumeSlider.addEventListener('touchstart', function (event) {
+		};
+
+		this._volumeSlider.addEventListener('touchstart', (event) => {
 			this._sliderSliding = true;
 			_updateVolume(event);
-		}.bind(this),{passive: true});
-	
+		}, {passive: true});
+
 		const _updateVolume = (event) => {
 			if (this._sliderSliding && event !== undefined) {
 				const rect = this._volumeSlider.getBoundingClientRect();
