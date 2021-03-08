@@ -73,7 +73,7 @@ const IbPwaAds = class {
 		IbPwaDebug.log("*** [IbPwaAds] _setupIMA screen.height=", screen.height);
 		IbPwaDebug.log("*** [IbPwaAds] _setupIMA document.body.clientWidth=", document.body.clientWidth);
 		IbPwaDebug.log("*** [IbPwaAds] _setupIMA document.body.clientHeight=", document.body.clientHeight);		
-		// 2画面の時だけdocument.body.clientHeightが全画面より小さい数字が取れてしまうため、screen.heightを使うようにする
+		// Use screen.height because document.body.clientHeight will get a smaller number than full screen only when using two screens.
 		adsRequest.linearAdSlotWidth = screen.width;
 		adsRequest.linearAdSlotHeight = screen.height;
 		adsRequest.nonLinearAdSlotWidth = screen.width;

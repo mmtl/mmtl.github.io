@@ -223,6 +223,8 @@ const IbPwaUi = class {
 	_initVideoAdPlate() {
 		// Initialize only once
 		this._videoAdNaviContainer = document.getElementById('video_ad_navi_container');
+
+		// Buttons
 		this._closeButton = document.getElementById('video_ad_close_btn');
 		this._nextButton = document.getElementById('video_ad_next_btn');
 		this._volumeButton = document.getElementById('video_ad_volume_btn');
@@ -233,10 +235,17 @@ const IbPwaUi = class {
 		this._nextButton.addEventListener('click', this._clickNextButton);
 		this._volumeButton.addEventListener('click', this._volumeClick.bind(this));
 
+		// Volumes
+		this._volumeContainer = document.getElementById('video_ad_volume_container');
+		this._inputSlider = document.getElementById('video_ad_volume');
+		this._fillRect = document.getElementById('video_ad_slider_fill_rect');
+		this._sliderCounter = document.getElementById('video_ad_volume_label');
+
+		this._inputSlider.addEventListener('input', this._moveVolumeSlider.bind(this));
+
+		// Events
 		IbPwaController.observe(IbPwaController.event.showUI, this._displayButton.bind(this));
 		IbPwaEvent.addEventListener(IbPwaEvent.event.ads, "initVolumeUi", this._initVolUiListener.bind(this));
-
-		this._initVolumeControl();
 
 		this._isVideoAdInitialized = true;
 	}
@@ -246,7 +255,7 @@ const IbPwaUi = class {
 		this._blurContainer = document.getElementById('signage_blur_container');
 		this._clockMinute = document.getElementById('clock_minute');
 		this._clockHour = document.getElementById('clock_hour');
-		this._clockDate = document.getElementById('clock_date');
+		this._clockDate = document.getElementById('signage_clock_date');
 		this._bgContainer = document.getElementById('signage_bg_container');
 		this._naviPrevBtn = document.getElementById('navi_prev_btn');
 		this._naviNextBtn = document.getElementById('navi_next_btn');
@@ -332,14 +341,14 @@ const IbPwaUi = class {
 		}
 	}
 
-	async _startSignageNews() {
-		IbPwaDebug.log(">>> [IbPwaUi] _startSignageNews()...");
+	async _loadSignageData() {
+		IbPwaDebug.log(">>> [IbPwaUi] _loadSignageData()...");
 		const [newsJson, infoJson, imageInfoJson] = await Promise.all([
 			IbPwaController.request(IbPwaController.requestType.news),
 			IbPwaController.request(IbPwaController.requestType.appInfo),
 			IbPwaUiService.getImageInfo()
 		]);
-		IbPwaDebug.log("<<< [IbPwaUi] _startSignageNews()...OK");
+		IbPwaDebug.log("<<< [IbPwaUi] _loadSignageData()...OK");
 
 		return [newsJson, infoJson, imageInfoJson];
 	}
@@ -393,19 +402,19 @@ const IbPwaUi = class {
 
 		switch (parseInt(mode)) {
 		case this.mode.signageNews:
-			this._startSignageNews()
+			this._loadSignageData()
 			.then(([newsJson, infoJson, imageInfoJson]) => {
 				this._setIbConfig(infoJson);
 				this._setNewsMessage(true, newsJson);
 				this._saveImageInfo(imageInfoJson);
 				this._setIdleRequest();
-				IbPwaDebug.log("*** [IbPwaUi] _startSignageNews is succeeded");
+				IbPwaDebug.log("*** [IbPwaUi] _loadSignageData is succeeded");
 				IbPwaDebug.log(this._message);
 				
 				this._setPlate(mode);
 			})
 			.catch(e => {
-				IbPwaDebug.log("!!! [IbPwaUi] _startSignageNews is failure");
+				IbPwaDebug.log("!!! [IbPwaUi] _loadSignageData is failure");
 				IbPwaDebug.log(e);
 
 				this._isModeChanged = true;
@@ -716,7 +725,7 @@ const IbPwaUi = class {
 	_updateAppInfo() {
 		IbPwaDebug.log(">>> [IbPwaUi] _updateAppInfo...");
 
-		this._startSignageNews()
+		this._loadSignageData()
 		.then(([newsJson, infoJson, imageInfoJson]) => {
 			this._setIbConfig(infoJson);
 			this._setNewsMessage(true, newsJson);
@@ -734,14 +743,14 @@ const IbPwaUi = class {
 	////////////////////////////////////////////////////////////////////////////////
 	// for Video Ad
 	_initVolUiListener(event) {
-		this._updateVolumeDisplay(0);
-		// this._lastVolume = 0;
-		document.getElementById('video_ad_volume_slider_container').style.visibility = "hidden";
+		this._volumeContainer.style.display = "none";
 		this._volumeButton.classList.remove("on");
-		//document.body.classList.remove("cursor_off");
+		this._inputSlider.value = 0;
+		this._fillRect.style.height = "0";
+		this._sliderCounter.innerHTML = "0";
 	}
 
-	//Display button for observer
+	// Observer for showUI command
 	_displayButton() {
 		IbPwaDebug.log(">>> [IbPwaUi] _displayButton...");
 		document.getElementById('video_ad_defaultText').style.visibility = "hidden";
@@ -749,70 +758,10 @@ const IbPwaUi = class {
 		this._videoAdNaviContainer.style.display = "flex";
 		IbPwaDebug.log("<<< [IbPwaUi] _displayButton...done");
 	}
-	
-	_initVolumeControl() {
-		this._volumeSlider = document.getElementById('volume_slider');
-		const updateVolume = (event) => {
-			if (this._sliderSliding && event !== undefined) {
-				const rect = this._volumeSlider.getBoundingClientRect();
-				const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-				const offsetTop = rect.top + scrollTop;
-				const val = 100 - (((event.clientY || event.touches[0].clientY) - offsetTop) / this._volumeSlider.getBoundingClientRect().height) * 100;
-				this._volume = parseInt(Math.max(Math.min(val, 100), 0).toFixed(1), 10);
-
-				IbPwaDebug.log("*** [IbPwaUi] setVolumeFromUpdateVolume=", this._volume*0.01);
-				const setVolEvent = new CustomEvent('setVolume', {
-					bubbles: true,
-					detail: this._volume * 0.01
-				});
-				IbPwaEvent.dispatch(IbPwaEvent.event.ads, setVolEvent);
-
-				this._updateVolumeDisplay(this._volume);
-			}
-		}
-
-		this._volumeSlider.onmousedown = (event) => {
-			this._sliderSliding = true;
-			updateVolume(event);
-		};
-
-		this._volumeSlider.onmouseup = (event) => {
-			updateVolume(event);
-			this._sliderSliding = false;
-		};
-
-		this._volumeSlider.onmouseleave = (event) => {
-			updateVolume(event);
-			this._sliderSliding = false;
-		};
-
-		this._volumeSlider.onmousemove = (event) => {
-			updateVolume(event);
-		};
-
-		this._volumeSlider.addEventListener('touchstart', (event) => {
-			this._sliderSliding = true;
-			updateVolume(event);
-		}, {passive: true});
-	}
 
 	_volumeClick() {
-		//Change button
 		this._volumeButton.classList.toggle("on");
-		let vsContainer = document.getElementById('video_ad_volume_slider_container');
-		if (vsContainer.style.visibility=="visible") {
-			vsContainer.style.visibility = "hidden";
-		} else {
-			vsContainer.style.visibility = "visible";
-		}
-	}
-
-	_updateVolumeDisplay(vol) {
-		document.getElementById('slider_upper').style.height = 100 - vol + '%';
-		document.getElementById('slider_downer').style.height = vol + '%';
-		document.getElementById('slider_icon').style.bottom = vol + '%';
-		document.getElementById('slider_icon').style.transform = 'translateY(8px)';
-		document.getElementById('volume_value').innerText = Math.round(vol);
+		this._volumeContainer.style.display = this._volumeContainer.style == "none" ? "block" : "none";
 	}
 
 	_clickPrevButton() {
@@ -835,6 +784,24 @@ const IbPwaUi = class {
 		IbPwaDebug.log(">>> [IbPwaUi] send signageTermination event...");
 		IbPwaController.send(IbPwaController.event.signageTermination);
 		IbPwaDebug.log("<<< [IbPwaUi] send signageTermination event...OK");
+	}
+
+	_moveVolumeSlider() {
+		const value = this._inputSlider.value;
+		this._sliderCounter.innerHTML = value;
+
+		// "*2" means input slider element's height is 200px (slider range is 0-100), "16" means thumb's height.
+		let height = value * 2 - 16 * (value / 100) - 1;
+		if (height < 0) {
+			height = 0;
+		}
+		this._fillRect.style.height = height;
+
+		IbPwaDebug.log("*** [IbPwaUi] _moveVolumeSlider value is " + value);
+		const setVolEvent = new CustomEvent('setVolume', {
+			detail: value * 0.01	// [0.0, 0.1, ..., 0.9, 1.0]
+		});
+		IbPwaEvent.dispatch(IbPwaEvent.event.ads, setVolEvent);
 	}
 
 	////////////////////////////////////////////////////////////////////////////////
@@ -860,7 +827,7 @@ const IbPwaUi = class {
 		this._updateAppinfoTimer = setInterval(this._updateAppInfo.bind(this), IbPwaConst.timer.updateAppInfo);
 
 		// test
-		this._test();
+		//this._test();
 		
 		IbPwaDebug.log("<<< [IbPwaUi] initialize()...OK");
 	}

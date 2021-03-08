@@ -1,15 +1,14 @@
-<!-- [Update] 2021/02/05 11:26 -->
+<!-- Last update: 2021/03/08 16:26 -->
 <html lang="ja">
 <head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# website: http://ogp.me/ns/website#">
-	<meta charset="utf-8">
-	<meta name="format-detection" content="telephone=no">
-	<meta name="viewport" content="width=device-width, initial-scale=1">    
-  <meta name="robots" content="noindex,nofollow,noarchive">
-	<link rel="icon" type="image/png" href="images/favicon.ico">
-	<link rel="manifest" href="manifest.json">
-	<title>test</title><!--インフォボードサイネージアドイン-->
+  <meta charset="utf-8">
+  <meta name="format-detection" content="telephone=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/png" href="images/favicon.ico">
+  <link rel="manifest" href="manifest.json">
+  <title>test</title><!--インフォボードサイネージアドイン-->
   <link rel="preload" as="image" href="./images/InfoWindow.Resource.Images.IBBG.aflo_AXHA018774.webp">
-	<link rel="stylesheet" href="styles/index.css">
+  <link rel="stylesheet" href="styles/index.css">
 </head>
 
 <body style="--bg-image: url('../images/InfoWindow.Resource.Images.IBBG.aflo_AXHA018774.webp');">
@@ -22,6 +21,7 @@
     <div id="signage_main_container">
       <div class="signage_content_container">
         <!-- for test -->
+        <!--
         <div id="test_container" style="display:none;">
           <div>
             <button id="test_btn_receive_message" style="margin:10px; padding:4px">receive service message</button>
@@ -37,9 +37,10 @@
           </div>
           <div id="test_image_block"></div>
         </div>
+        -->
 
-        <div id="clock"><span id="clock_hour"></span> <span id="clock_separator">:</span> <span id="clock_minute"></span></div>
-        <div id="clock_date"></div>
+        <div id="signage_clock"><span id="clock_hour"></span> <span id="clock_separator">:</span> <span id="clock_minute"></span></div>
+        <div id="signage_clock_date"></div>
 
         <div id="signage_ad_container"></div>
         <div id="signage_copyright_container">河口湖 富士山 ©AFLO, Hideaki Tanaka</div>
@@ -79,15 +80,13 @@
       <div id="video_ad_close_btn"></div>
 
       <div id="video_ad_volume_btn"></div>
-      <div class="volume_control">
-        <div class="volume_slider_container" id="video_ad_volume_slider_container">
-          <div class="volume_slider" id="volume_slider">
-            <div class="slider_upper slider_half" id="slider_upper"></div>
-            <div class="slider_downer slider_half" id="slider_downer"></div>
-            <div class="slider_icon" id="slider_icon"></div>
-          </div>
-        <div class="volume_value" id="volume_value"></div>
+
+      <div id="video_ad_volume_container" style="display:none;">
+        <input type="range" id="video_ad_volume" class="video_ad_volume_slider_vertical" min="0" max="100" value="0">
+        <div id="video_ad_volume_label">0</div>
+        <div id="video_ad_slider_fill_rect"></div>
       </div>
+
     </div>
 
   </div>
