@@ -761,7 +761,7 @@ const IbPwaUi = class {
 
 	_volumeClick() {
 		this._volumeButton.classList.toggle("on");
-		this._volumeContainer.style.display = this._volumeContainer.style == "none" ? "block" : "none";
+		this._volumeContainer.style.display = this._volumeContainer.style.display == "none" ? "block" : "none";
 	}
 
 	_clickPrevButton() {
