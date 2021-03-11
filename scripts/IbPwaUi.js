@@ -64,7 +64,7 @@ const IbPwaUi = class {
 			// 2: News
 			type: this.serviceType.pwaTag,
 			tag: "ibpwa-news",
-			src: "https://iwappdev.mytimeline-news.com/cmsupload_dev/app/53/153/ibpwa-news.js"
+			src: "https://iwappdev.mytimeline-news.com/cmsupload_dev/app/53/1/ibpwa-news.js"
 		}
 	];
 

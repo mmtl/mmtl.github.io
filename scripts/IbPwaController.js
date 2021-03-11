@@ -60,6 +60,8 @@ const IbPwaController = class {
         appInfo: "/api/v1/info"
     };
 
+    commandValidityTime = 10 * 1000;    // msec
+
     _init() {
 		IbPwaDebug.log("*** [IbPwaController] Last update: " , document.lastModified);
 
@@ -171,8 +173,8 @@ const IbPwaController = class {
         if (commands["a"] && commands["t"]) {
             const current = new Date();
             const reception = new Date(parseInt(commands["t"]));
-            if (current - reception > 5 * 1000) {
-                IbPwaDebug.log("!!! [IbPwaController] _handshakeEventHandler reception error");
+            if (current - reception > this.commandValidityTime) {
+                IbPwaDebug.log("!!! [IbPwaController] _handshakeEventHandler reception error (The validity time of the issued command has expired.)");
                 return;
             }
 
