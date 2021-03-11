@@ -77,12 +77,41 @@ body {
     border-style: none;
 }
 
+/* (1920x1080) Full HD Display -> 4K(3840x2160) */
+@media screen and (max-width: 3840px) {
+    :root {
+      --clock-right: 53px;
+      --clock-bottom: 160px;
+      --clock-font-size: 167px;
+      --clock-line-height: 222px;
+      --clock-date-font-size: 44px;
+      --clock-date-line-height: 73px;
+      --clock-date-right: 52px;
+      --clock-date-bottom: 101px;
+  }
+  }
+  
+  /* (1366x768) WXGA Display */
+  @media screen and (max-width: 1366px) {
+    :root {
+        --clock-right: 38px;
+        --clock-bottom: 114px;
+        --clock-font-size: 119px;
+        --clock-line-height: 158px;
+        --clock-date-font-size: 32px;
+        --clock-date-line-height: 52px;
+        --clock-date-right: 37px;
+        --clock-date-bottom: 72px;
+    }
+  }
+ 
+
 #clock {
     position: absolute;
-    right: 90px;
-    bottom: 130px;
-    font-size: 6vmax;
-    line-height: 6vmax;
+    right: var(--clock-right);
+    bottom: var(--clock-bottom);
+    font-size: var(--clock-font-size);
+    line-height: var(--clock-line-height);
 }
 
 #clock_separator {
@@ -91,9 +120,10 @@ body {
 
 #clock_date {
     position: absolute;
-    right: 90px;
-    bottom: 84px;
-    font-size: 26px;
+    right: var(--clock-date-right);
+    bottom: var(--clock-date-bottom);
+    font-size: var(--clock-date-font-size);
+    line-height: var(--clock-date-line-height);
 }
 
 @keyframes secondClock {

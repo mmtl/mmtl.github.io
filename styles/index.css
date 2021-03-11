@@ -119,8 +119,8 @@ body {
   align-items: center;
 }
 
-/* (1920x1080) Full HD Display */
-@media screen and (max-width: 1920px) {
+/* (1920x1080) Full HD Display -> (3840x2160) 4K */
+@media screen and (max-width: 3840px) {
   :root {
     --navi-prev-size: 51px;
     --navi-next-size: 51px;
