@@ -60,7 +60,7 @@ const IbPwaController = class {
         appInfo: "/api/v1/info"
     };
 
-    commandValidityTime = 10 * 1000;    // msec
+    commandValidityTime = 30 * 1000;    // msec
 
     _init() {
 		IbPwaDebug.log("*** [IbPwaController] Last update: " , document.lastModified);
