@@ -1,5 +1,5 @@
-const SW_VERSION = 2;
-const CACHE_NAME = 'static-cache-v' + SW_VERSION;
+const SW_VERSION = 3;
+const CACHE_NAME = 'static-cache-v3';
 const FILES_TO_CACHE = [
     './index.html',
     './styles/index.css',
