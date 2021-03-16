@@ -78,7 +78,7 @@ self.addEventListener('fetch', (event) => {
                 if (SW_DEBUG) console.log('[ServiceWorker] Fetch returns cached response of ' + requestUrl);
                 return cachedResponse;
             } else {
-                return fetch(event.request);
+                return fetch(event.request, {cache: "no-cache"});
             }
         })
     );
