@@ -48,7 +48,13 @@ export const IbPwaConst = class {
         // test
         //tagUrl: "https://sh.adingo.jp/vast/v3/?G=1000126431&u=1000217943&mimes=video%2Fmp4%2Cvideo%2Fogg%2Cvideo%2Fwebm&protocols=1%2C2%2C3%2C4%2C5%2C6%2C7%2C8&api=1%2C2&href=https%3A%2F%2Fwww.microsoft.com%2Fja-jp%2Fp%2F%25e3%2582%25a4%25e3%2583%25b3%25e3%2583%2595%25e3%2582%25a9%25e3%2583%259c%25e3%2583%25bc%25e3%2583%2589%2F9n6wn9d0gtll",
         // freakout
-        tagUrl: "https://ad.rfp.fout.jp/ad?media_id=3828&adspot_id=NTgzOjExNDIx&ad_type=12",
+        //tagUrl: "https://ad.rfp.fout.jp/ad?media_id=3828&adspot_id=NTgzOjExNDIx&ad_type=12",
+        // Dummy
+        tagUrl: 'https://pubads.g.doubleclick.net/gampad/ads?' +
+        'sz=640x480&iu=/124319096/external/single_ad_samples&ciu_szs=300x250&' +
+        'impl=s&gdfp_req=1&env=vp&output=vast&unviewed_position_start=1&' +
+        'cust_params=deployment%3Ddevsite%26sample_ct%3Dlinear&correlator=',
+
         maxPlayMillisecond: 180000
     };
 };
