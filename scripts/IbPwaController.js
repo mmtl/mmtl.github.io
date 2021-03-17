@@ -158,7 +158,7 @@ const IbPwaController = class {
     }
 
     _handshakeEventHandler(data) {
-        IbPwaDebug.log(">>> [IbPwaController] _handshakeEventHandler");
+        IbPwaDebug.log(">>> [IbPwaController] _handshakeEventHandler...");
 
         let commands = {};
         data.split('&').map(param => {
@@ -195,6 +195,8 @@ const IbPwaController = class {
                 break;
             }
         }
+
+        IbPwaDebug.log("<<< [IbPwaController] _handshakeEventHandler...OK");
     }
 
     _startHandshake() {
@@ -461,7 +463,7 @@ const IbPwaController = class {
                         reject(["", ""]);        
                     });
                 } else {
-                    // rss(json)
+                    // rss(json) or imageInfo
                     IbPwaDebug.log("*** [IbPwaController] request got response");
                     res.text()
                     .then(text => {
