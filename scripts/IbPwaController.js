@@ -33,7 +33,6 @@ const IbPwaController = class {
         signageTermination: 10004,
         adClick: 10005,
         modeChanged: 10006,
-        swUpdated: 90000
     };
 
     message = {
