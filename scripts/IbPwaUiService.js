@@ -19,10 +19,13 @@ export const IbPwaUiService = class {
     static async getImageInfo() {
 		const info = await IbPwaController.request(IbPwaController.requestType.image)
 		.then(jsonInfo => {
-            const json = JSON.parse(jsonInfo);
-			IbPwaDebug.log("*** [IbPwaUiService] getImageInfo is succeeded");
-			IbPwaDebug.log(json);
-			return json;
+			if (jsonInfo && jsonInfo != void 0) {
+				const json = JSON.parse(jsonInfo);
+				IbPwaDebug.log("*** [IbPwaUiService] getImageInfo is succeeded");
+				IbPwaDebug.log(json);
+				return json;	
+			}
+			return null;
 		})
 		.catch(e => {
 			IbPwaDebug.log("!!! [IbPwaUiService] request is failure");
