@@ -1,4 +1,4 @@
-// ver.20210201
+// ver.20210318
 const ibpwaTimeout = 10; // sec
 if (localStorage) {
     if (localStorage.getItem("ps") != 1) {
@@ -28,7 +28,7 @@ if (localStorage) {
             localStorage.setItem("bgt", mediaType);
         }
 
-        let mode = 0;
+        let mode = 1;
         if (p) {
             mode = parseInt(p);
         }
