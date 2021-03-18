@@ -16,7 +16,7 @@ if (localStorage) {
             console.log("date    = " + date.toString());
             console.log("current = " + current.toString());
 
-            if (current - date <= 5 * 1000) {
+            if (current - date <= ibpwaTimeout * 1000) {
                 localStorage.setItem("hs", hs);
                 localStorage.setItem("t", t);
             }
