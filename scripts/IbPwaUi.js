@@ -360,10 +360,12 @@ const IbPwaUi = class {
 		this._message.error = this.message.error.success;
 		this._message.data = isStart ? newsJson : null;
 
-		this._message.config.guid = this._ibConfig.guid;
-		this._message.config.appVer = this._ibConfig.appVer;
-		this._message.config.setting.isMeasurement = this._ibConfig.setting.isMeasurement;
-		this._message.config.setting.cyclicInterval = this._ibConfig.setting.cyclicInterval;
+		if (this._ibConfig && this._ibConfig != void 0) {
+			this._message.config.guid = this._ibConfig.guid;
+			this._message.config.appVer = this._ibConfig.appVer;
+			this._message.config.setting.isMeasurement = this._ibConfig.setting.isMeasurement;
+			this._message.config.setting.cyclicInterval = this._ibConfig.setting.cyclicInterval;	
+		}
 	}
 
 	_setIbConfig(infoJson) {
@@ -729,9 +731,18 @@ const IbPwaUi = class {
 
 		this._loadSignageData()
 		.then(([newsJson, infoJson, imageInfoJson]) => {
-			this._setIbConfig(infoJson);
-			this._setNewsMessage(true, newsJson);
-			this._saveImageInfo(imageInfoJson);
+			if (infoJson && infoJson != void 0) {
+				IbPwaDebug.log("** [IbPwaUi] _updateAppInfo sets IbConfig");
+				this._setIbConfig(infoJson);
+			}
+			if (newsJson && newsJson != void 0) {
+				IbPwaDebug.log("** [IbPwaUi] _updateAppInfo sets News message");
+				this._setNewsMessage(true, newsJson);
+			}
+			if (imageInfoJson && imageInfoJson != void 0) {
+				IbPwaDebug.log("** [IbPwaUi] _updateAppInfo sets Image info");
+				this._saveImageInfo(imageInfoJson);
+			}
 			IbPwaDebug.log("*** [IbPwaUi] _updateAppInfo is succeeded");
 		})
 		.catch(e => {
