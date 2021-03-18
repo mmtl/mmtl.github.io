@@ -367,7 +367,9 @@ const IbPwaUi = class {
 	}
 
 	_setIbConfig(infoJson) {
-		this._ibConfig = JSON.parse(infoJson);
+		if (infoJson && infoJson != void 0) {
+			this._ibConfig = JSON.parse(infoJson);
+		}
 	}
 
 	_saveImageInfo(imageInfoJson) {
