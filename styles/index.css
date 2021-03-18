@@ -242,6 +242,7 @@ body {
   height: 100%;
   overflow: hidden;
   display: none;
+  background: black;
 }
 
 #video_ad_navi_container {
