@@ -203,7 +203,8 @@ const IbPwaUi = class {
 				this._initSignagePlate();
 			}
 			this._setBackground();
-			this._setAd();
+			// Turning off the ad feature as a temporary measure because Google's response is not on schedule.
+			//this._setAd();
 			this._startSignageAnimation();
 			document.addEventListener('mousemove', this._mousemoveListener);
 		} else if (isVideoAd) {

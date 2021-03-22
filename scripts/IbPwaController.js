@@ -77,6 +77,21 @@ const IbPwaController = class {
 
             this._observer.clear();
         });
+
+        /*
+        window.addEventListener('offline', () => {
+            if (this._connection != null) {
+                this._connection.close();
+                this._connection = null;
+            }
+
+            IbPwaStorage.removeItem("ps");
+        });
+
+        window.addEventListener('online', () => {
+            this.initialize();
+        });
+        */
     }
 
     _isFunction(obj, notArrow) {
