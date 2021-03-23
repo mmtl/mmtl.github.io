@@ -93,7 +93,7 @@ export const IbPwaUiService = class {
 	}
 
     static saveBackgroundImages(file) {
-		const url = `../images/${file}`;
+		const url = `images/${file}`;//`../images/${file}`;
 		IbPwaController.requestExternal(url)
 		.then(res => {
 			const contentType = res.headers.get("Content-type");
