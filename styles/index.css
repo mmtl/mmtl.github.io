@@ -15,6 +15,10 @@ body {
 	background-color: black;
 }
 
+:root {
+  --bg-image: url('../images/InfoWindow.Resource.Images.IBBG.aflo_AXHA018774.webp');
+}
+
 /********************************************************************************/
 /* for Signage Service */
 #signage_bg_container, #signage_blur_container:before {
