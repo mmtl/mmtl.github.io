@@ -630,6 +630,7 @@ const IbPwaUi = class {
 	}
 
 	_selectDefaultBackground() {
+		IbPwaDebug.log(">>> [IbPwaUi] _selectDefaultBackground...");
 		let images = [];
 		for (const background of IbPwaConst.backgrounds.sort((a, b) => {a.order - b.order})) {
 			const image = IbPwaStorage.getItem(background.name);
@@ -641,9 +642,13 @@ const IbPwaUi = class {
 		if (images.length > 0) {
 			const index = Math.floor(Math.random() * Math.floor(images.length));
 			this._backgroundImageInfo = images[index];
+			IbPwaDebug.log("*** [IbPwaUi] found storage image - " + this._backgroundImageInfo.name);
+			IbPwaDebug.log("<<< [IbPwaUi] _selectDefaultBackground...");
 			return true;	
 		}
 
+		IbPwaDebug.log("*** [IbPwaUi] No storaged image");
+		IbPwaDebug.log("<<< [IbPwaUi] _selectDefaultBackground...OK");
 		return false;
 	}
 
