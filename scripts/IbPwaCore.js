@@ -24,7 +24,7 @@ const IbPwaCore = class {
             });
 
             navigator.serviceWorker.addEventListener('message', (event) => {
-                IbPwaDebug.log('*** [IbPwaCore] Message received from Servie worker.');
+                IbPwaDebug.log('*** [IbPwaCore] Message received from Service worker.');
                 const messageData = event.data;
                 if (messageData.activated && messageData.activated == true) {
                     IbPwaDebug.log("*** [IbPwaCore] Service worker cache is updated, so starts to reload.");
