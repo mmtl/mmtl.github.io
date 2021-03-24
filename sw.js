@@ -56,7 +56,6 @@ self.addEventListener('activate', (event) => {
                 if (url.pathname.indexOf("index.html") >= 0) {
                     if (SW_DEBUG) console.log('[ServiceWorker] Post message activated');
                     client.postMessage({'activated': true});
-                    break;
                 }
             });
         })
