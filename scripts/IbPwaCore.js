@@ -11,9 +11,9 @@ const IbPwaCore = class {
                     IbPwaDebug.log('*** [IbPwaCore] Service worker registered.', reg);
 
                     reg.onupdatefound = () => {
-                        IbPwaDebug.log("*** [IbPwaCore] Service worker is updated.");
+                        IbPwaDebug.log("*** [IbPwaCore] Service worker is updated, so starts to reload.");
                         IbPwaDebug.log("<<< [IbPwaCore] registServiceWorker...OK");
-                        window.location.reload(true);
+                        window.location.reload();
                     };
                 })
                 .catch((err) => {
