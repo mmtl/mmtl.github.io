@@ -26,7 +26,7 @@ self.addEventListener('install', (event) => {
         caches.open(CACHE_NAME).then((cache) => {
             if (SW_DEBUG) console.log('[ServiceWorker] Pre-caching offline page');
             return cache.addAll(FILES_TO_CACHE);
-        })   
+        })
     );
 
     self.skipWaiting();
@@ -48,6 +48,19 @@ self.addEventListener('activate', (event) => {
     );
     
     self.clients.claim();
+
+    event.waitUntil(
+        clients.matchAll().then((clients) => {
+            clients.array.forEach(client => {
+                const url = new URL(client.url);
+                if (url.pathname.indexOf("index.html") >= 0) {
+                    if (SW_DEBUG) console.log('[ServiceWorker] Post message activated');
+                    client.postMessage({'activated': true});
+                    break;
+                }
+            });
+        })
+    );
 });
 
 const handleErrors = (res) => {
