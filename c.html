@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>Color</title>
+<script>
+let clickToggle = false;
+window.addEventListener('load', () => {
+	let index = 0;
+	let colors = ["#009ce7", "#e6007c", "#fff100", "#091f84", "#009144", "#e60118", "#7ccef4", "#f19fc5", "#fff89d", "#8d85be", "#89c89d", "#f59c7e", "#90827f"];
+	window.addEventListener('click', () => {
+		document.body.style.background = colors[index++];
+		if (index >= colors.length) {
+			index = 0;
+		}
+	});
+
+});
+</script>
+</head>
+<body>
+</body>
+</html>
