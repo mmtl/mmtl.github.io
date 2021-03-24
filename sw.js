@@ -51,7 +51,7 @@ self.addEventListener('activate', (event) => {
 
     event.waitUntil(
         clients.matchAll().then((clients) => {
-            clients.array.forEach(client => {
+            clients.forEach(client => {
                 const url = new URL(client.url);
                 if (url.pathname.indexOf("index.html") >= 0) {
                     if (SW_DEBUG) console.log('[ServiceWorker] Post message activated');
