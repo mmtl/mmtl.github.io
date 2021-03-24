@@ -9,6 +9,12 @@ const IbPwaCore = class {
                 navigator.serviceWorker.register('./sw.js')
                 .then((reg) => {
                     IbPwaDebug.log('*** [IbPwaCore] Service worker registered.', reg);
+
+                    reg.onupdatefound = () => {
+                        IbPwaDebug.log("*** [IbPwaCore] Service worker is updated.");
+                        IbPwaDebug.log("<<< [IbPwaCore] registServiceWorker...OK");
+                        window.location.reload(true);
+                    };
                 })
                 .catch((err) => {
                     IbPwaDebug.log('!!! [IbPwaCore] Service worker did not register.', err);
