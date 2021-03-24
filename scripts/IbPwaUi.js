@@ -92,6 +92,7 @@ const IbPwaUi = class {
 	_init() {
 		this._signagePlate = document.getElementById('signage_bg_container');
 		this._videoAdPlate = document.getElementById('video_ad_container');
+		this._notificationContainer = document.getElementById('notification_container');
 
 		this._initMessage();
 		this._setIdleRequest();
@@ -139,6 +140,10 @@ const IbPwaUi = class {
 	}
 
 	_isValidPlate(type) {
+		if (type == null) {
+			return false;
+		}
+
 		for (let key in this.mode) {
             const value = this.mode[key];
             if (value === parseInt(type)) {
@@ -402,11 +407,16 @@ const IbPwaUi = class {
 		return [infoJson];
 	}
 
+	_displayNotificationContainer(isDisplay) {
+		this._notificationContainer.style.display = isDisplay ? "flex" : "none";
+	}
+
 	_start(mode) {
 		IbPwaDebug.log(">>> [IbPwaUi] _start()...");
 
 		switch (parseInt(mode)) {
 		case this.mode.signageNews:
+			this._displayNotificationContainer(false);
 			this._loadSignageData()
 			.then(([newsJson, infoJson, imageInfoJson]) => {
 				this._setIbConfig(infoJson);
@@ -427,6 +437,7 @@ const IbPwaUi = class {
 			});
 			break;
 		case this.mode.videoAd:
+			this._displayNotificationContainer(false);
 			if (this._isModeChanged) {
 				IbPwaDebug.log("*** [IbPwaUi] notify end message to Signage service");
 				this._setNewsMessage(false, null);
@@ -447,6 +458,7 @@ const IbPwaUi = class {
 			});
 			break;
 		default:
+			this._displayNotificationContainer(true);
 			this._setPlate(mode);
 			break;
 		}
@@ -772,7 +784,6 @@ const IbPwaUi = class {
 	// Observer for showUI command
 	_displayButton() {
 		IbPwaDebug.log(">>> [IbPwaUi] _displayButton...");
-		document.getElementById('video_ad_defaultText').style.visibility = "hidden";
 
 		this._videoAdNaviContainer.style.display = "flex";
 		IbPwaDebug.log("<<< [IbPwaUi] _displayButton...done");

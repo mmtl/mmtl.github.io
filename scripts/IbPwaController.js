@@ -74,6 +74,7 @@ const IbPwaController = class {
             }
 
             IbPwaStorage.removeItem("ps");
+            IbPwaStorage.removeItem("p");
 
             this._observer.clear();
         });
