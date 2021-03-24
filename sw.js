@@ -1,6 +1,8 @@
 const SW_VERSION = 3;
-const CACHE_NAME = 'static-cache-v3c';
+const CACHE_NAME = 'static-cache-v3b';
 const FILES_TO_CACHE = [
+    './index.html',
+    './styles/index.css',
     './images/favicon.ico',
     './images/icons/icon-128x128.png',
     './images/icons/icon-256x256.png',
