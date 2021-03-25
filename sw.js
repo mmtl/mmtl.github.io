@@ -1,5 +1,5 @@
 const SW_VERSION = 3;
-const CACHE_NAME = 'static-cache-v3f';
+const CACHE_NAME = 'static-cache-v3g';
 const FILES_TO_CACHE = [
     './index.html',
     './styles/index.css',
@@ -49,6 +49,7 @@ self.addEventListener('activate', (event) => {
     
     self.clients.claim();
 
+    /*
     event.waitUntil(
         clients.matchAll().then((clients) => {
             clients.forEach(client => {
@@ -60,6 +61,7 @@ self.addEventListener('activate', (event) => {
             });
         })
     );
+    */
 });
 
 const handleErrors = (res) => {
