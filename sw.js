@@ -1,5 +1,5 @@
 const SW_VERSION = 3;
-const CACHE_NAME = 'static-cache-v3z';
+const CACHE_NAME = 'static-cache-v3aa';
 const FILES_TO_CACHE = [
     './index.html',
     './styles/index.css',
@@ -18,6 +18,7 @@ const FILES_TO_CACHE = [
     './images/ui/sound_default.png',
 ];
 const SW_DEBUG = true;
+let isPublishMessage = false;
 
 // Install
 self.addEventListener('install', (event) => {
@@ -35,14 +36,13 @@ self.addEventListener('install', (event) => {
 // Activate
 self.addEventListener('activate', (event) => {
     if (SW_DEBUG) console.log('[ServiceWorker] Activate');
-    let isOldCacheRemoved = false;
     // Remove previous cached data from disk.
     event.waitUntil(
         caches.keys().then((keyList) => {
             return Promise.all(keyList.map((key) => {
                 if (key !== CACHE_NAME) {
                     if (SW_DEBUG) console.log('[ServiceWorker] Removing old cache', key);
-                    isOldCacheRemoved = true;
+                    isPublishMessage = true;
                     return caches.delete(key);
                 }
             }));
@@ -51,7 +51,7 @@ self.addEventListener('activate', (event) => {
     
     self.clients.claim();
 
-    if (isOldCacheRemoved) {
+    if (isPublishMessage) {
         event.waitUntil(
             clients.matchAll().then((clients) => {
                 clients.forEach(client => {
