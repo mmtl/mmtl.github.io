@@ -23,7 +23,6 @@ const IbPwaCore = class {
                   });
             });
 
-            /*
             navigator.serviceWorker.addEventListener('message', (event) => {
                 IbPwaDebug.log('*** [IbPwaCore] Message received from Service worker.');
                 const messageData = event.data;
@@ -32,7 +31,6 @@ const IbPwaCore = class {
                     window.location.reload();
                 }
             });
-            */
         }
         IbPwaDebug.log("<<< [IbPwaCore] registServiceWorker...OK");
     }
