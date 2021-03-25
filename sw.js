@@ -1,5 +1,5 @@
 const SW_VERSION = 3;
-const CACHE_NAME = 'static-cache-v3y';
+const CACHE_NAME = 'static-cache-v3z';
 const FILES_TO_CACHE = [
     './index.html',
     './styles/index.css',
@@ -35,12 +35,14 @@ self.addEventListener('install', (event) => {
 // Activate
 self.addEventListener('activate', (event) => {
     if (SW_DEBUG) console.log('[ServiceWorker] Activate');
+    let isOldCacheRemoved = false;
     // Remove previous cached data from disk.
     event.waitUntil(
         caches.keys().then((keyList) => {
             return Promise.all(keyList.map((key) => {
                 if (key !== CACHE_NAME) {
                     if (SW_DEBUG) console.log('[ServiceWorker] Removing old cache', key);
+                    isOldCacheRemoved = true;
                     return caches.delete(key);
                 }
             }));
@@ -49,17 +51,19 @@ self.addEventListener('activate', (event) => {
     
     self.clients.claim();
 
-    event.waitUntil(
-        clients.matchAll().then((clients) => {
-            clients.forEach(client => {
-                const url = new URL(client.url);
-                if (url.pathname.indexOf("index.html") >= 0) {
-                    if (SW_DEBUG) console.log('[ServiceWorker] Post message activated');
-                    client.postMessage({'activated': true});
-                }
-            });
-        })
-    );
+    if (isOldCacheRemoved) {
+        event.waitUntil(
+            clients.matchAll().then((clients) => {
+                clients.forEach(client => {
+                    const url = new URL(client.url);
+                    if (url.pathname.indexOf("index.html") >= 0) {
+                        if (SW_DEBUG) console.log('[ServiceWorker] Post message activated');
+                        client.postMessage({'activated': true});
+                    }
+                });
+            })
+        );    
+    }
 });
 
 const handleErrors = (res) => {
