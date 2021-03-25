@@ -1,5 +1,5 @@
 const SW_VERSION = 3;
-const CACHE_NAME = 'static-cache-v3ae';
+const CACHE_NAME = 'static-cache-v3af';
 const FILES_TO_CACHE = [
     './index.html',
     './styles/index.css',
@@ -35,10 +35,7 @@ self.addEventListener('install', (event) => {
 // Activate
 self.addEventListener('activate', (event) => {
     if (SW_DEBUG) console.log('[ServiceWorker] Activate');
-    let count = 0;
-    caches.keys().then((keyList) => {
-        count = keyList.length;
-    });
+    let isPublishMessage = false;
 
     // Remove previous cached data from disk.
     event.waitUntil(
@@ -46,6 +43,7 @@ self.addEventListener('activate', (event) => {
             return Promise.all(keyList.map((key) => {
                 if (key !== CACHE_NAME) {
                     if (SW_DEBUG) console.log('[ServiceWorker] Removing old cache', key);
+                    isPublishMessage = true;
                     return caches.delete(key);
                 }
             }));
@@ -54,20 +52,19 @@ self.addEventListener('activate', (event) => {
     
     self.clients.claim();
 
-    if (SW_DEBUG) console.log('[ServiceWorker] keyList length is', count);
-    if (count > 1) {
-        event.waitUntil(
-            clients.matchAll().then((clients) => {
-                clients.forEach(client => {
-                    const url = new URL(client.url);
-                    if (url.pathname.indexOf("index.html") >= 0) {
+    event.waitUntil(
+        clients.matchAll().then((clients) => {
+            clients.forEach(client => {
+                const url = new URL(client.url);
+                if (url.pathname.indexOf("index.html") >= 0) {
+                    if (isPublishMessage) {
                         if (SW_DEBUG) console.log('[ServiceWorker] Post message activated');
-                        client.postMessage({'activated': true});
+                        client.postMessage({'activated': true});    
                     }
-                });
-            })
-        );    
-    }
+                }
+            });
+        })
+    );    
 });
 
 const handleErrors = (res) => {
