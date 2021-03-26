@@ -70,6 +70,7 @@ const IbPwaController = class {
         this._identifier = this._uuid();
 
         window.addEventListener('beforeunload', () => {
+            this._isRetryedHandShake = true;    // for escaping retry
             if (this._connection != null) {
                 this._connection.close();
                 this._connection = null;
