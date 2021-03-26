@@ -28,7 +28,8 @@ const IbPwaCore = class {
                 const messageData = event.data;
                 if (messageData.activated && messageData.activated == true) {
                     IbPwaDebug.log("*** [IbPwaCore] Service worker cache is updated, so starts to reload.");
-                    window.location.reload();
+                    IbPwaController.notifyReload();
+                    //window.location.reload();
                 }
             });
         }

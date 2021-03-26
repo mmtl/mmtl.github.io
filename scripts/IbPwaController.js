@@ -24,6 +24,8 @@ const IbPwaController = class {
         showUI: 1002,
         exception: 1003,
         modeChange: 1004,
+        // for observe/dispatch (Controller -> UI)
+        prepareReload: 9000,
         // for PWA -> UWP
         pwaReady: 10000,
         // for send (Ads/UI -> Controller)
@@ -614,6 +616,18 @@ const IbPwaController = class {
         this._getRsaKey();
 
         IbPwaDebug.log("<<< [IbPwaController] initialize...");
+    }
+
+    notifyReload() {
+        IbPwaDebug.log(">>> [IbPwaController] notifyReload...");
+        this._observer.dispatch(this.event.prepareReload);
+        IbPwaDebug.log("<<< [IbPwaController] notifyReload...OK");
+    }
+
+    requestEventDispatcher(type, args) {
+        IbPwaDebug.log(">>> [IbPwaController] requestEventDispatcher...");
+        this._observer.dispatch(type, args);
+        IbPwaDebug.log("<<< [IbPwaController] requestEventDispatcher...OK");
     }
 
     // for debug

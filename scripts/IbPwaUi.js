@@ -31,6 +31,8 @@ const IbPwaUi = class {
 		this._fadeoutTimer = null;
 		this._updateAppinfoTimer = null;
 		this._mousemoveListener = this._playNaviAnimation.bind(this);
+		this._salvage = null;
+		this._state = this.state.none;
 		this._init();
 	}
 
@@ -38,6 +40,14 @@ const IbPwaUi = class {
 		none: 0,
 		videoAd: 1,		// Video Ad
 		signageNews: 2	// News
+	};
+
+	state = {
+		none: 0,
+		videoAd: 1,
+		videoAdShowUI: 2,
+		videoAdPrepareAds: 3,
+		signageNews: 4
 	};
 
 	serviceType = {
@@ -252,6 +262,9 @@ const IbPwaUi = class {
 		// Events
 		IbPwaController.observe(IbPwaController.event.showUI, this._displayButton.bind(this));
 		IbPwaEvent.addEventListener(IbPwaEvent.event.ads, "initVolumeUi", this._initVolUiListener.bind(this));
+		IbPwaController.observe(IbPwaController.event.prepareReload, this._reloadPage.bind(this));
+		IbPwaController.observe(IbPwaController.event.exception, this._salvageState.bind(this));
+		IbPwaController.observe(IbPwaController.event.prepareAds, this._prepareAdsHandler.bind(this));
 
 		this._isVideoAdInitialized = true;
 	}
@@ -416,6 +429,7 @@ const IbPwaUi = class {
 
 		switch (parseInt(mode)) {
 		case this.mode.signageNews:
+			this._state = this.state.signageNews;
 			this._displayNotificationContainer(false);
 			this._loadSignageData()
 			.then(([newsJson, infoJson, imageInfoJson]) => {
@@ -437,6 +451,7 @@ const IbPwaUi = class {
 			});
 			break;
 		case this.mode.videoAd:
+			this._state = this.state.videoAd;
 			this._displayNotificationContainer(false);
 			if (this._isModeChanged) {
 				IbPwaDebug.log("*** [IbPwaUi] notify end message to Signage service");
@@ -458,6 +473,7 @@ const IbPwaUi = class {
 			});
 			break;
 		default:
+			this._state = this.state.none;
 			this._displayNotificationContainer(true);
 			this._setPlate(mode);
 			break;
@@ -491,6 +507,62 @@ const IbPwaUi = class {
 				IbPwaDebug.log("<<< [IbPwaUi] onMessage...OK");
 			}
 		});
+	}
+
+	_reloadPage() {
+		IbPwaDebug.log(">>> [IbPwaUi] _reloadPage...");
+
+		const salvageObj = {
+			p: this._mode,
+			state: this._state
+		};
+		const salvageString = JSON.stringify(salvageObj);
+		IbPwaDebug.log("*** [IbPwaUi] salvageString = " + salvageString);
+		IbPwaStorage.setItem("salvage", salvageString);
+
+		IbPwaDebug.log("<<< [IbPwaUi] _reloadPage...OK");
+		IbPwaDebug.log("*** [IbPwaUi] reload triger");
+		window.location.reload();
+	}
+
+	_salvageState(observerArgs) {
+		IbPwaDebug.log(">>> [IbPwaUi] _salvageState...");
+
+		if (!Array.isArray(observerArgs)) {
+            IbPwaDebug.log("!!! [IbPwaUi] args is not array");
+            return;
+		}
+
+		if (this._salvage && this._salvage.hasOwnProperty("state")) {
+			switch (parseInt(this._salvage.state)) {
+			case this.state.videoAd:
+				// N/A
+				break;
+			case this.state.videoAdShowUI:
+				IbPwaDebug.log("*** [IbPwaUi] showUI triger");
+				this._displayButton();
+				break;
+			case this.state.videoAdPrepareAds:
+				IbPwaDebug.log("*** [IbPwaUi] showUI & prepareAds triger");
+				this._displayButton();
+				IbPwaController.requestEventDispatcher(IbPwaController.event.prepareAds);
+				break;
+			case this.state.signageNews:
+				// N/A
+				break;
+			default:
+				// N/A
+				break;
+			}
+		}
+
+		IbPwaDebug.log("<<< [IbPwaUi] _salvageState...OK");
+	}
+
+	_prepareAdsHandler() {
+		IbPwaDebug.log(">>> [IbPwaUi] _prepareAdsHandler...");
+		this._state = this.state.prepareAds;
+		IbPwaDebug.log("<<< [IbPwaUi] _prepareAdsHandler...OK");
 	}
 
 	////////////////////////////////////////////////////////////////////////////////
@@ -784,6 +856,7 @@ const IbPwaUi = class {
 	// Observer for showUI command
 	_displayButton() {
 		IbPwaDebug.log(">>> [IbPwaUi] _displayButton...");
+		this._state = this.state.videoAdShowUI;
 
 		this._videoAdNaviContainer.style.display = "flex";
 		IbPwaDebug.log("<<< [IbPwaUi] _displayButton...done");
@@ -839,6 +912,17 @@ const IbPwaUi = class {
 	initialize() {
 		IbPwaDebug.log(">>> [IbPwaUi] initialize()...");
 		IbPwaDebug.log("*** [IbPwaUi] Last update: " , document.lastModified);
+
+		// Salvage for reload
+		const salvage = IbPwaStorage.getItem("salvage");
+		if (salvage) {
+			IbPwaDebug.log("*** [IbPwaUi] salvage data found");
+			this._salvage = JSON.parse(salvage);
+			if (this._salvage.hasOwnProperty("p")) {
+				IbPwaStorage.setItem("p", parseInt(this._salvage.p));
+			}
+			IbPwaStorage.removeItem("salvage");
+		}
 
 		// Mode check
 		const p = IbPwaStorage.getItem("p");
